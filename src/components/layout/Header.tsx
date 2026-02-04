@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui'
 import { useAuth } from '@/hooks/useAuth'
-import { 
-  LayoutDashboard, 
-  Receipt, 
-  Settings, 
-  LogOut, 
-  Menu, 
+import {
+  LayoutDashboard,
+  Receipt,
+  FileText,
+  Settings,
+  LogOut,
+  Menu,
   X,
   ChevronDown,
   User,
@@ -25,6 +26,7 @@ export function Header() {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Transactions', href: '/transactions', icon: Receipt },
+    { name: 'Factures', href: '/factures', icon: FileText },
     { name: 'Paramètres', href: '/settings', icon: Settings },
   ]
 
