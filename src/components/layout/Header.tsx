@@ -10,12 +10,17 @@ import {
   Receipt,
   FileText,
   Settings,
+  Building2,
+  Upload,
   LogOut,
   Menu,
   X,
   ChevronDown,
   User,
+  Euro,
+  ArrowRightLeft,
 } from 'lucide-react'
+
 
 export function Header() {
   const pathname = usePathname()
@@ -23,12 +28,18 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
 
-  const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Transactions', href: '/transactions', icon: Receipt },
-    { name: 'Factures', href: '/factures', icon: FileText },
-    { name: 'Paramètres', href: '/settings', icon: Settings },
-  ]
+const navigation = [
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Transactions', href: '/transactions', icon: Receipt },
+  { name: 'Factures', href: '/factures', icon: FileText },
+  { name: 'Banques', href: '/parametres/banques', icon: Building2 },
+  { name: 'Import Relevé', href: '/import-releve', icon: Upload },
+  { name: 'TVA', href: '/tva', icon: Euro },
+  { name: 'Rapprochement', href: '/rapprochement', icon: ArrowRightLeft },
+  { name: 'Paramètres', href: '/parametres', icon: Settings },
+];
+
+
 
   const handleSignOut = async () => {
     try {

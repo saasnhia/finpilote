@@ -3,24 +3,35 @@
 import { useMemo } from 'react'
 import { Header } from '@/components/layout'
 import { Card } from '@/components/ui'
-import { 
-  KPICard, 
-  BreakEvenChart, 
-  BreakEvenGauge, 
-  DataInputForm 
+import {
+  KPICard,
+  BreakEvenChart,
+  BreakEvenGauge,
+  DataInputForm,
+  AlertDetailModal,
+  ComparativeMetrics,
+  InsightsPanel,
+  ExportFECModal,
 } from '@/components/dashboard'
 import { useAuth } from '@/hooks/useAuth'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { calculateKPIs, generateChartData, formatCurrency } from '@/lib/calculations'
-import { 
-  Target, 
-  TrendingUp, 
-  Calendar, 
+import { getSectorBenchmark, compareToBenchmark } from '@/lib/benchmarks/sector-data'
+import { analyzeResult } from '@/lib/analysis/result-analyzer'
+import {
+  Target,
+  TrendingUp,
+  Calendar,
   PiggyBank,
   ArrowUpRight,
   ArrowDownRight,
   Loader2,
+  Bell,
+  Download,
+  Settings,
 } from 'lucide-react'
+import Link from 'next/link'
+import type { Alert } from '@/types'
 import React, { useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 
@@ -36,6 +47,43 @@ export default function DashboardPage() {
   const [parsedData, setParsedData] = useState<ParsedFields | null>(null)
   const [importLoading, setImportLoading] = useState(false)
   const [importedData, setImportedData] = useState<any>(null)
+
+  // Phase 4 state
+  const [alerts, setAlerts] = useState<Alert[]>([])
+  const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
+  const [showFECModal, setShowFECModal] = useState(false)
+
+  // Fetch alerts on mount
+  React.useEffect(() => {
+    if (!user) return
+    const fetchAlerts = async () => {
+      try {
+        // Generate alerts first
+        await fetch('/api/alerts', { method: 'POST' })
+        // Then fetch them
+        const res = await fetch('/api/alerts?statut=nouvelle')
+        const data = await res.json()
+        if (data.success) setAlerts(data.alerts || [])
+      } catch (e) {
+        // Silently fail - alerts are non-critical
+      }
+    }
+    fetchAlerts()
+  }, [user])
+
+  const handleResolveAlert = async (id: string, statut: 'resolue' | 'ignoree', notes?: string) => {
+    try {
+      await fetch(`/api/alerts/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ statut, notes }),
+      })
+      setAlerts(prev => prev.filter(a => a.id !== id))
+      setSelectedAlert(null)
+    } catch (e) {
+      console.error('Error resolving alert:', e)
+    }
+  }
 
   const kpis = useMemo(() => {
     if (!currentData) return null
@@ -126,20 +174,120 @@ export default function DashboardPage() {
     ? ((kpis.currentResult - previousKpis.currentResult) / Math.abs(previousKpis.currentResult)) * 100
     : 0
 
+  // Phase 4D: Benchmarks sectoriels (default: Services)
+  const sectorData = getSectorBenchmark('services')
+
+  const caBenchmark = (() => {
+    const comp = compareToBenchmark(currentData.revenue, sectorData.ca_moyen_mensuel)
+    const delta = currentData.revenue - sectorData.ca_moyen_mensuel
+    return {
+      sectorLabel: sectorData.label,
+      comparison: `${delta >= 0 ? '+' : ''}${formatCurrency(delta)}`,
+      status: comp.status,
+    }
+  })()
+
+  const pointMortBenchmark = (() => {
+    const comp = compareToBenchmark(kpis.breakEvenDays, sectorData.point_mort_moyen, true)
+    const delta = kpis.breakEvenDays - sectorData.point_mort_moyen
+    return {
+      sectorLabel: sectorData.label,
+      comparison: `${delta >= 0 ? '+' : ''}${delta}j`,
+      status: comp.status,
+    }
+  })()
+
+  const margeBenchmark = (() => {
+    const userMarge = Math.round(kpis.marginRate * 100)
+    const comp = compareToBenchmark(userMarge, sectorData.marge_moyenne)
+    const delta = userMarge - sectorData.marge_moyenne
+    return {
+      sectorLabel: sectorData.label,
+      comparison: `${delta >= 0 ? '+' : ''}${delta} pts`,
+      status: comp.status,
+    }
+  })()
+
+  // Phase 4D: Analyse automatique du résultat
+  const resultAnalysis = analyzeResult(currentData, previousMonth || null, kpis, previousKpis)
+
   return (
     <div className="min-h-screen bg-navy-50">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-display font-bold text-navy-900">
-            Dashboard
-          </h1>
-          <p className="mt-1 text-navy-500">
-            Vue d&apos;ensemble de votre situation financière
-          </p>
+        <div className="flex items-start justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-display font-bold text-navy-900">
+              Dashboard
+            </h1>
+            <p className="mt-1 text-navy-500">
+              Vue d&apos;ensemble de votre situation financière
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* Alerts badge */}
+            {alerts.length > 0 && (
+              <button
+                onClick={() => setSelectedAlert(alerts[0])}
+                className="relative p-2 rounded-lg hover:bg-navy-100 transition-colors"
+              >
+                <Bell className="w-5 h-5 text-navy-600" />
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-coral-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {alerts.length}
+                </span>
+              </button>
+            )}
+            <button
+              onClick={() => setShowFECModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-navy-600 hover:bg-navy-100 rounded-lg transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Export FEC
+            </button>
+            <Link
+              href="/dashboard/settings/kpis"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-navy-600 hover:bg-navy-100 rounded-lg transition-colors"
+            >
+              <Settings className="w-4 h-4" />
+              KPIs
+            </Link>
+          </div>
         </div>
+
+        {/* Alerts banner */}
+        {alerts.length > 0 && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Bell className="w-4 h-4 text-amber-600" />
+                <span className="text-sm font-medium text-amber-900">
+                  {alerts.length} alerte{alerts.length > 1 ? 's' : ''} en attente
+                </span>
+              </div>
+              <div className="flex gap-1">
+                {alerts.slice(0, 3).map(alert => (
+                  <button
+                    key={alert.id}
+                    onClick={() => setSelectedAlert(alert)}
+                    className={`px-2 py-1 text-xs font-medium rounded-full cursor-pointer ${
+                      alert.severite === 'critical'
+                        ? 'bg-red-100 text-red-700'
+                        : alert.severite === 'warning'
+                          ? 'bg-amber-100 text-amber-700'
+                          : 'bg-blue-100 text-blue-700'
+                    }`}
+                  >
+                    {alert.titre.length > 30
+                      ? alert.titre.slice(0, 30) + '...'
+                      : alert.titre}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Demo Banner */}
         {!user && (
@@ -169,6 +317,7 @@ export default function DashboardPage() {
             subtitle="Point mort mensuel"
             icon={<Target className="w-5 h-5" />}
             variant="success"
+            benchmark={margeBenchmark}
           />
           
           <KPICard
@@ -179,6 +328,7 @@ export default function DashboardPage() {
             trendValue={`${revenueTrend >= 0 ? '+' : ''}${revenueTrend.toFixed(1)}%`}
             icon={<TrendingUp className="w-5 h-5" />}
             variant={revenueTrend >= 0 ? 'success' : 'danger'}
+            benchmark={caBenchmark}
           />
           
           <KPICard
@@ -187,6 +337,7 @@ export default function DashboardPage() {
             subtitle="Pour atteindre le SR"
             icon={<Calendar className="w-5 h-5" />}
             variant={kpis.breakEvenDays <= 180 ? 'success' : 'warning'}
+            benchmark={pointMortBenchmark}
           />
           
           <KPICard
@@ -197,6 +348,14 @@ export default function DashboardPage() {
             trendValue={resultTrend !== 0 ? `${resultTrend >= 0 ? '+' : ''}${resultTrend.toFixed(0)}%` : undefined}
             icon={<PiggyBank className="w-5 h-5" />}
             variant={kpis.currentResult >= 0 ? 'success' : 'danger'}
+            analysisTooltip={resultAnalysis ? {
+              summary: resultAnalysis.summary,
+              factors: resultAnalysis.factors.map(f => ({
+                label: f.label,
+                value: `${f.impact >= 0 ? '+' : ''}${formatCurrency(f.impact)}`,
+                type: f.type,
+              })),
+            } : undefined}
           />
         </div>
 
@@ -240,8 +399,14 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Quick Stats */}
+          {/* Quick Stats + Phase 4 Panels */}
           <div className="lg:col-span-1 space-y-6">
+            {/* Comparative Metrics (Phase 4) */}
+            <ComparativeMetrics userId={user?.id} />
+
+            {/* Insights Panel (Phase 4) */}
+            <InsightsPanel userId={user?.id} />
+
             <Card>
               <h3 className="text-lg font-display font-semibold text-navy-900 mb-4">
                 Analyse Rapide
@@ -319,6 +484,19 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+
+      {/* Phase 4 Modals */}
+      {selectedAlert && (
+        <AlertDetailModal
+          alert={selectedAlert}
+          onClose={() => setSelectedAlert(null)}
+          onResolve={handleResolveAlert}
+        />
+      )}
+
+      {showFECModal && (
+        <ExportFECModal onClose={() => setShowFECModal(false)} />
+      )}
     </div>
   )
 }

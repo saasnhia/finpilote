@@ -69,6 +69,7 @@ export function useFinancialData(userId: string | undefined) {
       // Fallback to demo data
       setCurrentData(generateDemoData())
       setHistory(generateDemoHistory())
+      return
     } finally {
       setLoading(false)
     }

@@ -89,6 +89,9 @@ export interface Transaction {
   import_batch_id?: string
   suggested_category?: string
   category_confirmed?: boolean
+
+  // Phase 2: TVA fields
+  tva_taux?: number // Taux de TVA (20, 10, 5.5, 2.1)
 }
 
 export type TransactionCategory = 
@@ -321,4 +324,279 @@ export interface ReconciliationResponse {
   unmatched_manual_count: number
   unmatched_bank_count: number
   error?: string
+}
+
+// ========================================
+// PHASE 2: TVA CA3 Types
+// ========================================
+
+// TVA Declarations
+export interface DeclarationTVA {
+  id: string
+  user_id: string
+
+  // Période
+  periode_debut: string
+  periode_fin: string
+  regime: 'reel_normal' | 'reel_simplifie' | 'franchise'
+
+  // Montants calculés
+  montant_ht: number
+  tva_collectee: number
+  tva_deductible: number
+  tva_nette: number // positif = à payer, négatif = crédit
+
+  // Détail par taux
+  ventes_tva_20: number
+  ventes_tva_10: number
+  ventes_tva_55: number
+  ventes_tva_21: number
+  achats_tva_20: number
+  achats_tva_10: number
+  achats_tva_55: number
+  achats_tva_21: number
+
+  // Statut
+  statut: 'brouillon' | 'validee' | 'envoyee' | 'payee'
+  date_validation?: string
+  date_envoi?: string
+  date_paiement?: string
+
+  // Fichiers
+  fichier_ca3_url?: string
+
+  // Notes
+  notes?: string
+
+  // Timestamps
+  created_at: string
+  updated_at: string
+}
+
+// Lignes CA3
+export interface LigneCA3 {
+  id: string
+  declaration_id: string
+
+  // Ligne CA3
+  ligne_numero: string // '01', '02', '08', '20', etc.
+  ligne_libelle: string
+
+  // Montants
+  base_ht?: number
+  taux_tva?: number
+  montant_tva: number
+
+  // Catégorie
+  categorie: 'ventes' | 'achats' | 'autres_operations' | 'credit_tva'
+
+  // Métadonnées
+  auto_calculated: boolean
+  transaction_count: number
+
+  created_at: string
+  updated_at: string
+}
+
+// TVA Calculation Result
+export interface TVACalculationResult {
+  periode_debut: string
+  periode_fin: string
+
+  // Ventes
+  ventes: {
+    total_ht: number
+    total_ttc: number
+    tva_collectee: number
+    par_taux: {
+      taux_20: { ht: number; tva: number; ttc: number; count: number }
+      taux_10: { ht: number; tva: number; ttc: number; count: number }
+      taux_55: { ht: number; tva: number; ttc: number; count: number }
+      taux_21: { ht: number; tva: number; ttc: number; count: number }
+    }
+  }
+
+  // Achats
+  achats: {
+    total_ht: number
+    total_ttc: number
+    tva_deductible: number
+    par_taux: {
+      taux_20: { ht: number; tva: number; ttc: number; count: number }
+      taux_10: { ht: number; tva: number; ttc: number; count: number }
+      taux_55: { ht: number; tva: number; ttc: number; count: number }
+      taux_21: { ht: number; tva: number; ttc: number; count: number }
+    }
+  }
+
+  // Résultat
+  tva_nette: number // positif = à payer, négatif = crédit
+
+  // Transactions utilisées
+  transactions_count: number
+}
+
+// CA3 Form Data
+export interface CA3FormData {
+  // Section 1: Ventes et prestations de services
+  ligne_01: number // Ventes, prestations de services (base HT)
+  ligne_02: number // TVA collectée sur ligne 01 (20%)
+  ligne_03: number // Ventes et prestations (base HT)
+  ligne_04: number // TVA collectée sur ligne 03 (10%)
+  ligne_05: number // Ventes et prestations (base HT)
+  ligne_06: number // TVA collectée sur ligne 05 (5.5%)
+  ligne_07: number // Ventes et prestations (base HT)
+  ligne_08: number // TVA collectée sur ligne 07 (2.1%)
+
+  // Section 2: Acquisitions intracommunautaires
+  ligne_09: number // Acquisitions intracommunautaires (base HT)
+  ligne_10: number // TVA due sur ligne 09
+
+  // Section 3: Autres opérations imposables
+  ligne_11: number // Livraisons à soi-même
+  ligne_12: number // TVA due sur ligne 11
+
+  // Section 4: Total TVA brute due
+  ligne_15: number // Total TVA brute (02+04+06+08+10+12)
+
+  // Section 5: TVA déductible
+  ligne_19: number // Biens constituant des immobilisations
+  ligne_20: number // Autres biens et services
+  ligne_21: number // Total TVA déductible (19+20)
+
+  // Section 6: TVA nette due
+  ligne_23: number // TVA nette due (15-21) ou crédit (21-15)
+
+  // Section 7: Crédit de TVA
+  ligne_24: number // Crédit de TVA à reporter
+}
+
+// API Response types
+export interface TVACalculateResponse {
+  success: boolean
+  result?: TVACalculationResult
+  error?: string
+}
+
+export interface TVAGenerateCA3Response {
+  success: boolean
+  declaration?: DeclarationTVA
+  lignes?: LigneCA3[]
+  error?: string
+}
+
+export interface TVADeclarationsListResponse {
+  success: boolean
+  declarations?: DeclarationTVA[]
+  error?: string
+}
+
+// ========================================
+// PHASE 4: Alerts, Insights, KPIs, FEC
+// ========================================
+
+// Alert types
+export type AlertType =
+  | 'facture_impayee'
+  | 'ecart_tva'
+  | 'transaction_anormale'
+  | 'seuil_depasse'
+  | 'doublon_detecte'
+  | 'rapprochement_echoue'
+  | 'point_mort_eleve'
+  | 'marge_faible'
+  | 'ca_baisse'
+  | 'tresorerie_basse'
+
+export type AlertSeverity = 'critical' | 'warning' | 'info'
+export type AlertStatus = 'nouvelle' | 'vue' | 'resolue' | 'ignoree'
+
+export interface Alert {
+  id: string
+  user_id: string
+  type: AlertType
+  severite: AlertSeverity
+  titre: string
+  description: string
+  impact_financier?: number
+  actions_suggerees: string[]
+  transaction_id?: string
+  facture_id?: string
+  statut: AlertStatus
+  resolved_at?: string
+  notes?: string
+  created_at: string
+  updated_at: string
+}
+
+// Phase 4D: Insight Action Plan
+export interface InsightAction {
+  label: string
+  impact_estimate: string
+  type: 'simulate' | 'plan' | 'action'
+}
+
+// Insight types
+export interface Insight {
+  key: string
+  titre: string
+  analyse: string
+  actions: string[]
+  action_plan?: InsightAction[]
+  severite: AlertSeverity
+  applied: boolean
+  metric_value?: number
+  metric_label?: string
+  benchmark_value?: number
+  benchmark_label?: string
+}
+
+// Comparative metrics
+export interface ComparativeMetric {
+  label: string
+  current_value: number
+  previous_value: number
+  delta_percent: number
+  trend: 'up' | 'down' | 'stable'
+}
+
+// Dashboard preferences
+export interface DashboardPreferences {
+  id: string
+  user_id: string
+  kpi_order: string[]
+  visible_kpis: string[]
+  created_at: string
+  updated_at: string
+}
+
+// FEC types
+export interface FECEntry {
+  JournalCode: string
+  JournalLib: string
+  EcritureNum: string
+  EcritureDate: string
+  CompteNum: string
+  CompteLib: string
+  CompAuxNum: string
+  CompAuxLib: string
+  PieceRef: string
+  PieceDate: string
+  EcritureLib: string
+  Debit: string
+  Credit: string
+  EcritureLet: string
+  DateLet: string
+  ValidDate: string
+  Montantdevise: string
+  Idevise: string
+}
+
+export interface FECGenerationResult {
+  entries: FECEntry[]
+  filename: string
+  total_entries: number
+  total_debit: number
+  total_credit: number
+  warnings: string[]
 }
