@@ -600,3 +600,114 @@ export interface FECGenerationResult {
   total_credit: number
   warnings: string[]
 }
+
+// ========================================
+// PHASE 5: Audit pour Cabinets Comptables
+// ========================================
+
+// Seuils légaux d'audit (France 2024/2026)
+export interface AuditThresholds {
+  // Seuils légaux (2 sur 3 déclenchent l'obligation)
+  legal: {
+    ca: number           // Chiffre d'affaires HT (€)
+    bilan: number        // Total bilan (€)
+    effectif: number     // Nombre de salariés
+  }
+  // Seuils de signification calculés
+  signification: {
+    value: number        // Seuil de signification (0.5-2% du total bilan)
+    percentage: number   // Pourcentage appliqué
+    method: 'bilan' | 'ca' | 'resultat' // Base de calcul utilisée
+  }
+  // Seuil de planification (70% du seuil de signification)
+  planification: {
+    value: number
+    percentage: number   // 70% par défaut
+  }
+  // Seuil d'anomalies clairement insignifiantes (5% du seuil de planification)
+  anomalies: {
+    value: number
+    percentage: number   // 5% par défaut
+  }
+}
+
+// Données financières de l'entreprise auditée
+export interface CompanyAuditData {
+  // Identité
+  company_name: string
+  siren?: string
+  secteur?: string
+  exercice_debut: string  // ISO date
+  exercice_fin: string    // ISO date
+
+  // Données financières
+  chiffre_affaires_ht: number
+  total_bilan: number
+  effectif_moyen: number
+  resultat_net: number
+
+  // Balance des comptes (optionnel, pour tri par seuils)
+  balance?: AccountBalance[]
+}
+
+// Ligne de balance comptable (PCG)
+export interface AccountBalance {
+  numero_compte: string   // Ex: '411000', '512000'
+  libelle: string         // Ex: 'Clients', 'Banque'
+  classe: number          // 1-7 (PCG)
+  solde_debiteur: number
+  solde_crediteur: number
+  solde_net: number       // debiteur - crediteur (positif = débiteur)
+  mouvement_debit: number
+  mouvement_credit: number
+}
+
+// Résultat de l'analyse d'audit
+export interface AuditResult {
+  // Obligation d'audit
+  audit_obligatoire: boolean
+  criteres_depasses: Array<{
+    critere: 'ca' | 'bilan' | 'effectif'
+    valeur: number
+    seuil: number
+    depasse: boolean
+  }>
+  nombre_criteres_depasses: number
+
+  // Seuils calculés
+  thresholds: AuditThresholds
+
+  // Comptes à risque (solde > seuil planification)
+  comptes_significatifs: AccountRisk[]
+  comptes_a_verifier: AccountRisk[]
+  comptes_insignifiants: AccountRisk[]
+}
+
+// Compte avec évaluation du risque
+export interface AccountRisk {
+  numero_compte: string
+  libelle: string
+  classe: number
+  solde_net: number
+  mouvement_total: number    // debit + credit total
+  ratio_bilan: number        // solde / total bilan (%)
+  risk_level: 'high' | 'medium' | 'low'
+  classification: 'significatif' | 'a_verifier' | 'insignifiant'
+  notes?: string
+}
+
+// API Response types
+export interface AuditThresholdsResponse {
+  success: boolean
+  result?: AuditResult
+  error?: string
+}
+
+export interface AuditAccountsResponse {
+  success: boolean
+  comptes_significatifs?: AccountRisk[]
+  comptes_a_verifier?: AccountRisk[]
+  comptes_insignifiants?: AccountRisk[]
+  thresholds?: AuditThresholds
+  error?: string
+}
