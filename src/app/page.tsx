@@ -293,7 +293,7 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
-                Valid&eacute; par IAE Dijon
+                Valid&eacute; par des enseignants en comptabilit&eacute; de l&apos;IAE Dijon
               </h2>
             </div>
 
