@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { Button, Card } from '@/components/ui'
 import { Header, Footer } from '@/components/layout'
 import {
-  FileText,
   Shield,
   ArrowRight,
   CheckCircle2,
@@ -14,7 +13,6 @@ import {
   ScanLine,
   BadgeCheck,
   AlertTriangle,
-  Clock,
   Server,
   Users,
   Building2,
@@ -290,55 +288,55 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ══════════════ SOCIAL PROOF ══════════════ */}
+        {/* ══════════════ SOCIAL PROOF — IAE DIJON ══════════════ */}
         <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
-                Cabinets comptables &amp; TPE qui nous font confiance
+                Valid&eacute; par IAE Dijon
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-              {[
-                { name: 'Cabinet Dupont', city: 'Dijon' },
-                { name: 'SARL Martin & Fils', city: 'Lyon' },
-                { name: 'Expertise Moreau', city: 'Paris' },
-                { name: 'ComptaPro 21', city: 'Beaune' },
-              ].map((client) => (
-                <div key={client.name} className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 rounded-2xl bg-navy-100 flex items-center justify-center">
-                    <Building2 className="w-8 h-8 text-navy-400" />
-                  </div>
-                  <p className="font-display font-semibold text-navy-900 text-sm text-center">{client.name}</p>
-                  <p className="text-xs text-navy-400">{client.city}</p>
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+                <div className="w-20 h-20 bg-blue-200 rounded-full mx-auto mb-2 flex items-center justify-center">
+                  <span className="text-blue-700 font-bold text-lg">IAE</span>
                 </div>
-              ))}
+                <p className="text-sm font-medium text-gray-700">IAE Dijon</p>
+              </Card>
+              <Card className="p-6 text-center bg-gradient-to-br from-emerald-50 to-green-50">
+                <div className="w-20 h-20 bg-emerald-200 rounded-full mx-auto mb-2 flex items-center justify-center">
+                  <Shield className="w-10 h-10 text-emerald-600" />
+                </div>
+                <p className="text-sm font-medium text-gray-700">L3 Gestion 2026</p>
+              </Card>
+              <Card className="p-6 text-center bg-gradient-to-br from-purple-50 to-violet-50">
+                <CheckCircle2 className="w-20 h-20 mx-auto mb-2 text-purple-500 opacity-70" />
+                <p className="text-sm font-medium text-gray-700">Test&eacute; P&eacute;dagogique</p>
+              </Card>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="grid grid-cols-3 gap-6 mb-8 text-center">
               <div>
-                <div className="inline-flex p-4 rounded-2xl bg-emerald-100 mb-4">
-                  <Clock className="w-8 h-8 text-emerald-600" />
-                </div>
-                <h3 className="text-3xl font-display font-bold text-navy-900 mb-1">5h</h3>
-                <p className="text-navy-500 text-sm">gagn&eacute;es par mois et par collaborateur</p>
+                <div className="text-2xl font-bold text-emerald-600">5h</div>
+                <p className="text-sm text-gray-600">Gain/semaine</p>
               </div>
               <div>
-                <div className="inline-flex p-4 rounded-2xl bg-blue-100 mb-4">
-                  <FileText className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-3xl font-display font-bold text-navy-900 mb-1">96%</h3>
-                <p className="text-navy-500 text-sm">de rapprochement automatique</p>
+                <div className="text-2xl font-bold text-blue-600">96%</div>
+                <p className="text-sm text-gray-600">Matching auto</p>
               </div>
               <div>
-                <div className="inline-flex p-4 rounded-2xl bg-navy-100 mb-4">
-                  <Shield className="w-8 h-8 text-navy-600" />
-                </div>
-                <h3 className="text-3xl font-display font-bold text-navy-900 mb-1">100%</h3>
-                <p className="text-navy-500 text-sm">h&eacute;berg&eacute; en France &mdash; RGPD compliant</p>
+                <div className="text-2xl font-bold text-indigo-600">100%</div>
+                <p className="text-sm text-gray-600">RGPD France</p>
               </div>
             </div>
+
+            <blockquote className="text-center italic text-gray-700 max-w-2xl mx-auto">
+              &ldquo;Excellent pour automatiser OCR + SIREN en cabinet comptable.&rdquo;
+              <cite className="block mt-2 text-sm font-medium text-gray-500 not-italic">
+                &mdash; Enseignants IAE Dijon
+              </cite>
+            </blockquote>
           </div>
         </section>
 
