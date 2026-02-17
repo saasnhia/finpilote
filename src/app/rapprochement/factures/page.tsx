@@ -160,7 +160,7 @@ export default function FacturesRapprochementPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-navy-900">
-                        {f.nom_fournisseur || 'Fournisseur inconnu'}
+                        {f.fournisseur || 'Fournisseur inconnu'}
                       </p>
                       <p className="text-xs text-navy-500">
                         N° {f.numero_facture || '—'} &middot; {formatDate(f.date_facture)}
@@ -179,7 +179,7 @@ export default function FacturesRapprochementPage() {
           <div>
             <h2 className="text-sm font-medium text-navy-600 uppercase tracking-wide mb-3">
               {selectedFacture
-                ? `Associer à "${selectedFacture.nom_fournisseur || 'Facture'}"`
+                ? `Associer à "${selectedFacture.fournisseur || 'Facture'}"`
                 : 'Sélectionnez une facture'}
             </h2>
 

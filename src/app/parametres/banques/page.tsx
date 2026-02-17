@@ -243,7 +243,7 @@ export default function BankAccountsPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 label="Nom du compte"
-                placeholder="Ex: Compte Pro FinPilote"
+                placeholder="Ex: Compte Pro FinSoft"
                 value={formData.account_name}
                 onChange={e => setFormData({ ...formData, account_name: e.target.value })}
                 required

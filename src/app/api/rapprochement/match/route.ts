@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { matchInvoicesWithTransactions } from '@/lib/matching/invoice-matcher'
 import { detectAnomalies } from '@/lib/matching/anomaly-detector'
+import { parseSupplierHistories, updateSupplierHistory } from '@/lib/matching/learning-engine'
 import type { Transaction, Facture } from '@/types'
-import type { MatchingConfig } from '@/lib/matching/matching-types'
+import type { MatchingConfig, SupplierHistory } from '@/lib/matching/matching-types'
 import { DEFAULT_MATCHING_CONFIG } from '@/lib/matching/matching-types'
 
 /**
  * POST /api/rapprochement/match
- * Lance le rapprochement automatique factures ↔ transactions
+ * Lance le rapprochement automatique factures <-> transactions
+ * avec scoring multi-criteres intelligent + apprentissage fournisseur
  */
 export async function POST(req: NextRequest) {
   try {
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+      return NextResponse.json({ error: 'Non authentifie' }, { status: 401 })
     }
 
     // Optional config overrides
@@ -30,47 +32,58 @@ export async function POST(req: NextRequest) {
       ...body.config,
     }
 
-    // Fetch user's transactions
+    // Fetch user's transactions (all types, matcher filters expenses)
     const { data: transactions, error: txError } = await supabase
       .from('transactions')
       .select('*')
       .eq('user_id', user.id)
-      .eq('type', 'expense')
       .order('date', { ascending: false })
 
     if (txError) {
       return NextResponse.json(
-        { error: 'Erreur lors de la récupération des transactions' },
+        { error: 'Erreur lors de la recuperation des transactions' },
         { status: 500 }
       )
     }
 
-    // Fetch user's validated invoices
+    // Fetch user's invoices (use correct column name: statut)
     const { data: factures, error: fError } = await supabase
       .from('factures')
       .select('*')
       .eq('user_id', user.id)
-      .in('validation_status', ['validated', 'manual_review'])
+      .in('statut', ['en_attente', 'validee', 'brouillon'])
       .order('date_facture', { ascending: false })
 
     if (fError) {
       return NextResponse.json(
-        { error: 'Erreur lors de la récupération des factures' },
+        { error: 'Erreur lors de la recuperation des factures' },
         { status: 500 }
       )
+    }
+
+    // Load supplier learning history
+    let supplierHistories: SupplierHistory[] = []
+    const { data: historyRows } = await supabase
+      .from('supplier_histories')
+      .select('*')
+      .eq('user_id', user.id)
+
+    if (historyRows && historyRows.length > 0) {
+      supplierHistories = parseSupplierHistories(historyRows)
     }
 
     const typedTransactions = (transactions || []) as Transaction[]
     const typedFactures = (factures || []) as Facture[]
 
-    // Run matching algorithm
+    // Run smart matching algorithm
     const matchResult = matchInvoicesWithTransactions(
       typedFactures,
       typedTransactions,
-      config
+      config,
+      supplierHistories
     )
 
-    // Save auto-matched results to DB
+    // Save auto-matched results to DB (with extended score fields)
     const autoMatchInserts = matchResult.auto_matched.map(m => ({
       user_id: user.id,
       facture_id: m.facture.id,
@@ -120,6 +133,46 @@ export async function POST(req: NextRequest) {
           { error: 'Erreur lors de la sauvegarde des rapprochements' },
           { status: 500 }
         )
+      }
+    }
+
+    // Update supplier learning for auto-matched pairs
+    for (const m of matchResult.auto_matched) {
+      if (m.facture.fournisseur) {
+        const updatedHistory = updateSupplierHistory(
+          supplierHistories,
+          m.facture.fournisseur,
+          m.transaction.description,
+          m.transaction.amount
+        )
+
+        // Upsert supplier history
+        if (updatedHistory.id) {
+          await supabase
+            .from('supplier_histories')
+            .update({
+              transaction_patterns: updatedHistory.transaction_patterns,
+              iban_patterns: updatedHistory.iban_patterns,
+              avg_amount: updatedHistory.avg_amount,
+              match_count: updatedHistory.match_count,
+              last_matched_at: updatedHistory.last_matched_at,
+              updated_at: updatedHistory.updated_at,
+            })
+            .eq('id', updatedHistory.id)
+        } else {
+          await supabase
+            .from('supplier_histories')
+            .insert({
+              user_id: user.id,
+              supplier_name: updatedHistory.supplier_name,
+              supplier_normalized: updatedHistory.supplier_normalized,
+              transaction_patterns: updatedHistory.transaction_patterns,
+              iban_patterns: updatedHistory.iban_patterns,
+              avg_amount: updatedHistory.avg_amount,
+              match_count: updatedHistory.match_count,
+              last_matched_at: updatedHistory.last_matched_at,
+            })
+        }
       }
     }
 

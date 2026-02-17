@@ -86,7 +86,7 @@ export function MatchingSuggestionCard({
           {facture ? (
             <>
               <p className="text-sm font-medium text-navy-900 truncate">
-                {facture.nom_fournisseur || facture.numero_facture || 'Sans nom'}
+                {facture.fournisseur || facture.numero_facture || 'Sans nom'}
               </p>
               <p className="text-sm font-mono text-navy-700">
                 {(facture.montant_ttc || 0).toFixed(2)} €
@@ -120,26 +120,40 @@ export function MatchingSuggestionCard({
         </div>
       </div>
 
-      {/* Score breakdown */}
-      <div className="flex gap-4 mb-4 text-xs text-navy-500">
+      {/* Score breakdown (5 criteria) */}
+      <div className="flex flex-wrap gap-3 mb-4 text-xs text-navy-500">
         <span>
           Montant:{' '}
           <span className="font-medium text-navy-700">
-            {rapprochement.amount_score || 0}%
+            {rapprochement.amount_score || 0}/40
           </span>
         </span>
         <span>
           Date:{' '}
           <span className="font-medium text-navy-700">
-            {rapprochement.date_score || 0}%
+            {rapprochement.date_score || 0}/20
           </span>
         </span>
         <span>
-          Description:{' '}
+          Fournisseur:{' '}
           <span className="font-medium text-navy-700">
-            {rapprochement.description_score || 0}%
+            {rapprochement.supplier_score || 0}/25
           </span>
         </span>
+        <span>
+          N° Facture:{' '}
+          <span className="font-medium text-navy-700">
+            {rapprochement.invoice_number_score || 0}/30
+          </span>
+        </span>
+        {(rapprochement.iban_bonus ?? 0) > 0 && (
+          <span>
+            IBAN:{' '}
+            <span className="font-medium text-emerald-600">
+              +{rapprochement.iban_bonus}/15
+            </span>
+          </span>
+        )}
       </div>
 
       {/* Actions */}

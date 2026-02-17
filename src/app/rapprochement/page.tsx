@@ -262,7 +262,7 @@ export default function RapprochementDashboardPage() {
                 {rapprochements.slice(0, 10).map(r => (
                   <tr key={r.id} className="hover:bg-navy-50">
                     <td className="px-4 py-3 text-sm text-navy-900">
-                      {r.facture?.nom_fournisseur || r.facture?.numero_facture || '—'}
+                      {r.facture?.fournisseur || r.facture?.numero_facture || '—'}
                     </td>
                     <td className="px-4 py-3 text-sm text-navy-700 truncate max-w-[200px]">
                       {r.transaction?.description || '—'}

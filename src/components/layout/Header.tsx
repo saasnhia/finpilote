@@ -74,11 +74,11 @@ export function Header() {
           {/* Logo + slogan */}
           <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-3">
             <div className="w-8 h-8 bg-brand-green-action rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">FP</span>
+              <span className="text-white font-bold text-sm">FS</span>
             </div>
             <div className="hidden sm:block">
               <span className="font-display font-bold text-white text-base">
-                FinPilote
+                FinSoft
               </span>
               <span className="hidden lg:inline text-[11px] text-neutral-400 ml-2">
                 Automatisez, sécurisez, gagnez du temps

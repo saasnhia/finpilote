@@ -3,12 +3,12 @@ import './globals.css'
 import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
-  title: 'FinPilote | Pilotez votre rentabilité',
+  title: 'FinSoft | Pilotez votre rentabilité',
   description: 'Calculez votre seuil de rentabilité en 30 secondes. La solution simple et efficace pour les comptables et PME.',
   keywords: ['comptabilité', 'seuil de rentabilité', 'PME', 'Dijon', 'gestion financière'],
-  authors: [{ name: 'FinPilote' }],
+  authors: [{ name: 'FinSoft' }],
   openGraph: {
-    title: 'FinPilote | Pilotez votre rentabilité',
+    title: 'FinSoft | Pilotez votre rentabilité',
     description: 'Calculez votre seuil de rentabilité en 30 secondes.',
     type: 'website',
     locale: 'fr_FR',

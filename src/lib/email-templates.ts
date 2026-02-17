@@ -29,13 +29,13 @@ function baseHtml(body: string, accentColor: string): string {
 <body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;margin-top:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
   <tr><td style="background:${accentColor};padding:24px 32px;">
-    <h1 style="margin:0;color:#fff;font-size:20px;font-weight:600;">FinPilote</h1>
+    <h1 style="margin:0;color:#fff;font-size:20px;font-weight:600;">FinSoft</h1>
     <p style="margin:4px 0 0;color:rgba(255,255,255,0.85);font-size:13px;">Rappel de paiement</p>
   </td></tr>
   <tr><td style="padding:32px;">${body}</td></tr>
   <tr><td style="padding:16px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;">
     <p style="margin:0;color:#9ca3af;font-size:11px;text-align:center;">
-      Cet email a été envoyé automatiquement via FinPilote. En cas de question, contactez directement l'émetteur de la facture.
+      Cet email a été envoyé automatiquement via FinSoft. En cas de question, contactez directement l'émetteur de la facture.
     </p>
   </td></tr>
 </table>

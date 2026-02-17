@@ -57,7 +57,7 @@ function detectDuplicateInvoices(factures: Facture[]): DetectedAnomaly[] {
         anomalies.push({
           type: 'doublon_facture',
           severite: 'critical',
-          description: `Facture en doublon : N°${f.numero_facture} de ${f.nom_fournisseur || 'inconnu'}`,
+          description: `Facture en doublon : N°${f.numero_facture} de ${f.fournisseur || 'inconnu'}`,
           facture_id: f.id,
           montant: f.montant_ttc || 0,
         })
@@ -66,14 +66,14 @@ function detectDuplicateInvoices(factures: Facture[]): DetectedAnomaly[] {
     }
 
     // Doublon par fournisseur + montant
-    if (f.nom_fournisseur && f.montant_ttc) {
-      const key = `${f.nom_fournisseur.toLowerCase()}|${f.montant_ttc}`
+    if (f.fournisseur && f.montant_ttc) {
+      const key = `${f.fournisseur.toLowerCase()}|${f.montant_ttc}`
       const existing = seenByAmount.get(key)
       if (existing && existing.id !== f.id) {
         anomalies.push({
           type: 'doublon_facture',
           severite: 'warning',
-          description: `Facture possible doublon : ${f.nom_fournisseur} - ${f.montant_ttc}€`,
+          description: `Facture possible doublon : ${f.fournisseur} - ${f.montant_ttc}€`,
           facture_id: f.id,
           montant: f.montant_ttc,
         })
@@ -124,11 +124,11 @@ function detectInvoicesWithoutTransaction(
   const anomalies: DetectedAnomaly[] = []
 
   for (const f of factures) {
-    if (!matchedFactureIds.has(f.id) && f.validation_status === 'validated') {
+    if (!matchedFactureIds.has(f.id) && f.statut === 'validee') {
       anomalies.push({
         type: 'facture_sans_transaction',
         severite: 'warning',
-        description: `Facture validée non rapprochée : ${f.nom_fournisseur || f.numero_facture || 'N/A'} - ${f.montant_ttc || 0}€`,
+        description: `Facture validée non rapprochée : ${f.fournisseur || f.numero_facture || 'N/A'} - ${f.montant_ttc || 0}€`,
         facture_id: f.id,
         montant: f.montant_ttc || 0,
       })
@@ -156,17 +156,17 @@ function detectTVADiscrepancies(
     const transaction = transactionMap.get(pair.transaction_id)
 
     if (!facture || !transaction) continue
-    if (!facture.tva || !facture.montant_ht) continue
+    if (!facture.montant_tva || !facture.montant_ht) continue
 
     // Vérifier cohérence TVA
-    const expectedTTC = facture.montant_ht + facture.tva
+    const expectedTTC = facture.montant_ht + facture.montant_tva
     const ecart = Math.abs(expectedTTC - (facture.montant_ttc || 0))
 
     if (ecart > 0.01) {
       anomalies.push({
         type: 'ecart_tva',
         severite: ecart > 10 ? 'critical' : 'info',
-        description: `Écart TVA sur facture ${facture.numero_facture || 'N/A'} : HT(${facture.montant_ht}) + TVA(${facture.tva}) ≠ TTC(${facture.montant_ttc})`,
+        description: `Écart TVA sur facture ${facture.numero_facture || 'N/A'} : HT(${facture.montant_ht}) + TVA(${facture.montant_tva}) ≠ TTC(${facture.montant_ttc})`,
         facture_id: facture.id,
         transaction_id: transaction.id,
         montant: facture.montant_ttc || 0,

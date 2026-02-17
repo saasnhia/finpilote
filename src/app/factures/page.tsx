@@ -24,13 +24,13 @@ export default function FacturesPage() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'validated':
+      case 'validee':
         return <CheckCircle className="w-4 h-4 text-emerald-600" />
-      case 'pending':
+      case 'en_attente':
         return <Loader2 className="w-4 h-4 text-gold-600 animate-spin" />
-      case 'manual_review':
+      case 'brouillon':
         return <AlertCircle className="w-4 h-4 text-coral-600" />
-      case 'rejected':
+      case 'rejetee':
         return <XCircle className="w-4 h-4 text-red-600" />
       default:
         return null
@@ -39,14 +39,14 @@ export default function FacturesPage() {
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'validated':
-        return 'Validé'
-      case 'pending':
+      case 'validee':
+        return 'Validée'
+      case 'en_attente':
         return 'En attente'
-      case 'manual_review':
-        return 'À vérifier'
-      case 'rejected':
-        return 'Rejeté'
+      case 'brouillon':
+        return 'Brouillon'
+      case 'rejetee':
+        return 'Rejetée'
       default:
         return status
     }
@@ -113,14 +113,14 @@ export default function FacturesPage() {
                 <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg">
                   <span className="text-sm text-emerald-700">Validées</span>
                   <span className="font-mono font-semibold text-emerald-900">
-                    {factures.filter(f => f.validation_status === 'validated').length}
+                    {factures.filter(f => f.statut === 'validee').length}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between p-3 bg-coral-50 rounded-lg">
-                  <span className="text-sm text-coral-700">À vérifier</span>
+                  <span className="text-sm text-coral-700">En attente</span>
                   <span className="font-mono font-semibold text-coral-900">
-                    {factures.filter(f => f.validation_status === 'manual_review').length}
+                    {factures.filter(f => f.statut === 'en_attente').length}
                   </span>
                 </div>
               </div>
@@ -160,12 +160,12 @@ export default function FacturesPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-1">
                             <p className="font-medium text-navy-900">
-                              {facture.nom_fournisseur || 'Fournisseur inconnu'}
+                              {facture.fournisseur ?? 'Fournisseur inconnu'}
                             </p>
                             <div className="flex items-center gap-1.5 px-2 py-0.5 bg-navy-100 rounded-full">
-                              {getStatusIcon(facture.validation_status)}
+                              {getStatusIcon(facture.statut)}
                               <span className="text-xs text-navy-600">
-                                {getStatusLabel(facture.validation_status)}
+                                {getStatusLabel(facture.statut)}
                               </span>
                             </div>
                           </div>
@@ -185,23 +185,25 @@ export default function FacturesPage() {
                             )}
                           </div>
 
-                          {facture.ai_confidence_score !== null && (
+                          {facture.ocr_confidence !== null && facture.ocr_confidence !== undefined && (
                             <div className="mt-2 text-xs text-navy-400">
-                              Confiance IA: {(facture.ai_confidence_score * 100).toFixed(0)}%
+                              Confiance OCR: {(facture.ocr_confidence * 100).toFixed(0)}%
                             </div>
                           )}
                         </div>
                       </div>
 
                       <div className="text-right">
-                        {facture.montant_ttc !== null && (
+                        {facture.montant_ttc != null && (
                           <div className="font-mono font-semibold text-lg text-navy-900">
                             {formatCurrency(facture.montant_ttc)}
                           </div>
                         )}
-                        {facture.montant_ht !== null && facture.tva !== null && (
+                        {(facture.montant_ht != null || facture.montant_tva != null) && (
                           <div className="text-xs text-navy-500 mt-1">
-                            HT: {formatCurrency(facture.montant_ht)} + TVA: {formatCurrency(facture.tva)}
+                            {facture.montant_ht != null && <>HT: {formatCurrency(facture.montant_ht)}</>}
+                            {facture.montant_ht != null && facture.montant_tva != null && ' + '}
+                            {facture.montant_tva != null && <>TVA: {formatCurrency(facture.montant_tva)}</>}
                           </div>
                         )}
                       </div>

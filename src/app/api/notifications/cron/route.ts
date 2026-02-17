@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
       })
 
       // Envoyer l'email (Resend ou SMTP selon config)
-      const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@finpilote.local'
+      const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@finsoft.local'
       const emailResult = await sendEmail({
         from: `${nomEntreprise} <${fromEmail}>`,
         to: [client.email],

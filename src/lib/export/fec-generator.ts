@@ -1,7 +1,7 @@
 import type { Transaction, FECEntry, FECGenerationResult } from '@/types'
 
 /**
- * Mapping des catégories FinPilote → comptes PCG
+ * Mapping des catégories FinSoft → comptes PCG
  */
 const CATEGORY_TO_PCG: Record<string, { num: string; lib: string }> = {
   // Charges

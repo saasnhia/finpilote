@@ -109,10 +109,10 @@ export default function SignupPage() {
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
           <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold">FP</span>
+            <span className="text-white font-bold">FS</span>
           </div>
           <span className="font-display font-bold text-2xl text-white">
-            FinPilote
+            FinSoft
           </span>
         </Link>
 

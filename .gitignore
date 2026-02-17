@@ -1,8 +1,19 @@
-node_modules/ 
-.next/ 
-.env 
-.env.local 
-data/ 
-dist/ 
-build/ 
-nul 
+node_modules/
+.next/
+.env
+.env.local
+data/
+dist/
+build/
+nul
+
+# Tesseract OCR models
+fra.traineddata
+*.traineddata
+tessdata/
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Claude
+.claude/

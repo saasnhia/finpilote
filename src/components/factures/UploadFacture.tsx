@@ -167,7 +167,7 @@ export function UploadFacture({ onUploadSuccess }: UploadFactureProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-emerald-600" />
-              <span className="font-medium text-navy-900">{extractedData.file_name}</span>
+              <span className="font-medium text-navy-900">{extractedData.fichier_url ?? 'Fichier'}</span>
             </div>
             <button
               onClick={handleReset}
@@ -179,12 +179,12 @@ export function UploadFacture({ onUploadSuccess }: UploadFactureProps) {
 
           {/* Confidence Badge */}
           <div className="flex items-center justify-between p-3 bg-navy-50 rounded-lg">
-            <span className="text-sm text-navy-600">Confiance IA</span>
+            <span className="text-sm text-navy-600">Confiance OCR</span>
             <div className="flex items-center gap-2">
               <span className="font-mono font-semibold text-navy-900">
-                {((extractedData.ai_confidence_score || 0) * 100).toFixed(0)}%
+                {((extractedData.ocr_confidence ?? 0) * 100).toFixed(0)}%
               </span>
-              {(extractedData.ai_confidence_score || 0) >= 0.7 ? (
+              {(extractedData.ocr_confidence ?? 0) >= 0.7 ? (
                 <CheckCircle className="w-5 h-5 text-emerald-600" />
               ) : (
                 <AlertCircle className="w-5 h-5 text-coral-600" />
@@ -198,10 +198,10 @@ export function UploadFacture({ onUploadSuccess }: UploadFactureProps) {
               label="Fournisseur"
               value={
                 editMode
-                  ? (editedFields.nom_fournisseur ?? extractedData.nom_fournisseur ?? '')
-                  : (extractedData.nom_fournisseur || 'Non détecté')
+                  ? (editedFields.fournisseur ?? extractedData.fournisseur ?? '')
+                  : (extractedData.fournisseur || 'Non détecté')
               }
-              onChange={(e) => handleFieldEdit('nom_fournisseur', e.target.value)}
+              onChange={(e) => handleFieldEdit('fournisseur', e.target.value)}
               disabled={!editMode}
             />
             <Input
@@ -242,10 +242,10 @@ export function UploadFacture({ onUploadSuccess }: UploadFactureProps) {
               type="number"
               value={
                 editMode
-                  ? (editedFields.tva ?? extractedData.tva ?? '')
-                  : (extractedData.tva || 'Non détecté')
+                  ? (editedFields.montant_tva ?? extractedData.montant_tva ?? '')
+                  : (extractedData.montant_tva ?? 'Non détecté')
               }
-              onChange={(e) => handleFieldEdit('tva', parseFloat(e.target.value))}
+              onChange={(e) => handleFieldEdit('montant_tva', parseFloat(e.target.value))}
               suffix="€"
               disabled={!editMode}
             />
@@ -263,11 +263,11 @@ export function UploadFacture({ onUploadSuccess }: UploadFactureProps) {
             />
           </div>
 
-          {/* AI Notes */}
-          {extractedData.ai_extraction_notes && (
+          {/* Status */}
+          {extractedData.statut && (
             <div className="p-3 bg-gold-50 border border-gold-200 rounded-lg">
               <p className="text-sm text-gold-800">
-                <strong>Notes IA:</strong> {extractedData.ai_extraction_notes}
+                <strong>Statut:</strong> {extractedData.statut}
               </p>
             </div>
           )}

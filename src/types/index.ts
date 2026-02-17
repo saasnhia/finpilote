@@ -1,4 +1,4 @@
-// Types pour FinPilote
+// Types pour FinSoft
 
 export interface User {
   id: string
@@ -146,31 +146,22 @@ export interface Facture {
   user_id: string
 
   // File metadata
-  file_name: string
-  file_type: 'pdf' | 'jpg' | 'jpeg' | 'png'
-  file_size_bytes: number
+  fichier_url: string | null
 
-  // Extracted fields
+  // Extracted fields (match DB column names)
   montant_ht: number | null
-  tva: number | null
+  montant_tva: number | null
   montant_ttc: number | null
   date_facture: string | null // ISO date string
   numero_facture: string | null
-  nom_fournisseur: string | null
+  fournisseur: string | null
 
   // OCR processing metadata
-  raw_ocr_text: string | null
+  ocr_raw_text: string | null
+  ocr_confidence: number | null
 
-  // AI validation metadata
-  ai_confidence_score: number | null
-  ai_extraction_notes: string | null
-
-  // Validation status
-  validation_status: 'pending' | 'validated' | 'rejected' | 'manual_review'
-  validated_by_user: boolean
-
-  // User edits tracking
-  user_edited_fields: string[]
+  // Status
+  statut: string
 
   // Timestamps
   created_at: string
@@ -824,5 +815,58 @@ export interface ClientsResponse {
 export interface FacturesClientResponse {
   success: boolean
   factures?: FactureClient[]
+  error?: string
+}
+
+// ========================================
+// APIs Gouvernementales
+// ========================================
+
+// API Entreprise (SIREN)
+export interface EntrepriseInfo {
+  siren: string
+  denomination: string
+  forme_juridique: string
+  adresse_complete: string
+  code_postal: string
+  commune: string
+  tva_intracom: string | null
+  statut_actif: boolean
+}
+
+export interface EntrepriseResponse {
+  success: boolean
+  entreprise?: EntrepriseInfo
+  error?: string
+}
+
+// API VIES (TVA intracommunautaire)
+export interface TVAValidationResult {
+  numero_tva: string
+  est_valide: boolean
+  nom_entreprise: string | null
+  adresse: string | null
+  pays_code: string
+}
+
+export interface TVAValidationResponse {
+  success: boolean
+  validation?: TVAValidationResult
+  error?: string
+}
+
+// API FIBEN/Pappers (Score de risque)
+export interface ScoreSolvabilite {
+  siren: string
+  score_risque: number // 1-10 (1=tres risque, 10=tres sur)
+  chiffre_affaires: number | null
+  resultat_net: number | null
+  effectif: number | null
+  recommandation: string
+}
+
+export interface ScoreRisqueResponse {
+  success: boolean
+  score?: ScoreSolvabilite
   error?: string
 }

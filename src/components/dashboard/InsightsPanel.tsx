@@ -73,7 +73,7 @@ export function InsightsPanel({ userId }: InsightsPanelProps) {
   const downloadReport = (insight: Insight) => {
     const lines = [
       '══════════════════════════════════════════════',
-      '  RAPPORT D\'ANALYSE – FinPilote',
+      '  RAPPORT D\'ANALYSE – FinSoft',
       '══════════════════════════════════════════════',
       '',
       `Date : ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`,
@@ -99,7 +99,7 @@ export function InsightsPanel({ userId }: InsightsPanelProps) {
         : insight.actions.map((a, i) => `${i + 1}. ${a}`)),
       '',
       '══════════════════════════════════════════════',
-      '  Généré par FinPilote',
+      '  Généré par FinSoft',
       '══════════════════════════════════════════════',
     ]
 

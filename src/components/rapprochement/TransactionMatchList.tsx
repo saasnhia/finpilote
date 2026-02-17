@@ -43,7 +43,7 @@ export function TransactionMatchList({
     if (filter !== 'all' && r.statut !== filter) return false
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
-      const fName = r.facture?.nom_fournisseur?.toLowerCase() || ''
+      const fName = r.facture?.fournisseur?.toLowerCase() || ''
       const tDesc = r.transaction?.description?.toLowerCase() || ''
       return fName.includes(q) || tDesc.includes(q)
     }
@@ -158,7 +158,7 @@ export function TransactionMatchList({
                     <div className="flex items-center gap-2">
                       <FileText className="w-3.5 h-3.5 text-navy-400 flex-shrink-0" />
                       <span className="text-sm font-medium text-navy-900 truncate">
-                        {r.facture?.nom_fournisseur ||
+                        {r.facture?.fournisseur ||
                           r.facture?.numero_facture ||
                           'Facture'}
                       </span>
@@ -204,18 +204,18 @@ export function TransactionMatchList({
                 {/* Expanded details */}
                 {isExpanded && (
                   <div className="border-t border-navy-100 p-4 bg-navy-50/30">
-                    {/* Score breakdown */}
-                    <div className="grid grid-cols-3 gap-4 mb-4">
+                    {/* Score breakdown (5 criteria) */}
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
                       <div className="text-center">
                         <p className="text-xs text-navy-500 mb-1">Montant</p>
                         <div className="w-full h-2 bg-navy-200 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-emerald-500 rounded-full transition-all"
-                            style={{ width: `${r.amount_score || 0}%` }}
+                            style={{ width: `${((r.amount_score || 0) / 40) * 100}%` }}
                           />
                         </div>
                         <p className="text-xs font-medium text-navy-700 mt-1">
-                          {r.amount_score || 0}%
+                          {r.amount_score || 0}/40
                         </p>
                       </div>
                       <div className="text-center">
@@ -223,23 +223,47 @@ export function TransactionMatchList({
                         <div className="w-full h-2 bg-navy-200 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-blue-500 rounded-full transition-all"
-                            style={{ width: `${r.date_score || 0}%` }}
+                            style={{ width: `${((r.date_score || 0) / 20) * 100}%` }}
                           />
                         </div>
                         <p className="text-xs font-medium text-navy-700 mt-1">
-                          {r.date_score || 0}%
+                          {r.date_score || 0}/20
                         </p>
                       </div>
                       <div className="text-center">
-                        <p className="text-xs text-navy-500 mb-1">Description</p>
+                        <p className="text-xs text-navy-500 mb-1">Fournisseur</p>
                         <div className="w-full h-2 bg-navy-200 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-amber-500 rounded-full transition-all"
-                            style={{ width: `${r.description_score || 0}%` }}
+                            style={{ width: `${((r.supplier_score || 0) / 25) * 100}%` }}
                           />
                         </div>
                         <p className="text-xs font-medium text-navy-700 mt-1">
-                          {r.description_score || 0}%
+                          {r.supplier_score || 0}/25
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-navy-500 mb-1">N° Facture</p>
+                        <div className="w-full h-2 bg-navy-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-purple-500 rounded-full transition-all"
+                            style={{ width: `${((r.invoice_number_score || 0) / 30) * 100}%` }}
+                          />
+                        </div>
+                        <p className="text-xs font-medium text-navy-700 mt-1">
+                          {r.invoice_number_score || 0}/30
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-navy-500 mb-1">IBAN</p>
+                        <div className="w-full h-2 bg-navy-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-teal-500 rounded-full transition-all"
+                            style={{ width: `${((r.iban_bonus || 0) / 15) * 100}%` }}
+                          />
+                        </div>
+                        <p className="text-xs font-medium text-navy-700 mt-1">
+                          {r.iban_bonus || 0}/15
                         </p>
                       </div>
                     </div>
@@ -251,7 +275,7 @@ export function TransactionMatchList({
                           Facture
                         </p>
                         <p className="text-sm text-navy-900">
-                          {r.facture?.nom_fournisseur || '—'}
+                          {r.facture?.fournisseur || '—'}
                         </p>
                         <p className="text-xs text-navy-500">
                           N° {r.facture?.numero_facture || '—'}
