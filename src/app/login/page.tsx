@@ -162,14 +162,14 @@ function LoginForm() {
           </Button>
         </form>
 
-        {/* Sign up link */}
+        {/* Access link */}
         <p className="mt-6 text-center text-sm text-navy-500">
-          Pas encore de compte ?{' '}
-          <Link 
+          Pas encore de licence ?{' '}
+          <Link
             href="/signup"
             className="font-medium text-emerald-600 hover:text-emerald-700"
           >
-            Créer un compte
+            Demander une d&eacute;mo
           </Link>
         </p>
       </Card>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { PlanBadge } from '@/components/plan/PlanGate'
+import { UserCountBadge } from '@/components/plan/UserCountBadge'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -60,7 +61,7 @@ const sections: SidebarSection[] = [
     items: [
       { name: 'Général', href: '/parametres', icon: Sliders },
       { name: 'Intégrations', href: '/parametres/banques', icon: Link2 },
-      { name: 'Utilisateurs', href: '/parametres', icon: Users },
+      { name: 'Utilisateurs', href: '/admin/users', icon: Users },
     ],
   },
   {
@@ -181,7 +182,8 @@ export function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="px-3 py-3 border-t border-white/5 flex flex-col items-center gap-1">
+      <div className="px-3 py-3 border-t border-white/5 flex flex-col items-center gap-2">
+        <UserCountBadge />
         <PlanBadge />
         <p className="text-[10px] text-neutral-600 text-center">
           FinSoft v2.1
