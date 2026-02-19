@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Card } from '@/components/ui'
 import { Mail, Phone, Calendar, ChevronRight, Shield, Lock } from 'lucide-react'
@@ -15,11 +16,9 @@ export default function SignupPage() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold">FS</span>
-          </div>
+          <Image src="/logo.png" alt="FinSoft" width={40} height={40} />
           <span className="font-display font-bold text-2xl text-white">
-            FinSoft
+            Fin<span className="text-emerald-400">Soft</span>
           </span>
         </Link>
 

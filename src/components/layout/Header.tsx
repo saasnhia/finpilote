@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui'
@@ -74,12 +75,10 @@ export function Header() {
         <div className="flex h-14 items-center justify-between">
           {/* Logo + slogan */}
           <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-brand-green-action rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">FS</span>
-            </div>
+            <Image src="/logo.png" alt="FinSoft" width={32} height={32} className="flex-shrink-0" />
             <div className="hidden sm:block">
               <span className="font-display font-bold text-white text-base">
-                FinSoft
+                Fin<span className="text-emerald-400">Soft</span>
               </span>
               <span className="hidden lg:inline text-[11px] text-neutral-400 ml-2">
                 Automatisez, sécurisez, gagnez du temps
