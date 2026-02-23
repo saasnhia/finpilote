@@ -7,6 +7,17 @@ dist/
 build/
 nul
 
+# Supabase local temp files
+supabase/.temp/
+supabase/Connection
+supabase/Database)
+supabase/supabase/
+
+# Source assets
+*.png
+!public/*.png
+!public/*.ico
+
 # Tesseract OCR models
 fra.traineddata
 *.traineddata
@@ -17,3 +28,4 @@ tsconfig.tsbuildinfo
 
 # Claude
 .claude/
+.vercel
