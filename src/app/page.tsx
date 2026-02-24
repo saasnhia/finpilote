@@ -12,14 +12,17 @@ import {
   ScanLine,
   BadgeCheck,
   AlertTriangle,
-  Server,
   Users,
   Building2,
+  Globe,
   Mail,
   Phone,
   Calendar,
   ChevronRight,
   X,
+  RefreshCw,
+  Clock,
+  Zap,
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -70,13 +73,13 @@ export default function HomePage() {
                   href="#tarifs"
                   className="inline-flex items-center justify-center gap-2 font-display font-medium px-6 py-3.5 text-lg rounded-xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-200"
                 >
-                  Tarifs d&egrave;s 299&euro;
+                  Tarifs d&egrave;s 400&euro;/an
                   <ChevronRight className="w-5 h-5" />
                 </a>
               </div>
 
               <p className="mt-6 text-sm text-navy-400 animate-slide-up stagger-3">
-                Licence perp&eacute;tuelle &bull; Installation locale &bull; RGPD compliant
+                Abonnement annuel &bull; H&eacute;berg&eacute; en Europe &bull; RGPD compliant
               </p>
             </div>
 
@@ -140,7 +143,6 @@ export default function HomePage() {
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Problemes */}
               <Card className="border-coral-200/50 bg-coral-50/30">
                 <h3 className="text-xl font-display font-semibold text-navy-900 mb-6 flex items-center gap-2">
                   <XCircle className="w-6 h-6 text-coral-500" />
@@ -161,7 +163,6 @@ export default function HomePage() {
                 </ul>
               </Card>
 
-              {/* Solutions */}
               <Card className="border-emerald-200/50 bg-emerald-50/30">
                 <h3 className="text-xl font-display font-semibold text-navy-900 mb-6 flex items-center gap-2">
                   <CheckCircle2 className="w-6 h-6 text-emerald-500" />
@@ -198,7 +199,6 @@ export default function HomePage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {/* OCR Factures */}
               <Card hover className="group">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
@@ -210,7 +210,7 @@ export default function HomePage() {
                     </h3>
                     <p className="text-navy-500 mb-4">
                       Uploadez un PDF &mdash; l&apos;IA extrait montant, date, fournisseur puis enrichit
-                      automatiquement via le SIREN : raison sociale, adresse, TVA intracommunautaire.
+                      automatiquement via le SIREN&nbsp;: raison sociale, adresse, TVA intracommunautaire.
                     </p>
                     <div className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
                       <span>API Recherche Entreprises</span>
@@ -220,7 +220,6 @@ export default function HomePage() {
                 </div>
               </Card>
 
-              {/* TVA */}
               <Card hover className="group">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
@@ -242,7 +241,6 @@ export default function HomePage() {
                 </div>
               </Card>
 
-              {/* Risque */}
               <Card hover className="group">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
@@ -253,7 +251,7 @@ export default function HomePage() {
                       Alertes Risque Fournisseurs
                     </h3>
                     <p className="text-navy-500 mb-4">
-                      Score de solvabilit&eacute; de 1 &agrave; 10 avec recommandations de paiement :
+                      Score de solvabilit&eacute; de 1 &agrave; 10 avec recommandations de paiement&nbsp;:
                       comptant, 30 jours, ou &agrave; &eacute;viter. Prot&eacute;gez votre tr&eacute;sorerie.
                     </p>
                     <div className="flex items-center gap-2 text-sm text-amber-600 font-medium">
@@ -264,7 +262,6 @@ export default function HomePage() {
                 </div>
               </Card>
 
-              {/* Rapprochement */}
               <Card hover className="group">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
@@ -333,7 +330,7 @@ export default function HomePage() {
             </div>
 
             <blockquote className="text-center italic text-gray-700 max-w-2xl mx-auto">
-              &ldquo;Adieu saisie manuelle ! OCR + SIREN en 30s.&rdquo;
+              &ldquo;Adieu saisie manuelle&nbsp;! OCR + SIREN en 30s.&rdquo;
               <cite className="block mt-2 text-sm font-medium text-gray-500 not-italic">
                 &mdash; Enseignants IAE Dijon
               </cite>
@@ -341,15 +338,111 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ══════════════ TARIFS ══════════════ */}
-        <section id="tarifs" className="py-24 bg-navy-50 scroll-mt-16">
+        {/* ══════════════ INTÉGRATIONS ERP ══════════════ */}
+        <section className="py-24 bg-navy-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
-                FinSoft Local &mdash; Votre comptabilit&eacute; sur votre serveur
+                Connect&eacute; &agrave; votre environnement comptable
               </h2>
               <p className="mt-4 text-lg text-navy-500 max-w-2xl mx-auto">
-                Licence perp&eacute;tuelle, pas d&apos;abonnement. Vos donn&eacute;es restent chez vous.
+                FinSoft se synchronise automatiquement avec vos logiciels comptables existants.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Sage — disponible */}
+              <Card className="border-emerald-200 bg-white">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center font-bold text-emerald-700 text-sm">
+                    S50
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-display font-semibold text-navy-900">Sage 50 / 100 FR</h3>
+                      <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                        <CheckCircle2 className="w-3 h-3" /> Disponible
+                      </span>
+                    </div>
+                    <p className="text-sm text-navy-500">Synchronisation Sage 50 FR et Sage 100 FR</p>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-5">
+                  <li className="flex items-start gap-2.5 text-sm text-navy-600">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-700 mt-0.5">1</span>
+                    Le cabinet renseigne son Company ID Chift dans Param&egrave;tres &rarr; Int&eacute;grations
+                  </li>
+                  <li className="flex items-start gap-2.5 text-sm text-navy-600">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-700 mt-0.5">2</span>
+                    FinSoft se connecte &agrave; Sage via l&apos;API Chift
+                  </li>
+                  <li className="flex items-start gap-2.5 text-sm text-navy-600">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-700 mt-0.5">3</span>
+                    Synchronisation automatique chaque nuit &agrave; 2h &mdash; toutes vos &eacute;critures import&eacute;es sans action manuelle
+                  </li>
+                </ul>
+
+                <div className="flex items-center gap-2 pt-4 border-t border-navy-100">
+                  <RefreshCw className="w-4 h-4 text-emerald-500" />
+                  <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                    Inclus d&egrave;s le plan Solo
+                  </span>
+                </div>
+              </Card>
+
+              {/* Cegid — prochainement */}
+              <Card className="border-navy-200 bg-white opacity-90">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-navy-100 flex items-center justify-center font-bold text-navy-500 text-xs">
+                    CXF
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-display font-semibold text-navy-900">Cegid XRP Flex</h3>
+                      <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-navy-100 text-navy-500 font-medium">
+                        <Clock className="w-3 h-3" /> Prochainement
+                      </span>
+                    </div>
+                    <p className="text-sm text-navy-500">Connexion Cegid XRP Flex &mdash; Cegid Loop</p>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-5">
+                  <li className="flex items-start gap-2.5 text-sm text-navy-500">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy-100 flex items-center justify-center text-[10px] font-bold text-navy-500 mt-0.5">1</span>
+                    Connexion OAuth2 s&eacute;curis&eacute;e en 1 clic
+                  </li>
+                  <li className="flex items-start gap-2.5 text-sm text-navy-500">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy-100 flex items-center justify-center text-[10px] font-bold text-navy-500 mt-0.5">2</span>
+                    Synchronisation temps r&eacute;el des &eacute;critures
+                  </li>
+                  <li className="flex items-start gap-2.5 text-sm text-navy-500">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy-100 flex items-center justify-center text-[10px] font-bold text-navy-500 mt-0.5">3</span>
+                    Disponible pour les plans Cabinet et Entreprise
+                  </li>
+                </ul>
+
+                <div className="flex items-center gap-2 pt-4 border-t border-navy-100">
+                  <Globe className="w-4 h-4 text-navy-400" />
+                  <span className="text-xs font-medium text-navy-500 bg-navy-50 px-2.5 py-1 rounded-full">
+                    Disponible T2 2026
+                  </span>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════ TARIFS ══════════════ */}
+        <section id="tarifs" className="py-24 bg-white scroll-mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
+                Abonnement annuel &mdash; sans engagement
+              </h2>
+              <p className="mt-4 text-lg text-navy-500 max-w-2xl mx-auto">
+                H&eacute;berg&eacute; en Europe, donn&eacute;es chiffr&eacute;es, RGPD compliant.
               </p>
             </div>
 
@@ -362,25 +455,33 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-xl font-display font-semibold text-navy-900">Solo</h3>
                 </div>
-                <div className="mb-6">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;299</span>
-                  <p className="text-sm text-navy-400 mt-1">licence perp&eacute;tuelle</p>
+                <div className="mb-2">
+                  <span className="text-4xl font-display font-bold text-navy-900">&euro;400</span>
+                  <span className="text-lg text-navy-500 ml-1">/an</span>
                 </div>
+                <p className="text-sm text-navy-400 mb-6">soit 33&euro;/mois</p>
                 <ul className="space-y-3 text-left mb-8">
-                  {['1 utilisateur', '500 factures / an', 'OCR + SIREN', 'Validation TVA', 'Support email'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  {[
+                    '1 utilisateur',
+                    '500 factures / an',
+                    'OCR + enrichissement SIREN',
+                    'Validation TVA intracommunautaire (VIES)',
+                    'Synchronisation Sage (via Chift)',
+                    'Support email',
+                  ].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <button
-                  onClick={() => setShowContact(true)}
-                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-navy-300 bg-transparent hover:bg-navy-50 text-navy-700 transition-all duration-200"
+                <a
+                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Solo%20FinSoft%20%E2%80%94%20400%E2%82%AC%2Fan"
+                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
                 >
-                  Nous contacter
+                  Choisir ce plan
                   <ChevronRight className="w-4 h-4" />
-                </button>
+                </a>
               </Card>
 
               {/* Cabinet — recommended */}
@@ -396,65 +497,104 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-xl font-display font-semibold text-navy-900">Cabinet</h3>
                 </div>
-                <div className="mb-6">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;799</span>
-                  <p className="text-sm text-navy-400 mt-1">licence perp&eacute;tuelle</p>
+                <div className="mb-2">
+                  <span className="text-4xl font-display font-bold text-navy-900">&euro;900</span>
+                  <span className="text-lg text-navy-500 ml-1">/an</span>
                 </div>
+                <p className="text-sm text-navy-400 mb-6">soit 75&euro;/mois</p>
                 <ul className="space-y-3 text-left mb-8">
-                  {['5 utilisateurs', 'Factures illimit\u00e9es', 'OCR + SIREN + Risque', 'Rapprochement auto', 'Support prioritaire'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  {[
+                    '5 utilisateurs',
+                    'Factures illimit\u00e9es',
+                    'OCR + SIREN + Score risque fournisseur (Pappers)',
+                    'Rapprochement bancaire intelligent (5 crit\u00e8res)',
+                    'Synchronisation Sage (via Chift)',
+                    'Alertes KPI automatiques',
+                    'Audit IA',
+                    'Support prioritaire',
+                  ].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       {f}
                     </li>
                   ))}
+                  {/* Cegid prochainement */}
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className="flex-shrink-0 mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-navy-100 text-navy-500 font-bold whitespace-nowrap">🔜</span>
+                    <div>
+                      <span className="text-navy-400">Cegid Loop</span>
+                      <p className="text-[11px] text-navy-400 mt-0.5">
+                        Connexion OAuth2 Cegid XRP Flex &mdash; disponible T2 2026
+                      </p>
+                    </div>
+                  </li>
                 </ul>
-                <Button
-                  className="w-full"
-                  icon={<ChevronRight className="w-4 h-4" />}
-                  onClick={() => setShowContact(true)}
+                <a
+                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Cabinet%20FinSoft%20%E2%80%94%20900%E2%82%AC%2Fan"
+                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-200"
                 >
-                  Nous contacter
-                </Button>
+                  Choisir ce plan
+                  <ChevronRight className="w-4 h-4" />
+                </a>
               </Card>
 
               {/* Entreprise */}
               <Card hover className="text-center relative">
                 <div className="mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-navy-100 mb-4">
-                    <Server className="w-6 h-6 text-navy-600" />
+                    <Zap className="w-6 h-6 text-navy-600" />
                   </div>
                   <h3 className="text-xl font-display font-semibold text-navy-900">Entreprise</h3>
                 </div>
-                <div className="mb-6">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;1 499</span>
-                  <p className="text-sm text-navy-400 mt-1">licence perp&eacute;tuelle</p>
+                <div className="mb-2">
+                  <span className="text-4xl font-display font-bold text-navy-900">&euro;1 900</span>
+                  <span className="text-lg text-navy-500 ml-1">/an</span>
                 </div>
+                <p className="text-sm text-navy-400 mb-6">soit 158&euro;/mois</p>
                 <ul className="space-y-3 text-left mb-8">
-                  {['Utilisateurs illimit\u00e9s', 'Tout illimit\u00e9 + custom', 'API d\u00e9di\u00e9e', 'Int\u00e9gration sur-mesure', 'Support 6h/jour'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  {[
+                    'Utilisateurs illimit\u00e9s',
+                    'Tout illimit\u00e9 + custom',
+                    'API d\u00e9di\u00e9e FinSoft',
+                    'Synchronisation Sage + Cegid (d\u00e8s disponibilit\u00e9)',
+                    'Int\u00e9gration ERP sur-mesure',
+                    'Support 6h/jour d\u00e9di\u00e9',
+                    'SLA garanti',
+                  ].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       {f}
                     </li>
                   ))}
+                  {/* Cegid prochainement */}
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className="flex-shrink-0 mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-navy-100 text-navy-500 font-bold whitespace-nowrap">🔜</span>
+                    <div>
+                      <span className="text-navy-400">Cegid Loop inclus</span>
+                      <p className="text-[11px] text-navy-400 mt-0.5">
+                        Connexion OAuth2 Cegid XRP Flex &mdash; disponible T2 2026
+                      </p>
+                    </div>
+                  </li>
                 </ul>
-                <button
-                  onClick={() => setShowContact(true)}
-                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-navy-300 bg-transparent hover:bg-navy-50 text-navy-700 transition-all duration-200"
+                <a
+                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Entreprise%20FinSoft%20%E2%80%94%201900%E2%82%AC%2Fan"
+                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
                 >
-                  Nous contacter
+                  Choisir ce plan
                   <ChevronRight className="w-4 h-4" />
-                </button>
+                </a>
               </Card>
             </div>
 
             <div className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-navy-500">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                Licence perp&eacute;tuelle
+                Abonnement annuel renouvelable
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                Installation locale (RGPD)
+                H&eacute;berg&eacute; en Europe (RGPD)
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -485,9 +625,9 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center text-navy-300 text-sm">
-              <a href="mailto:saasnhia@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <a href="mailto:contact@finsoft.fr" className="flex items-center gap-2 hover:text-white transition-colors">
                 <Mail className="w-4 h-4" />
-                saasnhia@gmail.com
+                contact@finsoft.fr
               </a>
               <a href="tel:+33611752632" className="flex items-center gap-2 hover:text-white transition-colors">
                 <Phone className="w-4 h-4" />
@@ -531,7 +671,7 @@ export default function HomePage() {
                 const body = encodeURIComponent(
                   `Nom: ${data.get('name')}\nEmail: ${data.get('email')}\nT\u00e9l\u00e9phone: ${data.get('phone')}\nTaille entreprise: ${data.get('size')}`
                 )
-                window.location.href = `mailto:saasnhia@gmail.com?subject=${subject}&body=${body}`
+                window.location.href = `mailto:contact@finsoft.fr?subject=${subject}&body=${body}`
                 setShowContact(false)
               }}
               className="space-y-4"

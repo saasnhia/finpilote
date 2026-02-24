@@ -1,10 +1,35 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+/** Routes publiques — ni auth ni subscription requises */
+const PUBLIC_PATHS = [
+  '/',
+  '/pricing',
+  '/login',
+  '/signup',
+  '/faq',
+  '/cgv',
+  '/confidentialite',
+  '/mentions-legales',
+  '/cabinet',
+]
+
+/** Préfixes d'API publics — pas de check subscription */
+const PUBLIC_API_PREFIXES = [
+  '/api/auth/',
+  '/api/health',
+  '/api/contact',
+  '/api/webhooks/',
+]
+
+function isPublicRoute(pathname: string): boolean {
+  if (PUBLIC_PATHS.includes(pathname)) return true
+  if (PUBLIC_API_PREFIXES.some(p => pathname.startsWith(p))) return true
+  return false
+}
+
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -18,9 +43,7 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
-          supabaseResponse = NextResponse.next({
-            request,
-          })
+          supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -29,34 +52,46 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
+  // Ne pas exécuter de code entre createServerClient et getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { pathname } = request.nextUrl
 
-  // Protected routes
-  const protectedPaths = ['/dashboard', '/settings', '/transactions']
-  const isProtectedPath = protectedPaths.some(path => 
-    request.nextUrl.pathname.startsWith(path)
-  )
-
-  if (isProtectedPath && !user) {
+  // ── 1. Route protégée sans session → /login ──────────────────────────────
+  if (!isPublicRoute(pathname) && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    url.searchParams.set('redirect', request.nextUrl.pathname)
+    url.searchParams.set('redirect', pathname)
     return NextResponse.redirect(url)
   }
 
-  // Redirect logged-in users away from auth pages
-  const authPaths = ['/login', '/signup']
-  const isAuthPath = authPaths.some(path => 
-    request.nextUrl.pathname === path
-  )
+  // ── 2. Route protégée + session → vérification subscription ──────────────
+  if (!isPublicRoute(pathname) && user) {
+    const bypassCheck = process.env.BYPASS_SUBSCRIPTION_CHECK === 'true'
 
-  if (isAuthPath && user) {
+    if (!bypassCheck) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('subscription_status')
+        .eq('id', user.id)
+        .maybeSingle()
+
+      const isActive =
+        profile?.subscription_status === 'active' ||
+        profile?.subscription_status === 'trial'
+
+      if (!isActive) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/pricing'
+        url.searchParams.set('message', 'subscription_required')
+        return NextResponse.redirect(url)
+      }
+    }
+  }
+
+  // ── 3. Utilisateur connecté sur /login ou /signup → /dashboard ───────────
+  const authPaths = ['/login', '/signup']
+  if (authPaths.includes(pathname) && user) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
