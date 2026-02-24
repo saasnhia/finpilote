@@ -68,6 +68,30 @@ export interface ChiftJournalEntry {
   }>
 }
 
+/**
+ * Valide un company ID Chift sans lever d'exception.
+ * Retourne la company si trouvée, null si 404 (ID invalide).
+ * Propage l'erreur pour tout autre statut HTTP.
+ */
+export async function validateChiftCompany(companyId: string): Promise<ChiftCompany | null> {
+  const res = await fetch(`${CHIFT_BASE}/v1/companies/${encodeURIComponent(companyId)}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.CHIFT_API_KEY}`,
+      'X-Consumer-ID': process.env.CHIFT_CONSUMER_ID ?? '',
+      Accept: 'application/json',
+    },
+  })
+
+  if (res.status === 404) return null
+
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`Chift API /companies/${companyId} — ${res.status}: ${text}`)
+  }
+
+  return res.json() as Promise<ChiftCompany>
+}
+
 /** List all companies connected via Chift */
 export async function listChiftCompanies(): Promise<ChiftCompany[]> {
   const data = await chiftFetch<{ data: ChiftCompany[] }>('/v1/companies')

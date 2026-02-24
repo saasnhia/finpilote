@@ -343,6 +343,18 @@ export default function IntegrationsPage() {
                   disabled={!sageStatus.configured}
                   className="w-full text-sm px-3 py-2 rounded-lg border border-navy-200 bg-white text-navy-900 placeholder-navy-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-50 font-mono"
                 />
+                <p className="mt-1.5 text-xs text-navy-400">
+                  Obtenez votre ID Chift sur{' '}
+                  <a
+                    href="https://app.chift.eu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-600 hover:underline"
+                  >
+                    app.chift.eu
+                  </a>{' '}
+                  — rubrique Companies.
+                </p>
               </div>
               <div className="flex-shrink-0 pt-5">
                 <Button

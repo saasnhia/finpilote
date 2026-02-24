@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { isChiftConfigured } from '@/lib/integrations/chift'
+import { isChiftConfigured, validateChiftCompany } from '@/lib/integrations/chift'
 
 interface ConnectBody {
   chift_company_id: string
@@ -35,6 +35,20 @@ export async function POST(request: Request) {
   const { chift_company_id } = body
   if (!chift_company_id?.trim()) {
     return NextResponse.json({ error: 'chift_company_id manquant' }, { status: 400 })
+  }
+
+  // Valide l'ID auprès de l'API Chift avant de sauvegarder
+  try {
+    const company = await validateChiftCompany(chift_company_id.trim())
+    if (!company) {
+      return NextResponse.json(
+        { error: 'ID Chift invalide — vérifiez votre Company ID sur app.chift.eu' },
+        { status: 400 }
+      )
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Erreur validation Chift'
+    return NextResponse.json({ error: message }, { status: 502 })
   }
 
   const { error } = await supabase
