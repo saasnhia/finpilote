@@ -22,6 +22,12 @@ const PUBLIC_API_PREFIXES = [
   '/api/webhooks/',
 ]
 
+/**
+ * Routes accessibles après auth+subscription MAIS sans onboarding obligatoire.
+ * Évite la boucle de redirection /onboarding → /onboarding.
+ */
+const SKIP_ONBOARDING_PATHS = ['/onboarding']
+
 function isPublicRoute(pathname: string): boolean {
   if (PUBLIC_PATHS.includes(pathname)) return true
   if (PUBLIC_API_PREFIXES.some(p => pathname.startsWith(p))) return true
@@ -65,14 +71,14 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // ── 2. Route protégée + session → vérification subscription ──────────────
+  // ── 2. Route protégée + session → vérification subscription + onboarding ─
   if (!isPublicRoute(pathname) && user) {
     const bypassCheck = process.env.BYPASS_SUBSCRIPTION_CHECK === 'true'
 
     if (!bypassCheck) {
       const { data: profile } = await supabase
         .from('user_profiles')
-        .select('subscription_status')
+        .select('subscription_status, onboarding_completed')
         .eq('id', user.id)
         .maybeSingle()
 
@@ -84,6 +90,14 @@ export async function updateSession(request: NextRequest) {
         const url = request.nextUrl.clone()
         url.pathname = '/pricing'
         url.searchParams.set('message', 'subscription_required')
+        return NextResponse.redirect(url)
+      }
+
+      // ── 2b. Onboarding non complété → /onboarding ───────────────────────
+      const skipOnboarding = SKIP_ONBOARDING_PATHS.some(p => pathname.startsWith(p))
+      if (!skipOnboarding && profile?.onboarding_completed === false) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/onboarding'
         return NextResponse.redirect(url)
       }
     }
