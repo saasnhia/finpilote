@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { runAuditAgent } from '@/lib/agents/audit-agent'
+import { triggerAuditRapportGenere } from '@/lib/n8n/trigger'
 
 export async function POST() {
   const supabase = await createClient()
@@ -12,6 +13,14 @@ export async function POST() {
 
   try {
     const result = await runAuditAgent(user.id)
+
+    // Notifier n8n (fire-and-forget)
+    const anomalies = (result as { anomalies?: unknown[] }).anomalies
+    void triggerAuditRapportGenere({
+      user_id: user.id,
+      anomalies_count: Array.isArray(anomalies) ? anomalies.length : 0,
+    })
+
     return NextResponse.json({ success: true, ...result })
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Erreur interne'

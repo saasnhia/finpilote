@@ -1,0 +1,62 @@
+{
+  "name": "FinSoft — Nouveau dossier cabinet → Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/nouveau-dossier",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-dossier",
+      "name": "Webhook FinSoft Dossier",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": "VOTRE_DATABASE_NOTION_ID",
+        "title": "={{ $json.body.nom }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "SIREN",
+              "textValue": "={{ $json.body.siren || 'N/A' }}"
+            },
+            {
+              "key": "Statut",
+              "selectValue": "Actif"
+            },
+            {
+              "key": "FinSoft ID",
+              "textValue": "={{ $json.body.dossier_id }}"
+            },
+            {
+              "key": "Date création",
+              "dateValue": "={{ $json.body.timestamp }}"
+            }
+          ]
+        }
+      },
+      "id": "notion-create",
+      "name": "Créer page Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Webhook FinSoft Dossier": {
+      "main": [
+        [{ "node": "Créer page Notion", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Crée automatiquement une fiche client dans la base Notion du cabinet dès qu'un nouveau dossier est créé dans FinSoft."
+  }
+}

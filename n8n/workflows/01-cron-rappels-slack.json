@@ -1,0 +1,64 @@
+{
+  "name": "FinSoft — Rapport CRON rappels → Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/cron-rappels-termine",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-cron",
+      "name": "Webhook FinSoft CRON",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.body.sent }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "if-sent",
+      "name": "Des rappels ont été envoyés ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#comptabilite",
+        "text": "=📬 *Rappels paiements FinSoft* — {{ $json.body.sent }} email(s) envoyé(s)\n> Traité : {{ $json.body.processed }} · Ignoré : {{ $json.body.skipped }} · Échec : {{ $json.body.failed }}\n> {{ new Date().toLocaleDateString('fr-FR') }}"
+      },
+      "id": "slack-notification",
+      "name": "Notifier Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [680, 220]
+    }
+  ],
+  "connections": {
+    "Webhook FinSoft CRON": {
+      "main": [
+        [{ "node": "Des rappels ont été envoyés ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Des rappels ont été envoyés ?": {
+      "main": [
+        [{ "node": "Notifier Slack", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Réceptionne l'événement CRON de FinSoft après envoi des rappels et poste un résumé dans Slack."
+  }
+}

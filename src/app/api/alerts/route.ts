@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { triggerAlertesGenerees } from '@/lib/n8n/trigger'
 
 /**
  * GET /api/alerts
@@ -280,8 +281,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Erreur création alertes' }, { status: 500 })
     }
 
+    // Notifier n8n (fire-and-forget)
+    const criticalCount = alerts.filter(a => a.severite === 'critical').length
+    void triggerAlertesGenerees({ user_id: user.id, generated: alerts.length, critical_count: criticalCount })
+
     return NextResponse.json({ success: true, generated: alerts.length })
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Erreur serveur: ' + error.message }, { status: 500 })
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Erreur inconnue'
+    return NextResponse.json({ error: 'Erreur serveur: ' + message }, { status: 500 })
   }
 }

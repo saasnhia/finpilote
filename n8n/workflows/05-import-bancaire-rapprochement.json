@@ -1,0 +1,83 @@
+{
+  "name": "FinSoft — Import bancaire → Lancer rapprochement auto",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/import-bancaire-termine",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-import",
+      "name": "Webhook Import Bancaire",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.body.transactions_imported }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "if-imported",
+      "name": "Des transactions importées ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://finpilote-app:3000/api/rapprochement/match",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "call-matching",
+      "name": "Lancer rapprochement FinSoft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 220]
+    },
+    {
+      "parameters": {
+        "channel": "#comptabilite",
+        "text": "=✅ Import bancaire FinSoft terminé : {{ $json.body.transactions_imported }} transaction(s)\n> Rapprochement automatique déclenché."
+      },
+      "id": "slack-ok",
+      "name": "Notifier Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [900, 220]
+    }
+  ],
+  "connections": {
+    "Webhook Import Bancaire": {
+      "main": [
+        [{ "node": "Des transactions importées ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Des transactions importées ?": {
+      "main": [
+        [{ "node": "Lancer rapprochement FinSoft", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Lancer rapprochement FinSoft": {
+      "main": [
+        [{ "node": "Notifier Slack", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Déclenche automatiquement le rapprochement factures/transactions dès qu'un relevé bancaire est importé dans FinSoft, puis notifie Slack."
+  }
+}

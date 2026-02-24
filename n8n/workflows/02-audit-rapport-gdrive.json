@@ -1,0 +1,42 @@
+{
+  "name": "FinSoft — Rapport audit IA → Google Drive",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/audit-rapport-genere",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-audit",
+      "name": "Webhook FinSoft Audit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "=Rapport Audit FinSoft — {{ new Date().toLocaleDateString('fr-FR') }}",
+        "mimeType": "text/plain",
+        "content": "=Rapport d'audit IA FinSoft\n\nDate : {{ new Date().toISOString() }}\nUtilisateur : {{ $json.body.user_id }}\nAnomalies détectées : {{ $json.body.anomalies_count }}\n\nRésumé :\n{{ $json.body.rapport_resume || 'Aucun résumé disponible' }}"
+      },
+      "id": "gdrive-create",
+      "name": "Créer fichier Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Webhook FinSoft Audit": {
+      "main": [
+        [{ "node": "Créer fichier Google Drive", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Sauvegarde le rapport d'audit IA FinSoft dans un dossier Google Drive du cabinet."
+  }
+}

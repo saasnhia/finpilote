@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateEmailTemplate, getAutoRappelType } from '@/lib/email-templates'
 import { sendEmail } from '@/lib/email-sender'
+import { triggerCronRappelsTermine } from '@/lib/n8n/trigger'
 
 /**
  * GET /api/notifications/cron
@@ -151,6 +152,9 @@ export async function GET(req: NextRequest) {
         })
         .eq('id', facture.id)
     }
+
+    // Notifier n8n (fire-and-forget)
+    void triggerCronRappelsTermine({ processed: factures.length, sent, skipped, failed })
 
     return NextResponse.json({
       success: true,

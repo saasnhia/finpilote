@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { BankTransaction, ImportConfirmResponse } from '@/types'
 import { randomUUID } from 'crypto'
+import { triggerImportBancaireTermine } from '@/lib/n8n/trigger'
 
 /**
  * POST /api/banques/confirm-import
@@ -118,6 +119,13 @@ export async function POST(req: NextRequest) {
       .from('comptes_bancaires')
       .update({ last_sync_date: new Date().toISOString() })
       .eq('id', bank_account_id)
+
+    // Notifier n8n (fire-and-forget)
+    void triggerImportBancaireTermine({
+      user_id: user.id,
+      compte_id: bank_account_id,
+      transactions_imported: newTransactions.length,
+    })
 
     return NextResponse.json({
       success: true,
