@@ -29,6 +29,7 @@ import {
   Sparkles,
   BarChart3,
   Wand2,
+  Zap,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -58,6 +59,7 @@ const sections: SidebarSection[] = [
     items: [
       { name: 'Balance âgée', href: '/audit/balance-agee', icon: BarChart3 },
       { name: 'Tri comptes', href: '/audit/comptes', icon: FolderOpen },
+      { name: 'Automatisation', href: '/automatisation', icon: Zap },
     ],
   },
   {
