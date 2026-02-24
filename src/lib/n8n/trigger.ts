@@ -1,9 +1,11 @@
 /**
- * FinSoft → n8n : Déclencheurs sortants
+ * FinSoft → n8n : Déclencheurs sortants OPS FONDATEUR UNIQUEMENT
  *
- * Chaque fonction envoie un événement au webhook n8n correspondant.
- * Si N8N_URL n'est pas défini ou si n8n est injoignable, l'erreur est loggée
- * sans faire crasher la route appelante (fire-and-forget).
+ * Ces triggers servent exclusivement au monitoring du fondateur.
+ * Les automatisations cabinet (matching, alertes, rappels) sont
+ * implémentées nativement dans FinSoft — elles ne passent PAS par n8n.
+ *
+ * Fire-and-forget : timeout 5s, jamais bloquant pour la route appelante.
  */
 
 const N8N_URL = process.env.N8N_URL
@@ -13,34 +15,27 @@ async function fireN8nWebhook(path: string, payload: Record<string, unknown>): P
   if (!N8N_URL) return // n8n non configuré → silent skip
 
   const url = `${N8N_URL}/webhook/${path}`
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  }
-  if (N8N_SECRET) {
-    headers['X-FinSoft-Secret'] = N8N_SECRET
-  }
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  if (N8N_SECRET) headers['X-FinSoft-Secret'] = N8N_SECRET
 
   try {
     const res = await fetch(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(5000), // 5s max
+      signal: AbortSignal.timeout(5000),
     })
-    if (!res.ok) {
-      console.warn(`[n8n trigger] ${path} → HTTP ${res.status}`)
-    }
+    if (!res.ok) console.warn(`[n8n ops] ${path} → HTTP ${res.status}`)
   } catch (err) {
-    // Timeout ou n8n injoignable : ne pas bloquer la route principale
-    console.warn(`[n8n trigger] ${path} → ${err instanceof Error ? err.message : 'erreur réseau'}`)
+    console.warn(`[n8n ops] ${path} → ${err instanceof Error ? err.message : 'erreur réseau'}`)
   }
 }
 
-// ─── Triggers ────────────────────────────────────────────────────────────────
+// ─── OPS FONDATEUR ────────────────────────────────────────────────────────────
 
 /**
- * Déclenché après l'exécution du job CRON de rappels email.
- * n8n peut créer un ticket Notion, envoyer un rapport Slack, etc.
+ * Déclenché après chaque exécution du CRON de rappels email.
+ * → Slack fondateur : résumé quotidien du CRON (ops-01-cron-monitoring)
  */
 export async function triggerCronRappelsTermine(stats: {
   processed: number
@@ -56,65 +51,52 @@ export async function triggerCronRappelsTermine(stats: {
 }
 
 /**
- * Déclenché après un rapport d'audit IA.
- * n8n peut archiver le rapport dans GDrive, notifier le cabinet, etc.
- */
-export async function triggerAuditRapportGenere(data: {
-  user_id: string
-  anomalies_count: number
-  rapport_resume?: string
-}): Promise<void> {
-  await fireN8nWebhook('finsoft/audit-rapport-genere', {
-    event: 'audit_rapport_genere',
-    timestamp: new Date().toISOString(),
-    ...data,
-  })
-}
-
-/**
- * Déclenché après la génération d'alertes (POST /api/alerts).
- * n8n peut envoyer un email récapitulatif, créer des tâches, etc.
- */
-export async function triggerAlertesGenerees(data: {
-  user_id: string
-  generated: number
-  critical_count?: number
-}): Promise<void> {
-  await fireN8nWebhook('finsoft/alertes-generees', {
-    event: 'alertes_generees',
-    timestamp: new Date().toISOString(),
-    ...data,
-  })
-}
-
-/**
  * Déclenché après la création d'un nouveau dossier cabinet.
- * n8n peut initialiser un dossier GDrive, envoyer un email de bienvenue, etc.
+ * → Slack fondateur : "🎉 Nouveau cabinet : {nom}" (ops-01-cron-monitoring)
  */
-export async function triggerNouveauDossier(data: {
+export async function triggerNouveauCabinet(data: {
   dossier_id: string
   nom: string
   siren?: string
   user_id: string
 }): Promise<void> {
-  await fireN8nWebhook('finsoft/nouveau-dossier', {
-    event: 'nouveau_dossier',
+  await fireN8nWebhook('finsoft/nouveau-cabinet', {
+    event: 'nouveau_cabinet',
     timestamp: new Date().toISOString(),
     ...data,
   })
 }
 
 /**
- * Déclenché après l'import d'un relevé bancaire CSV.
- * n8n peut déclencher un rapprochement automatique, notifier le comptable, etc.
+ * Déclenché depuis les catch des routes critiques en production.
+ * → Slack fondateur : "🚨 Erreur critique {endpoint}" (ops-02-erreur-critique)
  */
-export async function triggerImportBancaireTermine(data: {
-  user_id: string
-  compte_id?: string
-  transactions_imported: number
+export async function triggerErreurCritique(data: {
+  endpoint: string
+  message: string
+  stack?: string
+  user_id?: string
 }): Promise<void> {
-  await fireN8nWebhook('finsoft/import-bancaire-termine', {
-    event: 'import_bancaire_termine',
+  await fireN8nWebhook('finsoft/erreur-critique', {
+    event: 'erreur_critique',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'unknown',
+    ...data,
+  })
+}
+
+/**
+ * Déclenché quand un lead remplit le formulaire de contact.
+ * → Slack fondateur : "📥 Lead : {nom}, {email}" (ops-03-nouveau-lead)
+ */
+export async function triggerNouveauLead(data: {
+  nom: string
+  email: string
+  message?: string
+  source?: string
+}): Promise<void> {
+  await fireN8nWebhook('finsoft/nouveau-lead', {
+    event: 'nouveau_lead',
     timestamp: new Date().toISOString(),
     ...data,
   })

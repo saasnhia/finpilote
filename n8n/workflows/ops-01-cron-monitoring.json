@@ -1,0 +1,40 @@
+{
+  "name": "[OPS Fondateur] CRON rappels → monitoring Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/cron-rappels-termine",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-cron",
+      "name": "Webhook CRON FinSoft",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#ops-finsoft",
+        "text": "=📬 *CRON Rappels FinSoft* — {{ new Date().toLocaleDateString('fr-FR') }}\n> Traité : {{ $json.body.processed }} · Envoyé : {{ $json.body.sent }} · Ignoré : {{ $json.body.skipped }} · Échec : {{ $json.body.failed }}"
+      },
+      "id": "slack-cron",
+      "name": "Slack monitoring",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Webhook CRON FinSoft": {
+      "main": [
+        [{ "node": "Slack monitoring", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "OPS FONDATEUR UNIQUEMENT. Reçoit le résumé quotidien du CRON de rappels et le poste dans Slack #ops-finsoft."
+  }
+}

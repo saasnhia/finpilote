@@ -1,0 +1,40 @@
+{
+  "name": "[OPS Fondateur] Erreur critique prod → Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/erreur-critique",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-error",
+      "name": "Webhook Erreur Critique",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#ops-finsoft",
+        "text": "=🚨 *Erreur critique FinSoft* — {{ $json.body.environment }}\n> *Endpoint* : {{ $json.body.endpoint }}\n> *Message* : {{ $json.body.message }}\n> *User* : {{ $json.body.user_id || 'N/A' }}\n> *Timestamp* : {{ $json.body.timestamp }}\n{{ $json.body.stack ? '```' + $json.body.stack.slice(0, 300) + '```' : '' }}"
+      },
+      "id": "slack-error",
+      "name": "Slack alerte critique",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Erreur Critique": {
+      "main": [
+        [{ "node": "Slack alerte critique", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "OPS FONDATEUR UNIQUEMENT. Alerte Slack immédiate quand une erreur critique est détectée en prod via POST /api/ops/error."
+  }
+}

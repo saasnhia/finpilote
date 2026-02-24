@@ -1,0 +1,40 @@
+{
+  "name": "[OPS Fondateur] Nouveau lead → Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "finsoft/nouveau-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-lead",
+      "name": "Webhook Nouveau Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#leads-finsoft",
+        "text": "=📥 *Nouveau lead FinSoft* — {{ $json.body.source || 'site' }}\n> *Nom* : {{ $json.body.nom }}\n> *Email* : {{ $json.body.email }}\n> *Message* : {{ $json.body.message || '(aucun message)' }}"
+      },
+      "id": "slack-lead",
+      "name": "Slack nouveau lead",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Nouveau Lead": {
+      "main": [
+        [{ "node": "Slack nouveau lead", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "OPS FONDATEUR UNIQUEMENT. Notifie le fondateur dans Slack #leads-finsoft quand un lead remplit le formulaire de contact (POST /api/contact)."
+  }
+}

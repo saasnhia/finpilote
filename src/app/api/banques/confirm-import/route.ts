@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { BankTransaction, ImportConfirmResponse } from '@/types'
 import { randomUUID } from 'crypto'
-import { triggerImportBancaireTermine } from '@/lib/n8n/trigger'
+import { runAutoMatchForUser } from '@/lib/matching/auto-match'
 
 /**
  * POST /api/banques/confirm-import
- * Import transactions from parsed CSV
+ * Importe les transactions depuis un CSV bancaire parsé.
+ * Déclenche automatiquement le rapprochement factures <-> transactions après import.
  */
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()
 
-    // Get authenticated user
     const {
       data: { user },
       error: authError,
@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
 
-    // Parse request body
     const body = await req.json()
     const { bank_account_id, transactions } = body as {
       bank_account_id: string
@@ -36,7 +35,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Verify bank account belongs to user
+    // Vérifier que le compte appartient à l'utilisateur
     const { data: bankAccount, error: accountError } = await supabase
       .from('comptes_bancaires')
       .select('id')
@@ -51,10 +50,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Generate batch ID for this import
     const batchId = randomUUID()
 
-    // Check for duplicates (same date, amount, description)
+    // Déduplication (même date + montant + description)
     const dates = transactions.map(t => t.date)
     const minDate = dates.sort()[0]
     const maxDate = dates.sort()[dates.length - 1]
@@ -68,22 +66,17 @@ export async function POST(req: NextRequest) {
       .lte('date', maxDate)
 
     const existingSet = new Set(
-      (existingTransactions || []).map(
-        t => `${t.date}|${t.amount}|${t.description}`
-      )
+      (existingTransactions || []).map(t => `${t.date}|${t.amount}|${t.description}`)
     )
 
-    // Filter out duplicates
     const newTransactions = transactions.filter(t => {
-      const key = `${t.date}|${t.amount}|${t.description}`
-      return !existingSet.has(key)
+      return !existingSet.has(`${t.date}|${t.amount}|${t.description}`)
     })
 
     const duplicateCount = transactions.length - newTransactions.length
 
-    // Insert new transactions
     if (newTransactions.length > 0) {
-      const transactionsToInsert = newTransactions.map(t => ({
+      const toInsert = newTransactions.map(t => ({
         user_id: user.id,
         bank_account_id,
         date: t.date,
@@ -101,41 +94,45 @@ export async function POST(req: NextRequest) {
         import_batch_id: batchId,
       }))
 
-      const { error: insertError } = await supabase
-        .from('transactions')
-        .insert(transactionsToInsert)
+      const { error: insertError } = await supabase.from('transactions').insert(toInsert)
 
       if (insertError) {
         console.error('Error inserting transactions:', insertError)
         return NextResponse.json(
-          { error: 'Erreur lors de l\'insertion des transactions' },
+          { error: "Erreur lors de l'insertion des transactions" },
           { status: 500 }
         )
       }
     }
 
-    // Update bank account last_sync_date
+    // Mettre à jour la date de dernière synchro du compte
     await supabase
       .from('comptes_bancaires')
       .update({ last_sync_date: new Date().toISOString() })
       .eq('id', bank_account_id)
 
-    // Notifier n8n (fire-and-forget)
-    void triggerImportBancaireTermine({
-      user_id: user.id,
-      compte_id: bank_account_id,
-      transactions_imported: newTransactions.length,
-    })
+    // Rapprochement natif automatique (déclenché si des transactions ont été importées)
+    let matchStats = { auto_matched: 0, suggestions: 0, anomalies: 0 }
+    if (newTransactions.length > 0) {
+      try {
+        matchStats = await runAutoMatchForUser(supabase, user.id)
+      } catch (matchErr) {
+        console.error('[confirm-import] Auto-matching failed (non-blocking):', matchErr)
+      }
+    }
 
     return NextResponse.json({
       success: true,
       imported_count: newTransactions.length,
       duplicate_count: duplicateCount,
-    } as ImportConfirmResponse)
-  } catch (error: any) {
+      auto_matched: matchStats.auto_matched,
+      suggestions: matchStats.suggestions,
+    } as ImportConfirmResponse & { auto_matched: number; suggestions: number })
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Erreur inconnue'
     console.error('Error importing transactions:', error)
     return NextResponse.json(
-      { error: 'Erreur serveur interne: ' + error.message },
+      { error: 'Erreur serveur interne: ' + message },
       { status: 500 }
     )
   }

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { triggerNouveauDossier } from '@/lib/n8n/trigger'
+import { triggerNouveauCabinet } from '@/lib/n8n/trigger'
 
 /** GET /api/dossiers — liste les dossiers de l'utilisateur */
 export async function GET() {
@@ -40,8 +40,8 @@ export async function POST(request: Request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Notifier n8n (fire-and-forget)
-  void triggerNouveauDossier({ dossier_id: data.id, nom: data.nom, siren: data.siren, user_id: user.id })
+  // Notifier le fondateur via n8n ops (fire-and-forget)
+  void triggerNouveauCabinet({ dossier_id: data.id, nom: data.nom, siren: data.siren, user_id: user.id })
 
   return NextResponse.json({ success: true, dossier: data }, { status: 201 })
 }

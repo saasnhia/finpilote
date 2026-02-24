@@ -6,7 +6,7 @@ import { Card, Button } from '@/components/ui'
 import { SyncStatus } from '@/components/integrations/SyncStatus'
 import {
   Plug, ExternalLink, FileText, AlertCircle,
-  CheckCircle, Lock, Workflow, Zap, Copy,
+  CheckCircle, Lock,
 } from 'lucide-react'
 
 interface Connexion {
@@ -52,25 +52,10 @@ const PROVIDERS: Provider[] = [
   },
 ]
 
-const N8N_WEBHOOKS = [
-  { label: 'Facture reçue', path: '/api/webhooks/n8n/facture-recue', method: 'POST', desc: 'n8n pousse une facture fournisseur dans FinSoft' },
-  { label: 'Sync Cegid', path: '/api/webhooks/n8n/sync-cegid', method: 'POST', desc: 'Import transactions depuis Cegid Loop' },
-  { label: 'Sync Sage', path: '/api/webhooks/n8n/sync-sage', method: 'POST', desc: 'Import balance depuis Sage 50' },
-  { label: 'Nouveau client', path: '/api/webhooks/n8n/nouveau-client', method: 'POST', desc: 'Création client depuis CRM/formulaire' },
-  { label: 'Santé', path: '/api/webhooks/n8n/status', method: 'GET', desc: 'Ping de disponibilité FinSoft' },
-]
-
 export default function IntegrationsPage() {
   const [connexions, setConnexions] = useState<Connexion[]>([])
   const [loading, setLoading] = useState(true)
   const [connecting, setConnecting] = useState<string | null>(null)
-  const [copied, setCopied] = useState<string | null>(null)
-
-  const copyToClipboard = (text: string, key: string) => {
-    navigator.clipboard.writeText(text).catch(() => {})
-    setCopied(key)
-    setTimeout(() => setCopied(null), 1500)
-  }
 
   useEffect(() => {
     const fetchConnexions = async () => {
@@ -121,6 +106,9 @@ export default function IntegrationsPage() {
       body: JSON.stringify({ provider: providerId }),
     })
   }
+
+  // Avoid unused variable warning during loading
+  void loading
 
   return (
     <AppShell>
@@ -226,93 +214,6 @@ export default function IntegrationsPage() {
               </Card>
             )
           })}
-        </div>
-
-        {/* ─── Section n8n ─── */}
-        <div className="mt-10 mb-4 flex items-center gap-2">
-          <Workflow className="w-5 h-5 text-brand-green-action" />
-          <h2 className="text-lg font-display font-bold text-navy-900">Automatisation n8n</h2>
-          <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-brand-green-primary/10 text-brand-green-action font-medium">
-            On-premise
-          </span>
-        </div>
-        <p className="text-sm text-navy-500 mb-4">
-          Connectez n8n à FinSoft pour automatiser vos workflows cabinet : archivage, notifications, synchronisation Cegid/Sage.
-          Téléchargez les workflows prêts à l&apos;emploi dans <code className="font-mono text-xs bg-navy-100 px-1 rounded">n8n/workflows/</code>.
-        </p>
-
-        {/* n8n config block */}
-        <Card className="mb-4 bg-neutral-950 border-white/10">
-          <div className="flex items-start gap-3 mb-3">
-            <Zap className="w-4 h-4 text-brand-green-action mt-0.5 flex-shrink-0" />
-            <p className="text-sm text-neutral-300 font-medium">Variables .env.local</p>
-          </div>
-          <div className="font-mono text-xs text-neutral-400 space-y-1">
-            <p><span className="text-brand-green-action">N8N_URL</span>=http://localhost:5678</p>
-            <p><span className="text-brand-green-action">N8N_WEBHOOK_SECRET</span>=finsoft_n8n_secret_2026</p>
-            <p><span className="text-brand-green-action">N8N_API_KEY</span>=&lt;clé API n8n&gt;</p>
-          </div>
-        </Card>
-
-        {/* Webhook endpoints table */}
-        <Card className="overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-white/5 text-xs text-neutral-500 uppercase tracking-wider">
-                <th className="text-left px-4 py-2.5">Webhook</th>
-                <th className="text-left px-4 py-2.5 hidden sm:table-cell">Description</th>
-                <th className="px-4 py-2.5 w-12"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {N8N_WEBHOOKS.map((wh) => (
-                <tr key={wh.path} className="border-b border-white/5 last:border-0 hover:bg-white/3 transition-colors">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${wh.method === 'POST' ? 'bg-blue-500/20 text-blue-300' : 'bg-emerald-500/20 text-emerald-300'}`}>
-                        {wh.method}
-                      </span>
-                      <span className="font-mono text-xs text-neutral-300 truncate">{wh.path}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-xs text-neutral-500 hidden sm:table-cell">{wh.desc}</td>
-                  <td className="px-4 py-3">
-                    <button
-                      onClick={() => copyToClipboard(wh.path, wh.path)}
-                      className="p-1.5 rounded hover:bg-white/5 text-neutral-500 hover:text-neutral-300 transition-colors"
-                      title="Copier le chemin"
-                    >
-                      <Copy className="w-3.5 h-3.5" />
-                    </button>
-                    {copied === wh.path && (
-                      <span className="text-[10px] text-brand-green-action ml-1">Copié</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-
-        {/* Workflows download links */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {[
-            { file: '01-cron-rappels-slack.json', label: 'CRON Rappels → Slack' },
-            { file: '02-audit-rapport-gdrive.json', label: 'Audit → Google Drive' },
-            { file: '03-alertes-critiques-email.json', label: 'Alertes critiques → Email' },
-            { file: '04-nouveau-dossier-notion.json', label: 'Dossier → Notion' },
-            { file: '05-import-bancaire-rapprochement.json', label: 'Import → Rapprochement' },
-          ].map(wf => (
-            <a
-              key={wf.file}
-              href={`/n8n/workflows/${wf.file}`}
-              download
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white transition-colors border border-white/10"
-            >
-              <Workflow className="w-3 h-3" />
-              {wf.label}
-            </a>
-          ))}
         </div>
 
         {/* FEC manual upload shortcut */}

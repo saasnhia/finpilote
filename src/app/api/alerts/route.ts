@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { triggerAlertesGenerees } from '@/lib/n8n/trigger'
+import { sendEmail } from '@/lib/email-sender'
+
 
 /**
  * GET /api/alerts
@@ -281,9 +282,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Erreur création alertes' }, { status: 500 })
     }
 
-    // Notifier n8n (fire-and-forget)
-    const criticalCount = alerts.filter(a => a.severite === 'critical').length
-    void triggerAlertesGenerees({ user_id: user.id, generated: alerts.length, critical_count: criticalCount })
+    // Email natif : notifier l'utilisateur si des alertes critiques ont été générées
+    const criticalAlerts = alerts.filter(a => a.severite === 'critical')
+    if (criticalAlerts.length > 0) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, company_name')
+        .eq('id', user.id)
+        .single()
+
+      const { data: authData } = await supabase.auth.getUser()
+      const email = authData?.user?.email
+
+      if (email) {
+        const nomEntreprise = profile?.company_name || profile?.full_name || 'FinSoft'
+        const fromEmail = process.env.RESEND_FROM_EMAIL || 'alertes@finsoft.local'
+        const alertLines = criticalAlerts
+          .map(a => `<li><strong>${a.titre}</strong> — ${a.description}</li>`)
+          .join('')
+
+        void sendEmail({
+          from: `${nomEntreprise} <${fromEmail}>`,
+          to: [email],
+          subject: `⚠️ ${criticalAlerts.length} alerte(s) critique(s) — ${nomEntreprise}`,
+          html: `
+            <h2 style="color:#dc2626">Alertes critiques détectées</h2>
+            <p>${criticalAlerts.length} alerte(s) requièrent votre attention immédiate :</p>
+            <ul>${alertLines}</ul>
+            <p><a href="https://finpilote.vercel.app/dashboard" style="color:#22D3A5">
+              Accéder au tableau de bord →
+            </a></p>
+          `,
+          text: criticalAlerts.map(a => `${a.titre}: ${a.description}`).join('\n'),
+        })
+      }
+    }
 
     return NextResponse.json({ success: true, generated: alerts.length })
   } catch (error: unknown) {
