@@ -8,7 +8,10 @@ import { createClient } from '@/lib/supabase/server';
 import { queryOllama } from '@/lib/ai/ollama-client';
 import { logMetrics, startTimer } from '@/lib/metrics';
 import { enrichirFournisseur } from '@/lib/api/api-entreprise';
+import { suggestCategorization } from '@/lib/categorization/matcher';
+import { logAutomation } from '@/lib/automation/log';
 import type { ExtractedInvoiceData } from '@/types';
+import type { CategorizationRule } from '@/lib/categorization/matcher';
 
 // Helper: Extract text from PDF using pdf2json (pure JS, no worker issues)
 function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
@@ -606,10 +609,74 @@ export async function POST(req: NextRequest) {
       throw new Error(`Database error: ${dbError.message}`);
     }
 
-    // Step 5: Return response
+    // Step 5: Suggest categorization based on fournisseur (non-blocking)
+    let categorization_suggestion = null;
+    if (facture && extractedData.nom_fournisseur) {
+      try {
+        const { data: rulesData } = await supabase
+          .from('categorization_rules')
+          .select('*')
+          .eq('user_id', user_id)
+          .eq('is_active', true);
+
+        const rules = (rulesData ?? []) as CategorizationRule[];
+        const suggestion = suggestCategorization(extractedData.nom_fournisseur, rules);
+
+        if (suggestion) {
+          categorization_suggestion = suggestion;
+
+          // Auto-apply if confidence >= 90 (high confidence rule match)
+          if (suggestion.confidence >= 90) {
+            await supabase
+              .from('factures')
+              .update({
+                compte_comptable: suggestion.compte_comptable,
+                code_tva: suggestion.code_tva,
+              })
+              .eq('id', facture.id);
+
+            await logAutomation({
+              userId: user_id,
+              actionType: 'categorization_applied',
+              entityType: 'facture',
+              entityId: facture.id,
+              ruleId: suggestion.rule_id,
+              metadata: {
+                fournisseur: extractedData.nom_fournisseur,
+                compte_comptable: suggestion.compte_comptable,
+                confidence: suggestion.confidence,
+                source: 'upload',
+              },
+              isReversible: true,
+            });
+          } else if (suggestion.confidence >= 60) {
+            // Log as suggestion only
+            await logAutomation({
+              userId: user_id,
+              actionType: 'categorization_suggested',
+              entityType: 'facture',
+              entityId: facture.id,
+              ruleId: suggestion.rule_id,
+              metadata: {
+                fournisseur: extractedData.nom_fournisseur,
+                compte_comptable: suggestion.compte_comptable,
+                confidence: suggestion.confidence,
+                source: 'upload',
+              },
+              isReversible: false,
+            });
+          }
+        }
+      } catch (catErr) {
+        console.warn('[API] Categorization suggestion failed:', catErr);
+      }
+    }
+
+    // Step 6: Return response
     return NextResponse.json({
       success: true,
       facture,
+      categorization_suggestion,
       warnings: extractedData.confidence_score < 0.7
         ? ['Confiance faible. Veuillez vérifier les données extraites.']
         : [],

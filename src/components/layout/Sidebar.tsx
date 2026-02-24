@@ -28,6 +28,7 @@ import {
   Briefcase,
   Sparkles,
   BarChart3,
+  Wand2,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -72,6 +73,7 @@ const sections: SidebarSection[] = [
     icon: Settings,
     items: [
       { name: 'Général', href: '/settings', icon: Sliders },
+      { name: 'Règles auto', href: '/parametres/regles', icon: Wand2 },
       { name: 'Intégrations', href: '/parametres/integrations', icon: Plug },
       { name: 'Utilisateurs', href: '/admin/users', icon: Users },
     ],
