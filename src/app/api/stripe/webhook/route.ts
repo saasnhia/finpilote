@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 import { stripe } from '@/lib/stripe/client'
 import type Stripe from 'stripe'
 
 // Service-role client — bypasses RLS (safe for webhook server-side use only)
-function getAdminClient() {
-  return createSupabaseAdmin(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
-}
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 /**
  * POST /api/stripe/webhook
@@ -32,8 +29,6 @@ export async function POST(req: NextRequest) {
     const msg = err instanceof Error ? err.message : 'Signature invalide'
     return NextResponse.json({ error: msg }, { status: 400 })
   }
-
-  const supabase = getAdminClient()
 
   try {
     switch (event.type) {
@@ -65,7 +60,7 @@ export async function POST(req: NextRequest) {
           ? new Date(Number(rawPeriodEnd) * 1000).toISOString()
           : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
 
-        const { error: upsertError } = await supabase
+        const { error } = await supabaseAdmin
           .from('subscriptions')
           .upsert(
             {
@@ -79,10 +74,15 @@ export async function POST(req: NextRequest) {
             { onConflict: 'user_id' }
           )
 
-        if (upsertError) console.error('[webhook] Supabase upsert error:', upsertError)
+        if (error) {
+          console.error('[webhook] Supabase upsert error:', JSON.stringify(error))
+          throw new Error(`Supabase upsert failed: ${error.message}`)
+        }
+
+        console.log('[webhook] Subscription upserted for user:', userId)
 
         // Sync plan into user_profiles
-        await supabase
+        await supabaseAdmin
           .from('user_profiles')
           .update({ plan: plan ?? 'starter' })
           .eq('id', userId)
@@ -104,20 +104,20 @@ export async function POST(req: NextRequest) {
         }
         if (plan) updates.plan = plan
 
-        await supabase
+        await supabaseAdmin
           .from('subscriptions')
           .update(updates)
           .eq('stripe_subscription_id', sub.id)
 
         // Sync plan into user_profiles if plan changed
         if (plan) {
-          const { data: row } = await supabase
+          const { data: row } = await supabaseAdmin
             .from('subscriptions')
             .select('user_id')
             .eq('stripe_subscription_id', sub.id)
             .maybeSingle()
           if (row?.user_id) {
-            await supabase.from('user_profiles').update({ plan }).eq('id', row.user_id)
+            await supabaseAdmin.from('user_profiles').update({ plan }).eq('id', row.user_id)
           }
         }
 
@@ -128,19 +128,19 @@ export async function POST(req: NextRequest) {
       case 'customer.subscription.deleted': {
         const sub = event.data.object as Stripe.Subscription
 
-        await supabase
+        await supabaseAdmin
           .from('subscriptions')
           .update({ status: 'canceled' })
           .eq('stripe_subscription_id', sub.id)
 
         // Downgrade user_profiles to starter
-        const { data: row } = await supabase
+        const { data: row } = await supabaseAdmin
           .from('subscriptions')
           .select('user_id')
           .eq('stripe_subscription_id', sub.id)
           .maybeSingle()
         if (row?.user_id) {
-          await supabase.from('user_profiles').update({ plan: 'starter' }).eq('id', row.user_id)
+          await supabaseAdmin.from('user_profiles').update({ plan: 'starter' }).eq('id', row.user_id)
         }
 
         break
@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
         const invoice = event.data.object as Stripe.Invoice
         const customerId = invoice.customer as string
 
-        await supabase
+        await supabaseAdmin
           .from('subscriptions')
           .update({ status: 'past_due' })
           .eq('stripe_customer_id', customerId)
