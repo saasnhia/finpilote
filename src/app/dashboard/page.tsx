@@ -23,6 +23,7 @@ import {
   FolderOpen,
   Landmark,
   ShoppingCart,
+  Loader2,
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'react-hot-toast'
@@ -398,6 +399,15 @@ export default function DashboardPage() {
           loading,
         },
       ]
+
+  // Wait for subscription check before rendering or redirecting
+  if (subLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
+      </div>
+    )
+  }
 
   return (
     <AppShell>
