@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { normalizeFournisseur, PCG_COMPTES } from '@/lib/categorization/matcher'
 import { logAutomation } from '@/lib/automation/log'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 /**
  * POST /api/categorization/learn
@@ -18,11 +19,10 @@ import { logAutomation } from '@/lib/automation/log'
  */
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requirePlanFeature('categorization_rules')
+    if (!isAuthed(auth)) return auth
+
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
-    }
 
     const body = await req.json() as {
       facture_id: string
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       .from('categorization_rules')
       .upsert(
         {
-          user_id: user.id,
+          user_id: auth.userId,
           fournisseur_pattern,
           fournisseur_display: fournisseur,
           compte_comptable,
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
         categorie: categorie ?? null,
       })
       .eq('id', facture_id)
-      .eq('user_id', user.id)
+      .eq('user_id', auth.userId)
 
     if (updateError) {
       console.error('Invoice update error:', updateError)
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
 
     // Log the automation action
     await logAutomation({
-      userId: user.id,
+      userId: auth.userId,
       actionType: 'rule_learned',
       entityType: 'facture',
       entityId: facture_id,

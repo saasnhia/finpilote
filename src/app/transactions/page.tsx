@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout'
 import { Card, Button, Input } from '@/components/ui'
 import { useAuth } from '@/hooks/useAuth'
 import { useFinancialData } from '@/hooks/useFinancialData'
+import { useUserPlan } from '@/hooks/useUserPlan'
 import { CATEGORY_LABELS, type TransactionCategory } from '@/types'
 import { formatCurrency } from '@/lib/calculations'
 import { StatusBadge } from '@/components/rapprochement/StatusBadge'
@@ -41,6 +42,8 @@ interface RapprochementInfo {
 export default function TransactionsPage() {
   const { user, loading: authLoading } = useAuth()
   const { transactions, loading: dataLoading, addTransaction, deleteTransaction } = useFinancialData(user?.id)
+  const { can } = useUserPlan()
+  const canRapprochement = can('rapprochement_auto')
 
   const [showAddForm, setShowAddForm] = useState(false)
   const [filterType, setFilterType] = useState<'all' | 'income' | 'expense'>('all')
@@ -64,7 +67,7 @@ export default function TransactionsPage() {
 
   // ---- Load rapprochement status for all transactions ----
   const loadRapprochements = useCallback(async () => {
-    if (!user?.id) return
+    if (!user?.id || !canRapprochement) return
     setRapLoading(true)
     try {
       const res = await fetch('/api/rapprochement/suggestions')
@@ -397,8 +400,8 @@ export default function TransactionsPage() {
                       </div>
                     </div>
 
-                    {/* Rapprochement status — only for expense transactions */}
-                    {transaction.type === 'expense' && (
+                    {/* Rapprochement status — cabinet+ only */}
+                    {canRapprochement && transaction.type === 'expense' && (
                       <div className="flex-shrink-0 flex items-center gap-2">
                         <StatusBadge
                           statut={rapStatut}

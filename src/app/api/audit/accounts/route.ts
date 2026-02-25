@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { calculateAuditThresholds } from '@/lib/audit/audit-thresholds'
 import type { CompanyAuditData, AccountBalance, AccountRisk } from '@/types'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 /**
  * POST /api/audit/accounts
@@ -9,6 +10,9 @@ import type { CompanyAuditData, AccountBalance, AccountRisk } from '@/types'
  */
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requirePlanFeature('audit_ia')
+    if (!isAuthed(auth)) return auth
+
     const body = await req.json()
     const {
       chiffre_affaires_ht,
@@ -130,10 +134,8 @@ export async function POST(req: NextRequest) {
         insignifiants: insignifiants.length,
       },
     })
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: 'Erreur serveur: ' + error.message },
-      { status: 500 }
-    )
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Erreur inconnue'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

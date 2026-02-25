@@ -2,13 +2,13 @@ import type { Plan } from './check-plan'
 
 /**
  * Returns the maximum number of concurrent sessions allowed for a plan.
- * null = unlimited (Entreprise).
+ * null = unlimited (Pro).
  */
 export function getUserLimit(plan: Plan): number | null {
   switch (plan) {
-    case 'solo':       return 1
-    case 'cabinet':    return 5
-    case 'entreprise': return null
+    case 'starter': return 1
+    case 'cabinet': return 10
+    case 'pro':     return null
   }
 }
 
@@ -28,8 +28,8 @@ export function isAtLimit(plan: Plan, activeCount: number): boolean {
 /** Upgrade price hint for upsell banners */
 export function getUpgradePrice(plan: Plan): string | null {
   switch (plan) {
-    case 'solo':    return '799€ (Cabinet, 5 users)'
-    case 'cabinet': return '1 499€ (Entreprise, illimité)'
+    case 'starter': return '890€/an (Cabinet, 10 utilisateurs)'
+    case 'cabinet': return '1 900€/an (Pro, illimité)'
     default:        return null
   }
 }

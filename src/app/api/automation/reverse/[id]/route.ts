@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 type RouteParams = { params: Promise<{ id: string }> }
 
@@ -14,19 +15,17 @@ type RouteParams = { params: Promise<{ id: string }> }
  */
 export async function POST(_req: NextRequest, { params }: RouteParams) {
   try {
+    const auth = await requirePlanFeature('dashboard_automatisation')
+    if (!isAuthed(auth)) return auth
+
     const { id } = await params
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
-    }
-
     // Fetch the log entry
     const { data: logEntry, error: fetchError } = await supabase
       .from('automation_log')
       .select('*')
       .eq('id', id)
-      .eq('user_id', user.id)
+      .eq('user_id', auth.userId)
       .single()
 
     if (fetchError || !logEntry) {
@@ -52,7 +51,7 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
             .from('factures')
             .update({ compte_comptable: null, code_tva: null })
             .eq('id', logEntry.entity_id)
-            .eq('user_id', user.id)
+            .eq('user_id', auth.userId)
         }
         break
       }
@@ -63,7 +62,7 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
           await supabase
             .from('rapprochements_factures')
             .delete()
-            .eq('user_id', user.id)
+            .eq('user_id', auth.userId)
             .eq('transaction_id', logEntry.entity_id)
             .eq('facture_id', meta.facture_id as string)
             .eq('type', 'auto')
@@ -73,7 +72,7 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
             .from('transactions')
             .update({ status: 'pending' })
             .eq('id', logEntry.entity_id)
-            .eq('user_id', user.id)
+            .eq('user_id', auth.userId)
         }
         break
       }
@@ -85,7 +84,7 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
             .from('categorization_rules')
             .update({ is_active: false })
             .eq('id', logEntry.rule_id)
-            .eq('user_id', user.id)
+            .eq('user_id', auth.userId)
         }
         break
       }
@@ -102,7 +101,7 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
       .from('automation_log')
       .update({ is_reversed: true, reversed_at: new Date().toISOString() })
       .eq('id', id)
-      .eq('user_id', user.id)
+      .eq('user_id', auth.userId)
 
     return NextResponse.json({
       success: true,

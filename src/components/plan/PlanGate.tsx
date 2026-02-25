@@ -32,22 +32,24 @@ export function PlanGate({ feature, children, fallback }: PlanGateProps) {
   const required = getRequiredPlan(feature)
 
   return (
-    <div className="relative rounded-2xl border border-navy-200 bg-navy-50/50 p-6 text-center">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-navy-200 flex items-center justify-center">
-          <Lock className="w-5 h-5 text-navy-500" />
+    <div className="relative rounded-2xl border border-slate-700 bg-slate-800/50 p-10 text-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center">
+          <Lock className="w-6 h-6 text-slate-400" />
         </div>
-        <p className="text-sm font-medium text-navy-700">
-          {getFeatureLabel(feature)}
-        </p>
-        <p className="text-xs text-navy-500">
-          Disponible avec le plan {getPlanLabel(required)}
-        </p>
+        <div>
+          <p className="text-base font-semibold text-white">
+            {getFeatureLabel(feature)}
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Disponible à partir du plan <span className="text-emerald-400 font-medium">{getPlanLabel(required)}</span>
+          </p>
+        </div>
         <Link
-          href="/#tarifs"
-          className="mt-2 inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors"
+          href="/pricing"
+          className="mt-2 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors"
         >
-          Voir les tarifs
+          Mettre à niveau
         </Link>
       </div>
     </div>
@@ -62,14 +64,14 @@ export function PlanBadge() {
 
   if (loading) return null
 
-  const colors = {
-    solo: 'bg-navy-100 text-navy-600',
-    cabinet: 'bg-emerald-100 text-emerald-700',
-    entreprise: 'bg-purple-100 text-purple-700',
+  const colors: Record<string, string> = {
+    starter: 'bg-slate-700 text-slate-300',
+    cabinet: 'bg-emerald-900/60 text-emerald-400',
+    pro:     'bg-violet-900/60 text-violet-400',
   }
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[plan]}`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[plan] ?? colors.starter}`}>
       {getPlanLabel(plan)}
     </span>
   )

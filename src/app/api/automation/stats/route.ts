@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 /**
  * GET /api/automation/stats
@@ -7,11 +8,10 @@ import { createClient } from '@/lib/supabase/server'
  */
 export async function GET() {
   try {
+    const auth = await requirePlanFeature('dashboard_automatisation')
+    if (!isAuthed(auth)) return auth
+
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
-    }
 
     const now = new Date()
     const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
@@ -29,14 +29,14 @@ export async function GET() {
       supabase
         .from('factures')
         .select('id', { count: 'exact', head: true })
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .gte('created_at', firstOfMonth),
 
       // Factures auto-catégorisées this month (compte_comptable set via automation)
       supabase
         .from('automation_log')
         .select('id', { count: 'exact', head: true })
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .eq('action_type', 'categorization_applied')
         .gte('created_at', firstOfMonth),
 
@@ -44,14 +44,14 @@ export async function GET() {
       supabase
         .from('rapprochements_factures')
         .select('id', { count: 'exact', head: true })
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .in('statut', ['valide', 'suggestion']),
 
       // Auto rapprochements (type = 'auto')
       supabase
         .from('rapprochements_factures')
         .select('id', { count: 'exact', head: true })
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .eq('type', 'auto')
         .eq('statut', 'valide'),
 
@@ -59,14 +59,14 @@ export async function GET() {
       supabase
         .from('categorization_rules')
         .select('confidence', { count: 'exact' })
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .eq('is_active', true),
 
       // Avg confidence of auto-matched rapprochements
       supabase
         .from('rapprochements_factures')
         .select('confidence_score')
-        .eq('user_id', user.id)
+        .eq('user_id', auth.userId)
         .eq('type', 'auto')
         .not('confidence_score', 'is', null),
     ])

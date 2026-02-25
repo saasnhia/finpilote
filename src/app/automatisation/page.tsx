@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
+import { FeatureGate } from '@/components/plans/FeatureGate'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
@@ -290,6 +291,7 @@ export default function AutomatisationPage() {
 
   return (
     <AppShell>
+      <FeatureGate feature="dashboard_automatisation" requiredPlan="cabinet">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
 
         {/* Header */}
@@ -602,6 +604,7 @@ export default function AutomatisationPage() {
         </div>
 
       </div>
+      </FeatureGate>
     </AppShell>
   )
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { isChiftConfigured, validateChiftCompany } from '@/lib/integrations/chift'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 interface ConnectBody {
   chift_company_id: string
@@ -14,9 +15,10 @@ interface ConnectBody {
  * et obtenu son company_id. FinSoft le stocke pour les syncs automatiques.
  */
 export async function POST(request: Request) {
+  const auth = await requirePlanFeature('sage_sync')
+  if (!isAuthed(auth)) return auth
+
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
 
   if (!isChiftConfigured()) {
     return NextResponse.json({
@@ -55,7 +57,7 @@ export async function POST(request: Request) {
     .from('integrations_erp')
     .upsert(
       {
-        cabinet_id: user.id,
+        cabinet_id: auth.userId,
         provider: 'sage',
         config: { chift_company_id: chift_company_id.trim() },
         sync_status: 'idle',

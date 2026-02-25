@@ -18,6 +18,7 @@ import {
   ChevronDown,
 } from 'lucide-react'
 import { PCG_COMPTES, TVA_CODES } from '@/lib/categorization/matcher'
+import { FeatureGate } from '@/components/plans/FeatureGate'
 import type { CategorizationRule } from '@/lib/categorization/matcher'
 
 // ----------------------------------------------------------------
@@ -191,6 +192,7 @@ export default function ReglesPage() {
 
   return (
     <AppShell>
+      <FeatureGate feature="categorization_rules" requiredPlan="cabinet">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
@@ -455,6 +457,7 @@ export default function ReglesPage() {
           </div>
         </Card>
       </div>
+      </FeatureGate>
     </AppShell>
   )
 }

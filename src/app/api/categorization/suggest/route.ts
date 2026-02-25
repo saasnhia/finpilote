@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { suggestCategorization } from '@/lib/categorization/matcher'
 import type { CategorizationRule } from '@/lib/categorization/matcher'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 /**
  * POST /api/categorization/suggest
@@ -10,11 +11,10 @@ import type { CategorizationRule } from '@/lib/categorization/matcher'
  */
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requirePlanFeature('categorization_rules')
+    if (!isAuthed(auth)) return auth
+
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
-    }
 
     const body = await req.json() as { fournisseur?: string }
     const { fournisseur } = body
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const { data: rulesData, error: rulesError } = await supabase
       .from('categorization_rules')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', auth.userId)
       .eq('is_active', true)
 
     if (rulesError) {

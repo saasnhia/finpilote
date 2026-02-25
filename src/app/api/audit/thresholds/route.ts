@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { performAuditAnalysis, getLegalThresholds } from '@/lib/audit/audit-thresholds'
 import type { CompanyAuditData } from '@/types'
+import { requirePlanFeature, isAuthed } from '@/lib/auth/require-plan'
 
 /**
  * POST /api/audit/thresholds
@@ -9,6 +10,9 @@ import type { CompanyAuditData } from '@/types'
  */
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requirePlanFeature('audit_ia')
+    if (!isAuthed(auth)) return auth
+
     const body = await req.json()
     const {
       company_name,
