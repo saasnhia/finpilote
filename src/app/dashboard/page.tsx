@@ -254,17 +254,17 @@ function BalanceAgeeWidget({ items, loading, mode }: BalanceAgeeWidgetProps) {
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const { isActive, loading: subLoading } = useSubscription()
+  const { isActive, initialized } = useSubscription()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
   const [showFECModal, setShowFECModal] = useState(false)
 
   // Redirect to pricing only once both auth and subscription are fully loaded
   useEffect(() => {
-if (!authLoading && !subLoading && user && !isActive) {
+if (!authLoading && initialized && user && !isActive) {
       router.push('/pricing?message=subscription_required')
     }
-  }, [authLoading, subLoading, user, isActive, router])
+  }, [authLoading, initialized, user, isActive, router])
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -401,7 +401,7 @@ if (!authLoading && !subLoading && user && !isActive) {
       ]
 
   // Wait for both auth and subscription to finish loading
-  if (authLoading || subLoading) {
+  if (authLoading || !initialized) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />

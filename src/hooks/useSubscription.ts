@@ -18,6 +18,7 @@ interface UseSubscriptionResult {
   subscription: Subscription | null
   loading: boolean
   isActive: boolean
+  initialized: boolean
 }
 
 /**
@@ -28,36 +29,41 @@ export function useSubscription(): UseSubscriptionResult {
   const { user } = useAuth()
   const [subscription, setSubscription] = useState<Subscription | null>(null)
   const [loading, setLoading] = useState(true)
+  const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
     if (!user) {
       setSubscription(null)
       setLoading(false)
+      // Do NOT setInitialized here — only a real fetch for an authenticated user counts
       return
     }
 
-    // Reset loading=true before each fetch so consumers can gate on it
     setLoading(true)
 
-    const fetch = async () => {
-      const supabase = createClient()
-      const { data } = await supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', user.id)
-        .in('status', ['active', 'trialing'])
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+    const fetchSub = async () => {
+      try {
+        const supabase = createClient()
+        const { data } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', user.id)
+          .in('status', ['active', 'trialing'])
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
 
-      setSubscription(data as Subscription | null)
-      setLoading(false)
+        setSubscription(data as Subscription | null)
+      } finally {
+        setLoading(false)
+        setInitialized(true)
+      }
     }
 
-    fetch()
+    fetchSub()
   }, [user])
 
   const isActive = subscription?.status === 'active' || subscription?.status === 'trialing'
 
-  return { subscription, loading, isActive }
+  return { subscription, loading, isActive, initialized }
 }
