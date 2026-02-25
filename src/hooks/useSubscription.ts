@@ -36,6 +36,9 @@ export function useSubscription(): UseSubscriptionResult {
       return
     }
 
+    // Reset loading=true before each fetch so consumers can gate on it
+    setLoading(true)
+
     const fetch = async () => {
       const supabase = createClient()
       const { data } = await supabase
@@ -47,7 +50,6 @@ export function useSubscription(): UseSubscriptionResult {
         .limit(1)
         .maybeSingle()
 
-      console.log('[useSubscription] subscription data:', data)
       setSubscription(data as Subscription | null)
       setLoading(false)
     }
@@ -55,9 +57,7 @@ export function useSubscription(): UseSubscriptionResult {
     fetch()
   }, [user])
 
-  const isActive = subscription?.status === 'active'
-
-  console.log('[useSubscription] isActive:', isActive, '| status:', subscription?.status)
+  const isActive = subscription?.status === 'active' || subscription?.status === 'trialing'
 
   return { subscription, loading, isActive }
 }
