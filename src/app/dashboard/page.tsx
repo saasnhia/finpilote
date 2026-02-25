@@ -261,8 +261,7 @@ export default function DashboardPage() {
 
   // Redirect to pricing only once both auth and subscription are fully loaded
   useEffect(() => {
-    console.log('[guard] authLoading:', authLoading, '| subLoading:', subLoading, '| user:', !!user, '| isActive:', isActive)
-    if (!authLoading && !subLoading && user && !isActive) {
+if (!authLoading && !subLoading && user && !isActive) {
       router.push('/pricing?message=subscription_required')
     }
   }, [authLoading, subLoading, user, isActive, router])
