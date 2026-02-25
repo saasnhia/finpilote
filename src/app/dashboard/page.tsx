@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AppShell } from '@/components/layout'
 import { Card } from '@/components/ui'
-import { ExportFECModal, InsightsPanel } from '@/components/dashboard'
+import { ExportFECModal, InsightsPanel, UniversalImportHub, ImportHistoryList } from '@/components/dashboard'
 import { useAuth } from '@/hooks/useAuth'
 import {
   Clock,
@@ -11,7 +11,6 @@ import {
   Euro,
   Bell,
   Download,
-  Loader2,
   CheckCircle2,
   ChevronRight,
   ArrowUpRight,
@@ -106,75 +105,6 @@ const TRANCHE_COLORS: Record<string, string> = {
   '31_60': 'bg-orange-100 text-orange-700',
   '61_90': 'bg-red-100 text-red-700',
   plus_90: 'bg-red-200 text-red-800 font-semibold',
-}
-
-// ─── FileImportZone (inline) ──────────────────────────────────────────────────
-
-function FileImportZone() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [dragActive, setDragActive] = useState(false)
-  const [fileName, setFileName] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [parsed, setParsed] = useState<boolean | null>(null)
-
-  const handleFile = async (file: File) => {
-    setFileName(file.name)
-    setParsed(null)
-    setLoading(true)
-    const formData = new FormData()
-    formData.append('file', file)
-    try {
-      const res = await fetch('/api/parse-finance', { method: 'POST', body: formData })
-      const data = await res.json()
-      if (res.ok) setParsed(true)
-      else toast.error(data.error || 'Erreur lors du parsing')
-    } catch {
-      toast.error('Erreur lors du parsing du fichier')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div>
-      <div
-        className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-colors ${
-          dragActive ? 'border-emerald-500 bg-emerald-50' : 'border-navy-200 bg-navy-50 hover:border-emerald-400'
-        }`}
-        onDragOver={e => { e.preventDefault(); setDragActive(true) }}
-        onDragLeave={e => { e.preventDefault(); setDragActive(false) }}
-        onDrop={e => {
-          e.preventDefault()
-          setDragActive(false)
-          if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0])
-        }}
-        onClick={() => inputRef.current?.click()}
-      >
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png"
-          className="hidden"
-          onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
-        />
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xl">📁</span>
-          <span className="text-sm font-medium text-navy-600">
-            {fileName ?? 'Glissez ou cliquez pour importer'}
-          </span>
-          <span className="text-xs text-navy-400">PDF, Excel, CSV</span>
-        </div>
-      </div>
-      {loading && (
-        <div className="mt-3 flex items-center gap-2 text-sm text-emerald-600">
-          <Loader2 className="w-4 h-4 animate-spin" /> Analyse en cours…
-        </div>
-      )}
-      {parsed && !loading && (
-        <div className="mt-3 text-sm text-emerald-700 font-medium">✅ Fichier analysé</div>
-      )}
-    </div>
-  )
 }
 
 // ─── KPI card simple ──────────────────────────────────────────────────────────
@@ -625,8 +555,9 @@ export default function DashboardPage() {
                 <AlertCircle className="w-4 h-4 text-navy-400" />
                 <h2 className="text-base font-display font-semibold text-navy-900">Importer un fichier</h2>
               </div>
-              <p className="text-xs text-navy-400 mb-3">PDF, Excel, CSV — détection automatique des champs</p>
-              <FileImportZone />
+              <p className="text-xs text-navy-400 mb-3">PDF, Excel, CSV, FEC — détection intelligente du type</p>
+              <UniversalImportHub />
+              <ImportHistoryList />
             </Card>
 
             <InsightsPanel userId={user?.id} />
