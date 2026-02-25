@@ -43,29 +43,30 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session
         if (session.mode !== 'subscription' || !session.subscription) break
 
-        const userId  = session.metadata?.user_id
-        const plan    = session.metadata?.plan ?? 'starter'
-        const customerId     = session.customer as string
         const subscriptionId = session.subscription as string
+        const userId         = session.metadata?.user_id
+        const plan           = session.metadata?.plan ?? 'starter'
 
         if (!userId) break
 
-        // Fetch full subscription to get current_period_end
-        const sub = (await stripe.subscriptions.retrieve(subscriptionId)) as unknown as Stripe.Subscription & { current_period_end: number }
-        const periodEnd = new Date(sub.current_period_end * 1000).toISOString()
+        // Retrieve full subscription object to access current_period_end
+        // In Stripe API 2026-01-28, current_period_end is on the SubscriptionItem
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+        const periodEndTs  = subscription.items.data[0]?.current_period_end ?? 0
+        const periodEnd    = periodEndTs > 0 ? new Date(periodEndTs * 1000).toISOString() : null
 
         await supabase
           .from('subscriptions')
           .upsert(
             {
               user_id:                userId,
-              stripe_customer_id:     customerId,
+              stripe_customer_id:     session.customer as string,
               stripe_subscription_id: subscriptionId,
               plan,
-              status:                 'active',
+              status:                 subscription.status,
               current_period_end:     periodEnd,
             },
-            { onConflict: 'stripe_subscription_id' }
+            { onConflict: 'user_id' }
           )
 
         // Sync plan into user_profiles
@@ -79,12 +80,13 @@ export async function POST(req: NextRequest) {
 
       // ── Abonnement mis à jour (changement de plan, renouvellement…) ──────
       case 'customer.subscription.updated': {
-        const sub = event.data.object as Stripe.Subscription & { current_period_end: number }
-        const periodEnd = new Date(sub.current_period_end * 1000).toISOString()
+        const sub = event.data.object as Stripe.Subscription
+        const periodEndTs = sub.items.data[0]?.current_period_end ?? 0
+        const periodEnd   = periodEndTs > 0 ? new Date(periodEndTs * 1000).toISOString() : null
 
         const plan = (sub.metadata?.plan ?? null) as string | null
 
-        const updates: Record<string, string> = {
+        const updates: Record<string, string | null> = {
           status:             mapStripeStatus(sub.status),
           current_period_end: periodEnd,
         }
