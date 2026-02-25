@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button, Card } from '@/components/ui'
 import { Header, Footer } from '@/components/layout'
+import { PricingGrid } from '@/components/PricingGrid'
 import {
   Shield,
   ArrowRight,
@@ -23,12 +24,10 @@ import {
   RefreshCw,
   Clock,
   Zap,
-  Factory,
 } from 'lucide-react'
 
 export default function HomePage() {
   const [showContact, setShowContact] = useState(false)
-  const [pricingMode, setPricingMode] = useState<'cabinet' | 'entreprise'>('cabinet')
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -437,179 +436,18 @@ export default function HomePage() {
         </section>
 
         {/* ══════════════ TARIFS ══════════════ */}
-        <section id="tarifs" className="py-24 bg-white scroll-mt-16">
+        <section id="tarifs" className="py-24 bg-gray-50 scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900">
                 Abonnement annuel &mdash; sans engagement
               </h2>
-              <p className="mt-4 text-lg text-navy-500 max-w-2xl mx-auto">
-                H&eacute;berg&eacute; en Europe, donn&eacute;es chiffr&eacute;es, RGPD compliant.
+              <p className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
+                H&eacute;berg&eacute; en Europe &middot; Donn&eacute;es chiffr&eacute;es &middot; RGPD compliant
               </p>
             </div>
 
-            {/* Toggle Cabinet / Entreprise */}
-            <div className="flex justify-center mb-10">
-              <div className="flex items-center gap-1 p-1.5 bg-white border border-navy-200 rounded-2xl shadow-sm">
-                <button
-                  onClick={() => setPricingMode('cabinet')}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    pricingMode === 'cabinet'
-                      ? 'bg-slate-900 text-white shadow-md'
-                      : 'text-navy-500 hover:text-navy-800'
-                  }`}
-                >
-                  <Building2 className="w-4 h-4" />
-                  Cabinet comptable
-                </button>
-                <button
-                  onClick={() => setPricingMode('entreprise')}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    pricingMode === 'entreprise'
-                      ? 'bg-slate-900 text-white shadow-md'
-                      : 'text-navy-500 hover:text-navy-800'
-                  }`}
-                >
-                  <Factory className="w-4 h-4" />
-                  Mon entreprise
-                </button>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto transition-opacity duration-200">
-              {/* Starter */}
-              <Card hover className="text-center relative">
-                <div className="mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-navy-100 mb-4">
-                    <Users className="w-6 h-6 text-navy-600" />
-                  </div>
-                  <h3 className="text-xl font-display font-semibold text-navy-900">Starter</h3>
-                  <p className="text-xs text-navy-400 mt-1">Ind&eacute;pendant &bull; TPE &bull; Micro-entrepreneur</p>
-                </div>
-                <div className="mb-2">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;290</span>
-                  <span className="text-lg text-navy-500 ml-1">/an</span>
-                </div>
-                <p className="text-sm text-navy-400 mb-6">soit 24&euro;/mois</p>
-                <ul className="space-y-3 text-left mb-8">
-                  {(pricingMode === 'cabinet'
-                    ? ['1 utilisateur', '300 factures / an', 'OCR factures', 'Enrichissement SIREN', 'Validation TVA (VIES)', 'Synchronisation Sage', 'Support email']
-                    : ['1 utilisateur', '300 factures / an', 'OCR factures', 'Enrichissement SIREN', 'Validation TVA (VIES)', 'Balance âgée', 'Import PDF / FEC / CSV / Excel', 'Support email']
-                  ).map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="/pricing"
-                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
-                >
-                  Choisir ce plan
-                  <ChevronRight className="w-4 h-4" />
-                </a>
-              </Card>
-
-              {/* Cabinet — recommended */}
-              <Card hover className="text-center relative border-emerald-300 shadow-lg shadow-emerald-500/10">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    POPULAIRE
-                  </span>
-                </div>
-                <div className="mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-emerald-100 mb-4">
-                    <Building2 className="w-6 h-6 text-emerald-600" />
-                  </div>
-                  <h3 className="text-xl font-display font-semibold text-navy-900">Cabinet</h3>
-                  <p className="text-xs text-navy-400 mt-1">
-                    {pricingMode === 'cabinet' ? 'Cabinet comptable \u00b7 jusqu\u2019\u00e0 10 utilisateurs' : '10 utilisateurs \u00b7 \u00c9quipe comptable interne'}
-                  </p>
-                </div>
-                <div className="mb-2">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;890</span>
-                  <span className="text-lg text-navy-500 ml-1">/an</span>
-                </div>
-                <p className="text-sm text-navy-400 mb-6">soit 74&euro;/mois</p>
-                <ul className="space-y-3 text-left mb-8">
-                  {(pricingMode === 'cabinet'
-                    ? ['10 utilisateurs', 'Factures illimitées', 'OCR + SIREN + VIES', 'Rapprochement bancaire auto', 'Règles catégorisation PCG', 'Score risque fournisseur (Pappers)', 'Alertes KPI', 'Audit IA', 'Support prioritaire']
-                    : ['10 utilisateurs', 'Factures illimitées', 'Dashboard automatisation & rollback', 'Rapprochement bancaire auto', 'Alertes KPI', 'Synchronisation Sage (Chift)', 'Support prioritaire']
-                  ).map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="/pricing"
-                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-200"
-                >
-                  Choisir ce plan
-                  <ChevronRight className="w-4 h-4" />
-                </a>
-              </Card>
-
-              {/* Pro */}
-              <Card hover className="text-center relative">
-                <div className="mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-navy-100 mb-4">
-                    <Zap className="w-6 h-6 text-navy-600" />
-                  </div>
-                  <h3 className="text-xl font-display font-semibold text-navy-900">Pro</h3>
-                  <p className="text-xs text-navy-400 mt-1">Grande entreprise &bull; ETI &bull; Multi-sites</p>
-                </div>
-                <div className="mb-2">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;1 900</span>
-                  <span className="text-lg text-navy-500 ml-1">/an</span>
-                </div>
-                <p className="text-sm text-navy-400 mb-6">soit 158&euro;/mois</p>
-                <ul className="space-y-3 text-left mb-8">
-                  {(pricingMode === 'cabinet'
-                    ? ['Utilisateurs illimités', 'Tout Cabinet inclus', 'API dédiée FinSoft', 'Intégration ERP sur-mesure', 'Support dédié 6h/jour', 'SLA garanti']
-                    : ['Utilisateurs illimités', 'Tout illimité + custom', 'API dédiée FinSoft', 'Intégration ERP sur-mesure', 'Support 6h/jour', 'SLA garanti']
-                  ).map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-navy-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                  <li className="flex items-start gap-2 text-sm">
-                    <span className="flex-shrink-0 mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-navy-100 text-navy-500 font-bold whitespace-nowrap">🔜</span>
-                    <div>
-                      <span className="text-navy-400">Cegid Loop inclus</span>
-                      <p className="text-[11px] text-navy-400 mt-0.5">
-                        Connexion OAuth2 Cegid XRP Flex &mdash; disponible T2 2026
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-                <a
-                  href="/pricing"
-                  className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
-                >
-                  Choisir ce plan
-                  <ChevronRight className="w-4 h-4" />
-                </a>
-              </Card>
-            </div>
-
-            <div className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-navy-500">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                Abonnement annuel renouvelable
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                H&eacute;berg&eacute; en Europe (RGPD)
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                Paiement s&eacute;curis&eacute; &mdash; Facture CE
-              </span>
-            </div>
+            <PricingGrid />
           </div>
         </section>
 
