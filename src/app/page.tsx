@@ -73,7 +73,7 @@ export default function HomePage() {
                   href="#tarifs"
                   className="inline-flex items-center justify-center gap-2 font-display font-medium px-6 py-3.5 text-lg rounded-xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-200"
                 >
-                  Tarifs d&egrave;s 400&euro;/an
+                  Tarifs d&egrave;s 290&euro;/an
                   <ChevronRight className="w-5 h-5" />
                 </a>
               </div>
@@ -386,7 +386,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-2 pt-4 border-t border-navy-100">
                   <RefreshCw className="w-4 h-4 text-emerald-500" />
                   <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                    Inclus d&egrave;s le plan Solo
+                    Inclus d&egrave;s le plan Starter
                   </span>
                 </div>
               </Card>
@@ -419,7 +419,7 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-start gap-2.5 text-sm text-navy-500">
                     <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy-100 flex items-center justify-center text-[10px] font-bold text-navy-500 mt-0.5">3</span>
-                    Disponible pour les plans Cabinet et Entreprise
+                    Disponible pour les plans Cabinet et Pro
                   </li>
                 </ul>
 
@@ -447,23 +447,24 @@ export default function HomePage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {/* Solo */}
+              {/* Starter */}
               <Card hover className="text-center relative">
                 <div className="mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-navy-100 mb-4">
                     <Users className="w-6 h-6 text-navy-600" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold text-navy-900">Solo</h3>
+                  <h3 className="text-xl font-display font-semibold text-navy-900">Starter</h3>
+                  <p className="text-xs text-navy-400 mt-1">Ind&eacute;pendant &bull; TPE &bull; Micro-entrepreneur</p>
                 </div>
                 <div className="mb-2">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;400</span>
+                  <span className="text-4xl font-display font-bold text-navy-900">&euro;290</span>
                   <span className="text-lg text-navy-500 ml-1">/an</span>
                 </div>
-                <p className="text-sm text-navy-400 mb-6">soit 33&euro;/mois</p>
+                <p className="text-sm text-navy-400 mb-6">soit 24&euro;/mois</p>
                 <ul className="space-y-3 text-left mb-8">
                   {[
                     '1 utilisateur',
-                    '500 factures / an',
+                    '300 factures / an',
                     'OCR + enrichissement SIREN',
                     'Validation TVA intracommunautaire (VIES)',
                     'Synchronisation Sage (via Chift)',
@@ -476,7 +477,7 @@ export default function HomePage() {
                   ))}
                 </ul>
                 <a
-                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Solo%20FinSoft%20%E2%80%94%20400%E2%82%AC%2Fan"
+                  href="/pricing"
                   className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
                 >
                   Choisir ce plan
@@ -496,15 +497,16 @@ export default function HomePage() {
                     <Building2 className="w-6 h-6 text-emerald-600" />
                   </div>
                   <h3 className="text-xl font-display font-semibold text-navy-900">Cabinet</h3>
+                  <p className="text-xs text-navy-400 mt-1">Cabinet comptable &bull; jusqu&apos;&agrave; 10 utilisateurs</p>
                 </div>
                 <div className="mb-2">
-                  <span className="text-4xl font-display font-bold text-navy-900">&euro;900</span>
+                  <span className="text-4xl font-display font-bold text-navy-900">&euro;890</span>
                   <span className="text-lg text-navy-500 ml-1">/an</span>
                 </div>
-                <p className="text-sm text-navy-400 mb-6">soit 75&euro;/mois</p>
+                <p className="text-sm text-navy-400 mb-6">soit 74&euro;/mois</p>
                 <ul className="space-y-3 text-left mb-8">
                   {[
-                    '5 utilisateurs',
+                    '10 utilisateurs',
                     'Factures illimit\u00e9es',
                     'OCR + SIREN + Score risque fournisseur (Pappers)',
                     'Rapprochement bancaire intelligent (5 crit\u00e8res)',
@@ -518,7 +520,6 @@ export default function HomePage() {
                       {f}
                     </li>
                   ))}
-                  {/* Cegid prochainement */}
                   <li className="flex items-start gap-2 text-sm">
                     <span className="flex-shrink-0 mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-navy-100 text-navy-500 font-bold whitespace-nowrap">🔜</span>
                     <div>
@@ -530,7 +531,7 @@ export default function HomePage() {
                   </li>
                 </ul>
                 <a
-                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Cabinet%20FinSoft%20%E2%80%94%20900%E2%82%AC%2Fan"
+                  href="/pricing"
                   className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-200"
                 >
                   Choisir ce plan
@@ -538,13 +539,14 @@ export default function HomePage() {
                 </a>
               </Card>
 
-              {/* Entreprise */}
+              {/* Pro */}
               <Card hover className="text-center relative">
                 <div className="mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-navy-100 mb-4">
                     <Zap className="w-6 h-6 text-navy-600" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold text-navy-900">Entreprise</h3>
+                  <h3 className="text-xl font-display font-semibold text-navy-900">Pro</h3>
+                  <p className="text-xs text-navy-400 mt-1">Grande entreprise &bull; ETI &bull; Multi-sites</p>
                 </div>
                 <div className="mb-2">
                   <span className="text-4xl font-display font-bold text-navy-900">&euro;1 900</span>
@@ -555,7 +557,7 @@ export default function HomePage() {
                   {[
                     'Utilisateurs illimit\u00e9s',
                     'Tout illimit\u00e9 + custom',
-                    'API d\u00e9di\u00e9e FinSoft',
+                    'API d\u00e9di\u00e9e FinPilote',
                     'Synchronisation Sage + Cegid (d\u00e8s disponibilit\u00e9)',
                     'Int\u00e9gration ERP sur-mesure',
                     'Support 6h/jour d\u00e9di\u00e9',
@@ -566,7 +568,6 @@ export default function HomePage() {
                       {f}
                     </li>
                   ))}
-                  {/* Cegid prochainement */}
                   <li className="flex items-start gap-2 text-sm">
                     <span className="flex-shrink-0 mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-navy-100 text-navy-500 font-bold whitespace-nowrap">🔜</span>
                     <div>
@@ -578,7 +579,7 @@ export default function HomePage() {
                   </li>
                 </ul>
                 <a
-                  href="mailto:contact@finsoft.fr?subject=Souscription%20plan%20Entreprise%20FinSoft%20%E2%80%94%201900%E2%82%AC%2Fan"
+                  href="/pricing"
                   className="w-full inline-flex items-center justify-center gap-2 font-display font-medium px-4 py-2.5 text-base rounded-xl border-2 border-navy-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 text-navy-700 transition-all duration-200"
                 >
                   Choisir ce plan
