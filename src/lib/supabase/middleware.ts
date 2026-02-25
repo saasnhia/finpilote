@@ -20,6 +20,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/health',
   '/api/contact',
   '/api/webhooks/',
+  '/api/stripe/webhook',
 ]
 
 /**
