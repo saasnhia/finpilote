@@ -1,0 +1,13 @@
+FACTURE N° FAC-2026-TEST
+Date: 15/01/2026
+Fournisseur: Test Corp SAS
+SIRET: 12345678900012
+
+Prestation: Services informatiques - Janvier 2026
+
+Montant HT: 1000.00 EUR
+TVA 20%:     200.00 EUR
+Montant TTC: 1200.00 EUR
+
+Conditions de paiement: 30 jours
+IBAN: FR76 1234 5678 9012 3456 7890 123

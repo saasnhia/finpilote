@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test --workers=2 --project=chromium --project=firefox"
   },
   "dependencies": {
     "@ai-sdk/mistral": "^3.0.20",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "wait-on": "^8.0.2",
     "@types/node": "^22.9.0",
     "@types/nodemailer": "^7.0.9",
     "@types/papaparse": "^5.5.2",

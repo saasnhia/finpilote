@@ -11,10 +11,15 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://finpilote.vercel.app',
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
+
+  // webServer is omitted — tests run against the deployed Vercel URL.
+  // In CI, wait-on handles the health check before tests start.
 
   projects: [
     // Global setup: creates auth session
