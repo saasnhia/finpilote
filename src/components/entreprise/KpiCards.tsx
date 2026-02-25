@@ -1,3 +1,4 @@
+// KpiCards v2 — fond clair emerald-50/red-50/amber-50/purple-50
 'use client'
 
 import { useEffect, useState } from 'react'

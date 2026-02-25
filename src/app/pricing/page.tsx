@@ -1,3 +1,4 @@
+// pricing v3 — fond clair + toggle Cabinet/Entreprise
 'use client'
 
 import { useEffect, useState } from 'react'
