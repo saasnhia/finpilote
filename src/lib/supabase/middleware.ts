@@ -21,6 +21,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/contact',
   '/api/webhooks/',
   '/api/stripe/webhook',
+  '/api/onboarding/',
 ]
 
 /**
