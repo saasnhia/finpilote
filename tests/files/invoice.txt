@@ -1,13 +1,14 @@
-FACTURE N° FAC-2026-TEST
+FACTURE N° FAC-TEST-001
 Date: 15/01/2026
-Fournisseur: Test Corp SAS
-SIRET: 12345678900012
+Fournisseur: OFFICE DEPOT FRANCE
+SIREN: 552 100 554
 
-Prestation: Services informatiques - Janvier 2026
+Désignation: Fournitures de bureau
+Quantité: 5
+Prix unitaire HT: 48.00 EUR
+Total HT: 240.00 EUR
+TVA 20%: 48.00 EUR
+Total TTC: 288.00 EUR
 
-Montant HT: 1000.00 EUR
-TVA 20%:     200.00 EUR
-Montant TTC: 1200.00 EUR
-
-Conditions de paiement: 30 jours
-IBAN: FR76 1234 5678 9012 3456 7890 123
+Mode de paiement: Virement bancaire
+IBAN: FR76 1450 8059 4189 7781 5826 012

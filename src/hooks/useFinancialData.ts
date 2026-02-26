@@ -25,8 +25,9 @@ export function useFinancialData(userId: string | undefined) {
 
     try {
       setLoading(true)
-      
-      // Fetch current month data
+
+      // financial_data is a legacy table — ignore if absent (PGRST116 = no rows, PGRST205 = table not found)
+      const IGNORABLE = ['PGRST116', 'PGRST205']
       const currentMonth = new Date().toISOString().slice(0, 7)
       const { data: currentData, error: currentError } = await supabase
         .from('financial_data')
@@ -35,11 +36,11 @@ export function useFinancialData(userId: string | undefined) {
         .eq('month', currentMonth)
         .single()
 
-      if (currentError && currentError.code !== 'PGRST116') {
+      if (currentError && !IGNORABLE.includes(currentError.code)) {
         throw currentError
       }
 
-      // Fetch history (last 6 months)
+      // Fetch history (last 6 months) — also optional
       const { data: historyData, error: historyError } = await supabase
         .from('financial_data')
         .select('*')
@@ -47,9 +48,9 @@ export function useFinancialData(userId: string | undefined) {
         .order('month', { ascending: true })
         .limit(6)
 
-      if (historyError) throw historyError
+      if (historyError && !IGNORABLE.includes(historyError.code)) throw historyError
 
-      // Fetch transactions
+      // Fetch transactions — must succeed independently
       const { data: transactionsData, error: transError } = await supabase
         .from('transactions')
         .select('*')
@@ -66,10 +67,9 @@ export function useFinancialData(userId: string | undefined) {
     } catch (err) {
       console.error('Error fetching data:', err)
       setError('Erreur lors du chargement des données')
-      // Fallback to demo data
+      // Fallback to demo data — but keep transactions if already fetched
       setCurrentData(generateDemoData())
       setHistory(generateDemoHistory())
-      return
     } finally {
       setLoading(false)
     }

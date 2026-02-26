@@ -248,7 +248,7 @@ async function insertData(userId: string) {
       date_emission: f.date_emission,
       date_echeance: f.date_echeance,
       statut_paiement: stat,
-      montant_paye: stat === 'payee' ? ttc : stat === 'partiellement_payee' ? ttc * 0.5 : 0,
+      montant_paye: stat === 'payee' ? ttc : 0,
       date_dernier_paiement: stat === 'payee' ? f.date_emission : null,
     }
   })
