@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+function getAnthropicClient() {
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+}
 
 interface AgentRow {
   id: string
@@ -59,6 +61,7 @@ export async function POST(request: NextRequest) {
     const logId = (logData as { id: string } | null)?.id
 
     // Call Claude
+    const anthropic = getAnthropicClient()
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 1024,

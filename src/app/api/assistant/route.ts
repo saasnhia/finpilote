@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+function getAnthropicClient() {
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+}
 
 const SYSTEM_PROMPT = `Tu es un expert-comptable français spécialisé dans le Plan Comptable Général (PCG) et le BOFIP (Bulletin Officiel des Finances Publiques).
 
@@ -68,6 +70,7 @@ export async function POST(request: NextRequest) {
     const readable = new ReadableStream({
       async start(controller) {
         try {
+          const anthropic = getAnthropicClient()
           const stream = anthropic.messages.stream({
             model: 'claude-sonnet-4-6',
             max_tokens: 2048,
