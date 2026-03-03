@@ -419,9 +419,9 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="p-3 bg-[#22D3A5]/10 border border-[#22D3A5]/20 rounded-xl text-xs text-[#22D3A5] flex items-center gap-2">
-              <Check className="w-4 h-4 flex-shrink-0" />
-              Essai gratuit de 30 jours activé — aucune carte bancaire requise
+            <div className="p-3 bg-[#22D3A5]/10 border border-[#22D3A5]/20 rounded-xl text-xs text-[#22D3A5] flex items-start gap-2">
+              <Check className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span>Paiement sécurisé Stripe · Aucun débit avant 30 jours · Résiliation possible à tout moment depuis vos paramètres.</span>
             </div>
           </div>
         )}

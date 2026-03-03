@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { stripe } from '@/lib/stripe/client'
-import { mapPlanKeyToProfilePlan } from '@/lib/stripe/plans'
+import { PLANS, mapPlanKeyToProfilePlan } from '@/lib/stripe/plans'
+import { generateTrialEndingEmail } from '@/emails/TrialEndingEmail'
 import { sendEmail } from '@/lib/email-sender'
 import type Stripe from 'stripe'
 
@@ -171,39 +172,45 @@ export async function POST(req: NextRequest) {
         if (!subRow?.user_id) break
 
         const { data: userData } = await supabaseAdmin.auth.admin.getUserById(subRow.user_id)
-        const email = userData?.user?.email
-        if (!email) break
+        const userEmail = userData?.user?.email
+        if (!userEmail) break
+
+        // Get user's first name
+        const { data: profileData } = await supabaseAdmin
+          .from('user_profiles')
+          .select('prenom')
+          .eq('id', subRow.user_id)
+          .maybeSingle()
+        const prenom = (profileData?.prenom as string) || ''
+
+        // Get plan info from metadata
+        const rawPlanId = (sub.metadata?.plan_id ?? 'STARTER') as string
+        const planConfig = PLANS[rawPlanId.toUpperCase()]
+        const planName = rawPlanId.replace(/_/g, ' ')
+        const priceMonthly = planConfig?.price_monthly ?? 0
+
+        // Trial end date
+        const trialEnd = sub.trial_end
+          ? new Date(sub.trial_end * 1000)
+          : new Date(Date.now() + 7 * 86400000)
+        const trialEndStr = trialEnd.toLocaleDateString('fr-FR', {
+          day: 'numeric', month: 'long', year: 'numeric',
+        })
+
+        const { subject, html } = generateTrialEndingEmail({
+          prenom,
+          trialEndDate: trialEndStr,
+          planName,
+          priceMonthly,
+          dashboardUrl: 'https://finpilote.vercel.app/dashboard',
+          settingsUrl: 'https://finpilote.vercel.app/dashboard/settings?tab=abonnement',
+        })
 
         await sendEmail({
           from: process.env.RESEND_FROM_EMAIL ?? 'noreply@finpilote.app',
-          to:   [email],
-          subject: 'Votre essai FinSoft se termine dans 7 jours',
-          html: `
-            <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
-              <div style="background:#22D3A5;padding:24px 32px;border-radius:12px 12px 0 0">
-                <h1 style="color:#fff;margin:0;font-size:22px">FinSoft</h1>
-              </div>
-              <div style="background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:32px">
-                <h2 style="color:#0f172a;margin-top:0">Votre essai gratuit se termine dans 7 jours</h2>
-                <p style="color:#475569;line-height:1.6">
-                  Merci d'avoir testé FinSoft ! Pour continuer à profiter de toutes les fonctionnalités,
-                  activez votre abonnement avant la fin de votre essai.
-                </p>
-                <p style="color:#475569;line-height:1.6">
-                  Aucune interruption de service — vos données et paramètres sont conservés intégralement.
-                </p>
-                <div style="text-align:center;margin:32px 0">
-                  <a href="https://finpilote.vercel.app/dashboard"
-                    style="background:#22D3A5;color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;display:inline-block">
-                    Continuer avec FinSoft →
-                  </a>
-                </div>
-                <p style="color:#94a3b8;font-size:12px;text-align:center;margin:0">
-                  Des questions ? Répondez à cet email — nous vous répondons sous 24h.
-                </p>
-              </div>
-            </div>
-          `,
+          to:   [userEmail],
+          subject,
+          html,
         }).catch(() => { /* fire-and-forget */ })
 
         break

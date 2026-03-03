@@ -49,15 +49,16 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/dashboard?welcome=true`,
       cancel_url:  `${origin}/#pricing`,
       metadata: { user_id: user.id, plan_id: planKey, billing },
       subscription_data: {
-        trial_period_days: plan.trial_days > 0 ? plan.trial_days : undefined,
+        trial_period_days: 30,
         metadata: { user_id: user.id, plan_id: planKey, billing },
       },
-      payment_method_collection: plan.trial_days > 0 ? 'if_required' : 'always',
+      payment_method_collection: 'always',
       allow_promotion_codes: true,
       locale: 'fr',
       ...customerField,
