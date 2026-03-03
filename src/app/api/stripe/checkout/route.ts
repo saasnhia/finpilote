@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         trial_period_days: plan.trial_days ?? 30,
         metadata: { user_id: user.id, plan_id: planKey, billing },
       },
-      payment_method_collection: 'always',
+      payment_method_collection: 'if_required',
       allow_promotion_codes: true,
       locale: 'fr',
       ...customerField,
