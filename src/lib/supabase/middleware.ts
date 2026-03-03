@@ -31,7 +31,7 @@ const PUBLIC_PREFIXES = [
   '/api/health',
   '/api/contact',
   '/api/webhooks/',
-  '/api/stripe/webhook',
+  '/api/stripe/',          // /api/stripe/checkout, /api/stripe/webhook, /api/stripe/portal
   '/api/onboarding/',
 ]
 
@@ -95,9 +95,32 @@ export async function updateSession(request: NextRequest) {
         .eq('id', user.id)
         .maybeSingle()
 
-      const isActive =
+      let isActive =
         profile?.subscription_status === 'active' ||
         profile?.subscription_status === 'trial'
+
+      // Fallback: si user_profiles.subscription_status est désynchronisé,
+      // vérifier directement la table subscriptions (gère le race condition
+      // webhook + données historiques jamais synchronisées)
+      if (!isActive) {
+        const { data: sub } = await supabase
+          .from('subscriptions')
+          .select('status')
+          .eq('user_id', user.id)
+          .in('status', ['active', 'trialing'])
+          .maybeSingle()
+
+        if (sub) {
+          isActive = true
+          // Auto-sync: corriger user_profiles pour les prochaines requêtes
+          const syncStatus = sub.status === 'trialing' ? 'trial' : 'active'
+          void supabase
+            .from('user_profiles')
+            .update({ subscription_status: syncStatus })
+            .eq('id', user.id)
+            .then(() => { /* fire-and-forget */ })
+        }
+      }
 
       if (!isActive) {
         const url = request.nextUrl.clone()
