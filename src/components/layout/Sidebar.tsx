@@ -121,7 +121,7 @@ const sections: SidebarSection[] = [
     label: 'Paramètres',
     icon: Settings,
     items: [
-      { name: 'Général', href: '/settings', icon: Sliders },
+      { name: 'Général', href: '/dashboard/settings', icon: Sliders },
       { name: 'Règles auto', href: '/parametres/regles', icon: Wand2 },
       { name: 'Intégrations', href: '/parametres/integrations', icon: Plug },
       { name: 'Utilisateurs', href: '/admin/users', icon: Users },
@@ -180,7 +180,10 @@ export function Sidebar() {
     return () => clearInterval(interval)
   }, [user?.id])
 
-  // Fetch profile_type to show/hide enterprise section
+  const [profileName, setProfileName] = useState<string>('')
+  const [profilePlan, setProfilePlan] = useState<string>('starter')
+
+  // Fetch profile_type, name and plan
   useEffect(() => {
     if (!user?.id) return
     const fetchProfile = async () => {
@@ -188,10 +191,12 @@ export function Sidebar() {
         const supabase = createClient()
         const { data } = await supabase
           .from('user_profiles')
-          .select('profile_type')
+          .select('profile_type, prenom, nom, plan')
           .eq('id', user.id)
           .single()
         if (data?.profile_type) setProfileType(data.profile_type as 'cabinet' | 'entreprise')
+        if (data?.prenom || data?.nom) setProfileName(`${data.prenom ?? ''} ${data.nom ?? ''}`.trim())
+        if (data?.plan) setProfilePlan(String(data.plan))
       } catch { /* silent */ }
     }
     fetchProfile()
@@ -361,6 +366,28 @@ export function Sidebar() {
             </div>
           )
         })}
+      </div>
+
+      {/* User avatar + Settings link */}
+      <div className="px-3 py-2 border-t border-white/5">
+        <Link
+          href="/dashboard/settings"
+          className={`
+            flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors group w-full
+            ${pathname.startsWith('/dashboard/settings') ? 'bg-white/5' : ''}
+          `}
+        >
+          <div className="w-7 h-7 rounded-full bg-brand-green-primary/20 flex items-center justify-center text-brand-green-action text-[11px] font-bold flex-shrink-0 uppercase">
+            {(profileName || user?.email || 'U')[0]}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-medium text-neutral-300 truncate leading-tight">
+              {profileName || user?.email?.split('@')[0] || 'Mon compte'}
+            </p>
+            <p className="text-[10px] text-neutral-500 leading-tight capitalize">{profilePlan}</p>
+          </div>
+          <Settings className="w-3.5 h-3.5 text-neutral-600 group-hover:text-neutral-400 transition-colors flex-shrink-0" />
+        </Link>
       </div>
 
       {/* Footer */}
