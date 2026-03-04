@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { ScreenshotCarousel } from '@/components/ScreenshotCarousel'
 import { PricingPlans } from '@/components/PricingPlans'
+import { ComparatifSection } from '@/components/ComparatifSection'
 
 // ─────────────────────────────────────────────────────────────
 // DATA
@@ -298,6 +299,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── COMPARATIF ── */}
+      <ComparatifSection />
 
       {/* ── PRICING — shared component ── */}
       <PricingPlans sectionId="pricing" defaultProfile={3} />
