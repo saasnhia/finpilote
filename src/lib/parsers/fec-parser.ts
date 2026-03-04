@@ -160,7 +160,7 @@ export function fecEntryToTransactionType(compteNum: string): 'expense' | 'incom
 }
 
 /**
- * Mappe un code journal FEC vers une catégorie Worthify
+ * Mappe un code journal FEC vers une catégorie Worthifast
  */
 export function mapJournalToCategory(journalCode: string): string {
   const code = journalCode.toUpperCase().trim()

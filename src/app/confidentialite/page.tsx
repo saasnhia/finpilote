@@ -13,17 +13,17 @@ export default function ConfidentialitePage() {
           <div className="prose prose-navy max-w-none space-y-8 text-navy-700">
             <section>
               <h2 className="text-xl font-display font-semibold text-navy-900 mb-3">1. Responsable du traitement</h2>
-              <p>Worthify — contact : <a href="mailto:saasnhia@gmail.com" className="text-emerald-600 hover:underline">saasnhia@gmail.com</a>, +33 6 11 75 26 32, Dijon (21000), France.</p>
+              <p>Worthifast — contact : <a href="mailto:saasnhia@gmail.com" className="text-emerald-600 hover:underline">saasnhia@gmail.com</a>, +33 6 11 75 26 32, Dijon (21000), France.</p>
             </section>
 
             <section>
               <h2 className="text-xl font-display font-semibold text-navy-900 mb-3">2. Architecture locale — pas de cloud</h2>
-              <p>Worthify est un logiciel installé <strong>sur le serveur de votre entreprise</strong>. Vos données comptables (factures, transactions bancaires, données fournisseurs) restent exclusivement sur votre infrastructure. L&apos;éditeur n&apos;y a pas accès.</p>
+              <p>Worthifast est un logiciel installé <strong>sur le serveur de votre entreprise</strong>. Vos données comptables (factures, transactions bancaires, données fournisseurs) restent exclusivement sur votre infrastructure. L&apos;éditeur n&apos;y a pas accès.</p>
             </section>
 
             <section>
               <h2 className="text-xl font-display font-semibold text-navy-900 mb-3">3. Données collectées sur ce site</h2>
-              <p>Le site vitrine (worthify.vercel.app) peut collecter :</p>
+              <p>Le site vitrine (worthifast.vercel.app) peut collecter :</p>
               <ul className="list-disc pl-6 space-y-1 mt-2">
                 <li>Nom, email, téléphone via le formulaire de demande de démo</li>
                 <li>Données de navigation anonymisées (logs Vercel)</li>

@@ -63,7 +63,7 @@ function LoginForm() {
     <div className="relative w-full max-w-md">
       {/* Logo */}
       <Link href="/" className="flex items-center justify-center mb-8">
-        <Image src="/logo-white.svg" alt="Worthify" width={180} height={44} priority className="h-10 w-auto" />
+        <Image src="/logo-white.svg" alt="Worthifast" width={180} height={44} priority className="h-10 w-auto" />
       </Link>
 
       <Card className="animate-scale-in">

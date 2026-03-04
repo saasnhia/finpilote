@@ -15,7 +15,7 @@ export default function EinvoicingPage() {
     try {
       const sampleData = {
         vendeur: {
-          nom: 'Worthify SARL',
+          nom: 'Worthifast SARL',
           siren: '123456789',
           tvaIntracom: 'FR12123456789',
           adresse: '1 rue de la Paix',
@@ -66,7 +66,7 @@ export default function EinvoicingPage() {
             </span>
           </div>
           <p className="text-sm text-navy-500">
-            Worthify génère des factures au format Factur-X (PDF/A-3 + XML EN16931),
+            Worthifast génère des factures au format Factur-X (PDF/A-3 + XML EN16931),
             obligatoire en France pour les TPE/PME à partir du 1er septembre 2026.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function EinvoicingPage() {
           <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-emerald-800">
-              ✅ Worthify est conforme e-invoicing 2026 (Factur-X / EN16931)
+              ✅ Worthifast est conforme e-invoicing 2026 (Factur-X / EN16931)
             </p>
             <p className="text-xs text-emerald-700 mt-1">
               Norme : Factur-X 1.0 · Profil EN16931 · Portail Public de Facturation (PPF) compatible

@@ -19,8 +19,8 @@ const SERVICE_ROLE_KEY =
 const ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3YXFzc3pjYWljaWtoZ21mY3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTYwNzQsImV4cCI6MjA4NTYzMjA3NH0.A9PkW91fcQl52eIiOr8LEsVc9ldG2IANray8Wjd2dII'
 
-const TEST_EMAIL = 'test-e2e@worthify.dev'
-const TEST_PASSWORD = 'TestE2E_Worthify_2026!'
+const TEST_EMAIL = 'test-e2e@worthifast.dev'
+const TEST_PASSWORD = 'TestE2E_Worthifast_2026!'
 const STATE_FILE = path.join(__dirname, '.test-state.json')
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ function log(msg: string) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('\n🌱 Worthify — Test Seed\n')
+  console.log('\n🌱 Worthifast — Test Seed\n')
   console.log('Connecting to Supabase...')
 
   // Admin client (bypasses RLS)
@@ -260,7 +260,7 @@ async function main() {
         montant_tva: 833.33,
         montant_ttc: 5000.00,
         statut: 'en_attente',
-        fichier_url: 'https://placeholder.worthify.dev/test-facture-003.pdf',
+        fichier_url: 'https://placeholder.worthifast.dev/test-facture-003.pdf',
       },
       {
         user_id: userId,
@@ -271,7 +271,7 @@ async function main() {
         montant_tva: 300.00,
         montant_ttc: 1800.00,
         statut: 'en_attente',
-        fichier_url: 'https://placeholder.worthify.dev/test-facture-004.pdf',
+        fichier_url: 'https://placeholder.worthifast.dev/test-facture-004.pdf',
       },
       {
         user_id: userId,
@@ -282,7 +282,7 @@ async function main() {
         montant_tva: 144.00,
         montant_ttc: 864.00,
         statut: 'en_attente',
-        fichier_url: 'https://placeholder.worthify.dev/test-facture-005.pdf',
+        fichier_url: 'https://placeholder.worthifast.dev/test-facture-005.pdf',
       },
     ])
     .select()

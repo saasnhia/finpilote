@@ -1,7 +1,7 @@
 import type { Transaction, FECEntry, FECGenerationResult } from '@/types'
 
 /**
- * Mapping des catégories Worthify → comptes PCG
+ * Mapping des catégories Worthifast → comptes PCG
  */
 const CATEGORY_TO_PCG: Record<string, { num: string; lib: string }> = {
   // Charges

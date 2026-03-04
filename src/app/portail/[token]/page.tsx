@@ -96,9 +96,9 @@ export default function PortailClientPublicPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <Image src="/logo-icon.svg" alt="Worthify" width={32} height={32} className="rounded-lg" />
+          <Image src="/logo-icon.svg" alt="Worthifast" width={32} height={32} className="rounded-lg" />
           <div>
-            <p className="font-semibold text-gray-900 text-sm">Worthify — Espace client</p>
+            <p className="font-semibold text-gray-900 text-sm">Worthifast — Espace client</p>
             <p className="text-xs text-gray-500">{portail?.client_nom}</p>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function PortailClientPublicPage() {
       </div>
 
       <footer className="max-w-2xl mx-auto px-4 py-6 text-center">
-        <p className="text-xs text-gray-400">Espace sécurisé Worthify · Données chiffrées · Ne partagez pas ce lien</p>
+        <p className="text-xs text-gray-400">Espace sécurisé Worthifast · Données chiffrées · Ne partagez pas ce lien</p>
       </footer>
     </div>
   )

@@ -79,7 +79,7 @@ export default function PricingPage() {
           <div className="bg-emerald-600 text-white py-3 px-4">
             <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-sm font-medium">
               <Info className="w-4 h-4 flex-shrink-0" />
-              Bienvenue sur Worthify&nbsp;! Choisissez votre plan pour accéder à votre espace.
+              Bienvenue sur Worthifast&nbsp;! Choisissez votre plan pour accéder à votre espace.
             </div>
           </div>
         )}

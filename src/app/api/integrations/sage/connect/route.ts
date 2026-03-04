@@ -12,7 +12,7 @@ interface ConnectBody {
  * Enregistre le Chift company_id pour le cabinet.
  *
  * Prérequis : le cabinet a déjà connecté son Sage 50 sur app.chift.eu
- * et obtenu son company_id. Worthify le stocke pour les syncs automatiques.
+ * et obtenu son company_id. Worthifast le stocke pour les syncs automatiques.
  */
 export async function POST(request: Request) {
   const auth = await requirePlanFeature('sage_sync')

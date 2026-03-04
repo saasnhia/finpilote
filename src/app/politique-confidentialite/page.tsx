@@ -12,7 +12,7 @@ export default function PolitiqueConfidentialitePage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">1. Responsable du traitement</h2>
-            <p>Worthify SAS — <a href="mailto:harounchikh71@gmail.com" className="text-emerald-600 hover:underline">harounchikh71@gmail.com</a></p>
+            <p>Worthifast SAS — <a href="mailto:harounchikh71@gmail.com" className="text-emerald-600 hover:underline">harounchikh71@gmail.com</a></p>
             <p className="mt-2 font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
               [À COMPLÉTER — Adresse siège social, numéro SIREN, DPO si applicable]
             </p>
@@ -20,7 +20,7 @@ export default function PolitiqueConfidentialitePage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">2. Données collectées</h2>
-            <p>Dans le cadre de l&apos;utilisation de Worthify, nous collectons les catégories de données suivantes :</p>
+            <p>Dans le cadre de l&apos;utilisation de Worthifast, nous collectons les catégories de données suivantes :</p>
             <ul className="list-disc list-inside mt-3 space-y-1">
               <li><strong>Données d&apos;identification :</strong> nom, prénom, adresse email professionnelle</li>
               <li><strong>Données comptables :</strong> factures, transactions, données bancaires (relevés importés)</li>
@@ -34,7 +34,7 @@ export default function PolitiqueConfidentialitePage() {
             <h2 className="text-lg font-bold text-slate-900 mb-3">3. Finalités du traitement</h2>
             <p>Les données sont traitées pour les finalités suivantes :</p>
             <ul className="list-disc list-inside mt-3 space-y-1">
-              <li>Fourniture et amélioration du service Worthify</li>
+              <li>Fourniture et amélioration du service Worthifast</li>
               <li>Authentification et sécurisation des accès</li>
               <li>Traitement OCR des documents comptables</li>
               <li>Envoi de notifications et relances (avec votre autorisation)</li>
@@ -96,7 +96,7 @@ export default function PolitiqueConfidentialitePage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">8. Cookies</h2>
-            <p>Worthify utilise des cookies strictement nécessaires au fonctionnement de l&apos;application (session d&apos;authentification). Aucun cookie de tracking tiers n&apos;est déposé sans votre consentement.</p>
+            <p>Worthifast utilise des cookies strictement nécessaires au fonctionnement de l&apos;application (session d&apos;authentification). Aucun cookie de tracking tiers n&apos;est déposé sans votre consentement.</p>
             <p className="mt-2 font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
               [À COMPLÉTER — Bannière cookie si analytics/tracking ajoutés ultérieurement]
             </p>
@@ -104,7 +104,7 @@ export default function PolitiqueConfidentialitePage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">9. Sous-traitants</h2>
-            <p>Worthify fait appel aux sous-traitants suivants :</p>
+            <p>Worthifast fait appel aux sous-traitants suivants :</p>
             <ul className="list-disc list-inside mt-3 space-y-1">
               <li><strong>Supabase</strong> — Base de données et authentification (hébergement France)</li>
               <li><strong>Vercel</strong> — Hébergement de l&apos;application (edge Europe)</li>

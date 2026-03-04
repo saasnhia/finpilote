@@ -12,7 +12,7 @@ export default function CGVPage() {
           <div className="prose prose-navy max-w-none space-y-8 text-navy-700">
             <section>
               <h2 className="text-xl font-display font-semibold text-navy-900 mb-3">1. Objet</h2>
-              <p>Les présentes CGV régissent la vente de licences perpétuelles du logiciel Worthify entre l&apos;éditeur et tout client professionnel (cabinet comptable, PME, indépendant).</p>
+              <p>Les présentes CGV régissent la vente de licences perpétuelles du logiciel Worthifast entre l&apos;éditeur et tout client professionnel (cabinet comptable, PME, indépendant).</p>
             </section>
 
             <section>

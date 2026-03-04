@@ -73,7 +73,7 @@ export function InsightsPanel({ userId }: InsightsPanelProps) {
   const downloadReport = (insight: Insight) => {
     const lines = [
       '══════════════════════════════════════════════',
-      '  RAPPORT D\'ANALYSE – Worthify',
+      '  RAPPORT D\'ANALYSE – Worthifast',
       '══════════════════════════════════════════════',
       '',
       `Date : ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`,
@@ -99,7 +99,7 @@ export function InsightsPanel({ userId }: InsightsPanelProps) {
         : insight.actions.map((a, i) => `${i + 1}. ${a}`)),
       '',
       '══════════════════════════════════════════════',
-      '  Généré par Worthify',
+      '  Généré par Worthifast',
       '══════════════════════════════════════════════',
     ]
 

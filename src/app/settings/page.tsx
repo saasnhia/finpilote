@@ -115,7 +115,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
-          {/* Mon profil Worthify */}
+          {/* Mon profil Worthifast */}
           <Card>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-emerald-100 rounded-lg">
@@ -123,7 +123,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <h2 className="text-lg font-display font-semibold text-navy-900">
-                  Mon profil Worthify
+                  Mon profil Worthifast
                 </h2>
                 <p className="text-sm text-navy-500">
                   Adapte votre tableau de bord à votre usage

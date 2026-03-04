@@ -69,7 +69,7 @@ export default function PrintDocumentPage({ params }: { params: Promise<{ id: st
         {/* En-tête */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px', paddingBottom: '24px', borderBottom: '2px solid #22D3A5' }}>
           <div>
-            <div style={{ fontSize: '28px', fontWeight: '800', color: '#0F172A', letterSpacing: '-0.5px' }}>Worthify</div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: '#0F172A', letterSpacing: '-0.5px' }}>Worthifast</div>
             <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>Logiciel de gestion comptable</div>
           </div>
           <div style={{ textAlign: 'right' }}>
@@ -177,7 +177,7 @@ export default function PrintDocumentPage({ params }: { params: Promise<{ id: st
 
         {/* Footer */}
         <div style={{ marginTop: '48px', paddingTop: '16px', borderTop: '1px solid #E2E8F0', textAlign: 'center', fontSize: '10px', color: '#94A3B8' }}>
-          Document généré par Worthify — Logiciel de gestion comptable & commerciale
+          Document généré par Worthifast — Logiciel de gestion comptable & commerciale
         </div>
       </div>
     </>

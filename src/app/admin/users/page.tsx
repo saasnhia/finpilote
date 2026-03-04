@@ -66,7 +66,7 @@ export default function AdminUsersPage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `worthify-sessions-${new Date().toISOString().slice(0, 10)}.csv`
+    a.download = `worthifast-sessions-${new Date().toISOString().slice(0, 10)}.csv`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -85,7 +85,7 @@ export default function AdminUsersPage() {
               Gestion des utilisateurs
             </h1>
             <p className="text-sm text-navy-500 mt-1">
-              Sessions actives sur votre licence Worthify
+              Sessions actives sur votre licence Worthifast
             </p>
           </div>
           <button

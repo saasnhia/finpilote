@@ -39,7 +39,7 @@ export function TVAAgent() {
   const exportTxt = () => {
     if (!result) return
     const content = [
-      'RÉSUMÉ CA3 — Worthify',
+      'RÉSUMÉ CA3 — Worthifast',
       '='.repeat(40),
       '',
       result.resume_ca3,
@@ -55,7 +55,7 @@ export function TVAAgent() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'resume-ca3-worthify.txt'
+    a.download = 'resume-ca3-worthifast.txt'
     a.click()
     URL.revokeObjectURL(url)
   }

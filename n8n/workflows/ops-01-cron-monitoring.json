@@ -4,20 +4,20 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "worthify/cron-rappels-termine",
+        "path": "worthifast/cron-rappels-termine",
         "responseMode": "onReceived",
         "options": {}
       },
       "id": "webhook-cron",
-      "name": "Webhook CRON Worthify",
+      "name": "Webhook CRON Worthifast",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [240, 300]
     },
     {
       "parameters": {
-        "channel": "#ops-worthify",
-        "text": "=📬 *CRON Rappels Worthify* — {{ new Date().toLocaleDateString('fr-FR') }}\n> Traité : {{ $json.body.processed }} · Envoyé : {{ $json.body.sent }} · Ignoré : {{ $json.body.skipped }} · Échec : {{ $json.body.failed }}"
+        "channel": "#ops-worthifast",
+        "text": "=📬 *CRON Rappels Worthifast* — {{ new Date().toLocaleDateString('fr-FR') }}\n> Traité : {{ $json.body.processed }} · Envoyé : {{ $json.body.sent }} · Ignoré : {{ $json.body.skipped }} · Échec : {{ $json.body.failed }}"
       },
       "id": "slack-cron",
       "name": "Slack monitoring",
@@ -27,7 +27,7 @@
     }
   ],
   "connections": {
-    "Webhook CRON Worthify": {
+    "Webhook CRON Worthifast": {
       "main": [
         [{ "node": "Slack monitoring", "type": "main", "index": 0 }]
       ]
@@ -35,6 +35,6 @@
   },
   "settings": { "executionOrder": "v1" },
   "meta": {
-    "description": "OPS FONDATEUR UNIQUEMENT. Reçoit le résumé quotidien du CRON de rappels et le poste dans Slack #ops-worthify."
+    "description": "OPS FONDATEUR UNIQUEMENT. Reçoit le résumé quotidien du CRON de rappels et le poste dans Slack #ops-worthifast."
   }
 }

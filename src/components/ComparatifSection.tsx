@@ -9,11 +9,11 @@ import { ChevronDown, Trophy, CheckCircle2, XCircle, ArrowRight } from 'lucide-r
 
 interface Category {
   name: string
-  scoreWorthify: number
+  scoreWorthifast: number
   scorePennylane: number
-  winner: 'worthify' | 'pennylane'
-  forcesWorthify: string[]
-  faiblessesWorthify?: string[]
+  winner: 'worthifast' | 'pennylane'
+  forcesWorthifast: string[]
+  faiblessesWorthifast?: string[]
   forcesPennylane?: string[]
   faiblessesPennylane: string[]
   analyse: string
@@ -26,10 +26,10 @@ interface Category {
 const CATEGORIES: Category[] = [
   {
     name: '\u{1F4CA} Dashboard & KPIs',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 7,
-    winner: 'worthify',
-    forcesWorthify: [
+    winner: 'worthifast',
+    forcesWorthifast: [
       'KPIs financiers temps réel (CA, charges, trésorerie)',
       'Alertes intelligentes cliquables',
       'Benchmarks sectoriels intégrés',
@@ -44,14 +44,14 @@ const CATEGORIES: Category[] = [
       'Alertes moins configurables',
     ],
     analyse:
-      "Worthify offre un dashboard orienté action avec alertes cliquables et benchmarks sectoriels. Pennylane propose une interface plus visuelle mais moins configurable pour les besoins spécifiques des cabinets.",
+      "Worthifast offre un dashboard orienté action avec alertes cliquables et benchmarks sectoriels. Pennylane propose une interface plus visuelle mais moins configurable pour les besoins spécifiques des cabinets.",
   },
   {
     name: '\u{1F9FE} Factures & OCR',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 9,
     winner: 'pennylane',
-    forcesWorthify: [
+    forcesWorthifast: [
       'OCR intelligent avec extraction automatique',
       'Saisie manuelle factures clients (Factur-X)',
       'Catégorisation automatique PCG',
@@ -66,18 +66,18 @@ const CATEGORIES: Category[] = [
       'Collecte automatique fournisseurs',
       'Intégration bancaire native pour le matching',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Pas de collecte automatique fournisseurs',
     ],
     analyse:
-      "Pennylane excelle sur la chaîne complète de traitement des factures. Worthify compense avec l'OCR intelligent, la facturation Factur-X native, et le lien de paiement Stripe intégré pour encaisser directement.",
+      "Pennylane excelle sur la chaîne complète de traitement des factures. Worthifast compense avec l'OCR intelligent, la facturation Factur-X native, et le lien de paiement Stripe intégré pour encaisser directement.",
   },
   {
     name: '\u{1F916} Assistant IA',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 9.5,
     winner: 'pennylane',
-    forcesWorthify: [
+    forcesWorthifast: [
       'IA spécialisée PCG, BOFIP et CGI',
       'Agents IA personnalisables par cabinet',
       'Contexte dossier injecté automatiquement (forme juridique, régime TVA)',
@@ -93,18 +93,18 @@ const CATEGORIES: Category[] = [
       'IA intégrée dans tout le workflow',
       'Suggestions contextuelles temps réel',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'IA conversationnelle moins aboutie que Pennylane',
     ],
     analyse:
-      "Worthify cible les cabinets qui veulent un outil comptable solide avec une IA réglementaire (PCG, BOFIP, CGI) contextualisée sur le dossier client. L'assistant Pennylane est plus large mais moins spécialisé sur le droit fiscal français.",
+      "Worthifast cible les cabinets qui veulent un outil comptable solide avec une IA réglementaire (PCG, BOFIP, CGI) contextualisée sur le dossier client. L'assistant Pennylane est plus large mais moins spécialisé sur le droit fiscal français.",
   },
   {
     name: '\u{1F3E6} Banque & rapprochement',
-    scoreWorthify: 6,
+    scoreWorthifast: 6,
     scorePennylane: 9,
     winner: 'pennylane',
-    forcesWorthify: [
+    forcesWorthifast: [
       'Import CSV bancaire avec détection automatique',
       'Rapprochement IA qui apprend les habitudes',
     ],
@@ -116,19 +116,19 @@ const CATEGORIES: Category[] = [
       'Catégorisation automatique avancée',
       'Synchronisation en temps réel',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Pas de connexion bancaire directe (Open Banking prévu)',
       'Import manuel CSV uniquement',
     ],
     analyse:
-      "L'intégration bancaire est le point fort historique de Pennylane. Worthify propose le rapprochement IA sur import CSV — la connexion directe via Open Banking est sur la roadmap.",
+      "L'intégration bancaire est le point fort historique de Pennylane. Worthifast propose le rapprochement IA sur import CSV — la connexion directe via Open Banking est sur la roadmap.",
   },
   {
     name: '\u{1F4D2} Production comptable',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 8,
     winner: 'pennylane',
-    forcesWorthify: [
+    forcesWorthifast: [
       'TVA CA3 automatique conforme',
       'Export FEC certifié DGFiP',
       'Module audit avec seuils de significativité',
@@ -144,18 +144,18 @@ const CATEGORIES: Category[] = [
       'Lettrage automatique avancé',
       'Gestion multi-exercice native',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Lettrage avancé prévu T3 2026',
     ],
     analyse:
-      "Worthify et Pennylane sont désormais au coude-à-coude sur la production comptable. Worthify ajoute la balance N-1 et l'export Excel, Pennylane garde l'avantage sur le lettrage et le workflow collaboratif.",
+      "Worthifast et Pennylane sont désormais au coude-à-coude sur la production comptable. Worthifast ajoute la balance N-1 et l'export Excel, Pennylane garde l'avantage sur le lettrage et le workflow collaboratif.",
   },
   {
     name: '\u{1F514} Relances & recouvrement',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 6,
-    winner: 'worthify',
-    forcesWorthify: [
+    winner: 'worthifast',
+    forcesWorthifast: [
       'Relances automatiques 3 niveaux (J+7, J+15, J+30)',
       'Email personnalisé avec Resend',
       'Configuration par client et par seuil',
@@ -168,18 +168,18 @@ const CATEGORIES: Category[] = [
     forcesPennylane: [
       'Intégration paiement en ligne',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Pas de paiement en ligne intégré (prévu)',
     ],
     analyse:
-      "Les relances automatiques multi-niveaux sont un avantage net de Worthify pour les cabinets qui gèrent le recouvrement de leurs clients. Pennylane propose le paiement en ligne mais sans automatisation des relances.",
+      "Les relances automatiques multi-niveaux sont un avantage net de Worthifast pour les cabinets qui gèrent le recouvrement de leurs clients. Pennylane propose le paiement en ligne mais sans automatisation des relances.",
   },
   {
     name: '\u{1F4B0} Tarification',
-    scoreWorthify: 9,
+    scoreWorthifast: 9,
     scorePennylane: 5,
-    winner: 'worthify',
-    forcesWorthify: [
+    winner: 'worthifast',
+    forcesWorthifast: [
       'À partir de 99\u20AC/mois — dossiers illimités dès Cabinet',
       'Pas de facturation à l\'utilisateur',
       'Essai 30 jours sans carte bancaire',
@@ -193,18 +193,18 @@ const CATEGORIES: Category[] = [
     forcesPennylane: [
       'Offre gratuite pour les indépendants',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Pas d\'offre gratuite permanente',
     ],
     analyse:
-      "C'est l'un des avantages les plus clairs de Worthify : un pricing transparent qui ne punit pas la croissance du cabinet. Pennylane facture par dossier, ce qui devient vite prohibitif pour les cabinets avec 50+ clients.",
+      "C'est l'un des avantages les plus clairs de Worthifast : un pricing transparent qui ne punit pas la croissance du cabinet. Pennylane facture par dossier, ce qui devient vite prohibitif pour les cabinets avec 50+ clients.",
   },
   {
     name: '\u{1F4C4} E-invoicing 2026',
-    scoreWorthify: 9,
+    scoreWorthifast: 9,
     scorePennylane: 6,
-    winner: 'worthify',
-    forcesWorthify: [
+    winner: 'worthifast',
+    forcesWorthifast: [
       'Factur-X 1.0 natif — norme EN16931',
       'Validation automatique des 16 champs obligatoires DGFiP',
       'Export PDF/A-3 avec XML embarqué',
@@ -217,14 +217,14 @@ const CATEGORIES: Category[] = [
       'Dépendance aux mises à jour éditeur',
     ],
     analyse:
-      "L'e-invoicing 2026 est obligatoire pour toutes les entreprises françaises. Worthify est conçu natif pour cette obligation — c'est un avantage structurel face aux solutions qui adaptent rétrospectivement leur architecture.",
+      "L'e-invoicing 2026 est obligatoire pour toutes les entreprises françaises. Worthifast est conçu natif pour cette obligation — c'est un avantage structurel face aux solutions qui adaptent rétrospectivement leur architecture.",
   },
   {
     name: '\u{1F465} Portail client',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 8,
     winner: 'pennylane',
-    forcesWorthify: [
+    forcesWorthifast: [
       'Espace partagé sécurisé par client',
       'Dépôt de documents avec 4 statuts (en attente, reçu, traité, validé)',
       'Badge "Nouveau" sur les documents récents',
@@ -239,18 +239,18 @@ const CATEGORIES: Category[] = [
       'Portail client mature avec historique complet',
       'Signature électronique intégrée',
     ],
-    faiblessesWorthify: [
+    faiblessesWorthifast: [
       'Pas encore de signature électronique intégrée',
     ],
     analyse:
-      "Worthify rattrape Pennylane sur le portail avec les statuts de documents, la messagerie intégrée et les notifications email bidirectionnelles. Pennylane conserve l'avantage de la signature électronique.",
+      "Worthifast rattrape Pennylane sur le portail avec les statuts de documents, la messagerie intégrée et les notifications email bidirectionnelles. Pennylane conserve l'avantage de la signature électronique.",
   },
   {
     name: '\u{1F504} Migration & onboarding',
-    scoreWorthify: 8,
+    scoreWorthifast: 8,
     scorePennylane: 5,
-    winner: 'worthify',
-    forcesWorthify: [
+    winner: 'worthifast',
+    forcesWorthifast: [
       'Import FEC standard',
       'Connecteur Sage via Chift',
       'Connecteur Cegid via Chift',
@@ -264,7 +264,7 @@ const CATEGORIES: Category[] = [
       'Support migration payant ou inexistant',
     ],
     analyse:
-      "C'est l'argument décisif pour les cabinets sur Sage 50 ou Cegid depuis 10 ans : Worthify propose une migration assistée avec reprise FEC, plan comptable et balances N-1. Pennylane ne cible pas ce segment.",
+      "C'est l'argument décisif pour les cabinets sur Sage 50 ou Cegid depuis 10 ans : Worthifast propose une migration assistée avec reprise FEC, plan comptable et balances N-1. Pennylane ne cible pas ce segment.",
   },
 ]
 
@@ -296,7 +296,7 @@ function ScoreBar({ score, max = 10, color }: { score: number; max?: number; col
 }
 
 function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolean; onToggle: () => void }) {
-  const isWorthifyWinner = cat.winner === 'worthify'
+  const isWorthifastWinner = cat.winner === 'worthifast'
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -305,9 +305,9 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
 
         <div className="hidden sm:flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-slate-500 w-14 text-right">Worthify</span>
+            <span className="text-xs font-medium text-slate-500 w-14 text-right">Worthifast</span>
             <div className="w-24">
-              <ScoreBar score={cat.scoreWorthify} color="bg-emerald-500" />
+              <ScoreBar score={cat.scoreWorthifast} color="bg-emerald-500" />
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -319,12 +319,12 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
         </div>
 
         <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
-          isWorthifyWinner
+          isWorthifastWinner
             ? 'bg-emerald-50 text-emerald-700'
             : 'bg-blue-50 text-blue-700'
         }`}>
           <Trophy className="w-3 h-3" />
-          {isWorthifyWinner ? 'Worthify' : 'Pennylane'}
+          {isWorthifastWinner ? 'Worthifast' : 'Pennylane'}
         </span>
 
         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -334,8 +334,8 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
       {!isOpen && (
         <div className="sm:hidden px-6 pb-4 flex gap-4">
           <div className="flex-1">
-            <span className="text-xs text-slate-500">Worthify</span>
-            <ScoreBar score={cat.scoreWorthify} color="bg-emerald-500" />
+            <span className="text-xs text-slate-500">Worthifast</span>
+            <ScoreBar score={cat.scoreWorthifast} color="bg-emerald-500" />
           </div>
           <div className="flex-1">
             <span className="text-xs text-slate-500">Pennylane</span>
@@ -347,12 +347,12 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
       {isOpen && (
         <div className="px-6 pb-6 border-t border-gray-100 pt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-            {/* Worthify */}
+            {/* Worthifast */}
             <div>
-              <h4 className="text-sm font-bold text-emerald-700 mb-3">Worthify</h4>
-              {cat.forcesWorthify.length > 0 && (
+              <h4 className="text-sm font-bold text-emerald-700 mb-3">Worthifast</h4>
+              {cat.forcesWorthifast.length > 0 && (
                 <ul className="space-y-2 mb-3">
-                  {cat.forcesWorthify.map(f => (
+                  {cat.forcesWorthifast.map(f => (
                     <li key={f} className="flex items-start gap-2 text-sm text-slate-700">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       <span>{f}</span>
@@ -360,9 +360,9 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
                   ))}
                 </ul>
               )}
-              {cat.faiblessesWorthify && cat.faiblessesWorthify.length > 0 && (
+              {cat.faiblessesWorthifast && cat.faiblessesWorthifast.length > 0 && (
                 <ul className="space-y-2">
-                  {cat.faiblessesWorthify.map(f => (
+                  {cat.faiblessesWorthifast.map(f => (
                     <li key={f} className="flex items-start gap-2 text-sm text-slate-500">
                       <XCircle className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
                       <span>{f}</span>
@@ -410,9 +410,9 @@ function CategoryCard({ cat, isOpen, onToggle }: { cat: Category; isOpen: boolea
 export function ComparatifSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
-  const avgWorthify = +(CATEGORIES.reduce((s, c) => s + c.scoreWorthify, 0) / CATEGORIES.length).toFixed(1)
+  const avgWorthifast = +(CATEGORIES.reduce((s, c) => s + c.scoreWorthifast, 0) / CATEGORIES.length).toFixed(1)
   const avgPennylane = +(CATEGORIES.reduce((s, c) => s + c.scorePennylane, 0) / CATEGORIES.length).toFixed(1)
-  const winsWorthify = CATEGORIES.filter(c => c.winner === 'worthify').length
+  const winsWorthifast = CATEGORIES.filter(c => c.winner === 'worthifast').length
   const winsPennylane = CATEGORIES.filter(c => c.winner === 'pennylane').length
 
   return (
@@ -421,10 +421,10 @@ export function ComparatifSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-slate-900 mb-4">
-            Worthify vs Pennylane — Comparatif honnête
+            Worthifast vs Pennylane — Comparatif honnête
           </h2>
           <p className="text-slate-500 max-w-2xl mx-auto">
-            10 catégories analysées objectivement. Nous montrons où Worthify excelle et où Pennylane a l&apos;avantage.
+            10 catégories analysées objectivement. Nous montrons où Worthifast excelle et où Pennylane a l&apos;avantage.
           </p>
         </div>
 
@@ -434,9 +434,9 @@ export function ComparatifSection() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 mb-3">
               <span className="font-extrabold text-lg">W</span>
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Worthify</h3>
-            <p className="text-3xl font-extrabold text-emerald-600 mt-2">{avgWorthify}<span className="text-base text-slate-400">/10</span></p>
-            <p className="text-sm text-slate-500 mt-1">{winsWorthify} victoire{winsWorthify > 1 ? 's' : ''} sur {CATEGORIES.length}</p>
+            <h3 className="text-lg font-bold text-slate-900">Worthifast</h3>
+            <p className="text-3xl font-extrabold text-emerald-600 mt-2">{avgWorthifast}<span className="text-base text-slate-400">/10</span></p>
+            <p className="text-sm text-slate-500 mt-1">{winsWorthifast} victoire{winsWorthifast > 1 ? 's' : ''} sur {CATEGORIES.length}</p>
           </div>
           <div className="bg-white border border-blue-200 rounded-2xl p-6 text-center shadow-sm">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 mb-3">
@@ -462,7 +462,7 @@ export function ComparatifSection() {
 
         {/* Recommendations roadmap */}
         <div className="mt-10 bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-          <h3 className="text-lg font-bold text-slate-900 mb-4">Roadmap Worthify — Améliorations prévues</h3>
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Roadmap Worthifast — Améliorations prévues</h3>
           <ul className="space-y-3">
             {RECOMMENDATIONS.map(r => (
               <li key={r} className="flex items-start gap-3 text-sm text-slate-600">

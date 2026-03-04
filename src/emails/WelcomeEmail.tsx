@@ -1,5 +1,5 @@
 /**
- * WelcomeEmail — Générateur d'email de bienvenue Worthify
+ * WelcomeEmail — Générateur d'email de bienvenue Worthifast
  * Retourne { subject, html, text } — pas de dépendance @react-email
  */
 
@@ -16,9 +16,9 @@ interface WelcomeEmailResult {
 
 export function generateWelcomeEmail(params: WelcomeEmailParams): WelcomeEmailResult {
   const name = params.prenom || params.email.split('@')[0]
-  const dashboardUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+  const dashboardUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
 
-  const subject = `Bienvenue sur Worthify 🎉 — votre essai de 30 jours commence`
+  const subject = `Bienvenue sur Worthifast 🎉 — votre essai de 30 jours commence`
 
   const html = `
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ export function generateWelcomeEmail(params: WelcomeEmailParams): WelcomeEmailRe
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bienvenue sur Worthify</title>
+  <title>Bienvenue sur Worthifast</title>
 </head>
 <body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <div style="max-width:560px;margin:40px auto;padding:0 16px">
@@ -49,7 +49,7 @@ export function generateWelcomeEmail(params: WelcomeEmailParams): WelcomeEmailRe
         Bienvenue, ${name} ! 👋
       </h1>
       <p style="color:#475569;font-size:15px;line-height:1.6;margin:0 0 24px">
-        Votre compte Worthify est prêt. Vous disposez de <strong>30 jours d'essai gratuit</strong>
+        Votre compte Worthifast est prêt. Vous disposez de <strong>30 jours d'essai gratuit</strong>
         pour découvrir toutes les fonctionnalités.
       </p>
 
@@ -122,14 +122,14 @@ export function generateWelcomeEmail(params: WelcomeEmailParams): WelcomeEmailRe
         Une question ? Répondez directement à cet email.<br />
         Notre équipe vous répond sous 24h (jours ouvrés).<br />
         <br />
-        <span style="font-size:11px">Worthify — Comptabilité intelligente hébergée en France 🇫🇷</span>
+        <span style="font-size:11px">Worthifast — Comptabilité intelligente hébergée en France 🇫🇷</span>
       </p>
     </div>
 
     <!-- Footer -->
     <p style="color:#cbd5e1;font-size:11px;text-align:center;margin:16px 0 40px">
-      Vous recevez cet email car vous venez de créer un compte Worthify avec ${params.email}.<br />
-      © ${new Date().getFullYear()} Worthify — IAE Dijon, Dijon, France
+      Vous recevez cet email car vous venez de créer un compte Worthifast avec ${params.email}.<br />
+      © ${new Date().getFullYear()} Worthifast — IAE Dijon, Dijon, France
     </p>
   </div>
 </body>
@@ -137,7 +137,7 @@ export function generateWelcomeEmail(params: WelcomeEmailParams): WelcomeEmailRe
   `.trim()
 
   const text = `
-Bienvenue sur Worthify, ${name} !
+Bienvenue sur Worthifast, ${name} !
 
 Votre compte est prêt. Vous disposez de 30 jours d'essai gratuit.
 
@@ -150,7 +150,7 @@ Accédez à votre tableau de bord : ${dashboardUrl}/dashboard
 
 Des questions ? Répondez à cet email — nous répondons sous 24h.
 
-© ${new Date().getFullYear()} Worthify — Hébergé en France 🇫🇷
+© ${new Date().getFullYear()} Worthifast — Hébergé en France 🇫🇷
   `.trim()
 
   return { subject, html, text }

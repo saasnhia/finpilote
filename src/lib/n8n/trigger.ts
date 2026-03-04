@@ -1,9 +1,9 @@
 /**
- * Worthify → n8n : Déclencheurs sortants OPS FONDATEUR UNIQUEMENT
+ * Worthifast → n8n : Déclencheurs sortants OPS FONDATEUR UNIQUEMENT
  *
  * Ces triggers servent exclusivement au monitoring du fondateur.
  * Les automatisations cabinet (matching, alertes, rappels) sont
- * implémentées nativement dans Worthify — elles ne passent PAS par n8n.
+ * implémentées nativement dans Worthifast — elles ne passent PAS par n8n.
  *
  * Fire-and-forget : timeout 5s, jamais bloquant pour la route appelante.
  */
@@ -16,7 +16,7 @@ async function fireN8nWebhook(path: string, payload: Record<string, unknown>): P
 
   const url = `${N8N_URL}/webhook/${path}`
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-  if (N8N_SECRET) headers['X-Worthify-Secret'] = N8N_SECRET
+  if (N8N_SECRET) headers['X-Worthifast-Secret'] = N8N_SECRET
 
   try {
     const res = await fetch(url, {
@@ -43,7 +43,7 @@ export async function triggerCronRappelsTermine(stats: {
   skipped: number
   failed: number
 }): Promise<void> {
-  await fireN8nWebhook('worthify/cron-rappels-termine', {
+  await fireN8nWebhook('worthifast/cron-rappels-termine', {
     event: 'cron_rappels_termine',
     timestamp: new Date().toISOString(),
     ...stats,
@@ -60,7 +60,7 @@ export async function triggerNouveauCabinet(data: {
   siren?: string
   user_id: string
 }): Promise<void> {
-  await fireN8nWebhook('worthify/nouveau-cabinet', {
+  await fireN8nWebhook('worthifast/nouveau-cabinet', {
     event: 'nouveau_cabinet',
     timestamp: new Date().toISOString(),
     ...data,
@@ -77,7 +77,7 @@ export async function triggerErreurCritique(data: {
   stack?: string
   user_id?: string
 }): Promise<void> {
-  await fireN8nWebhook('worthify/erreur-critique', {
+  await fireN8nWebhook('worthifast/erreur-critique', {
     event: 'erreur_critique',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'unknown',
@@ -95,7 +95,7 @@ export async function triggerNouveauLead(data: {
   message?: string
   source?: string
 }): Promise<void> {
-  await fireN8nWebhook('worthify/nouveau-lead', {
+  await fireN8nWebhook('worthifast/nouveau-lead', {
     event: 'nouveau_lead',
     timestamp: new Date().toISOString(),
     ...data,

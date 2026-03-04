@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       email: user.email,
     })
     void sendEmail({
-      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
       to: [user.email],
       subject,
       html,

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Palette Worthify - Finance moderne et accessible
+        // Palette Worthifast - Finance moderne et accessible
         navy: {
           50: '#f0f4f8',
           100: '#d9e2ec',

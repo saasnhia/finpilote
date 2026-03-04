@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { Shield, CreditCard, Headphones, ArrowRight } from 'lucide-react'
 
 export const metadata = {
-  title: 'A propos | Worthify',
-  description: "L'equipe Worthify - Un projet ne a l'IAE Dijon pour moderniser la comptabilite des cabinets francais.",
+  title: 'A propos | Worthifast',
+  description: "L'equipe Worthifast - Un projet ne a l'IAE Dijon pour moderniser la comptabilite des cabinets francais.",
 }
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="Worthify" width={140} height={34} className="h-8 w-auto" />
+            <Image src="/logo.svg" alt="Worthifast" width={140} height={34} className="h-8 w-auto" />
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/" className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">
@@ -31,7 +31,7 @@ export default function AboutPage() {
       <section className="pt-24 pb-16 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">
-            L&apos;equipe Worthify
+            L&apos;equipe Worthifast
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
             Un projet ne a l&apos;IAE Dijon, construit pour moderniser
@@ -45,10 +45,10 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Notre histoire</h2>
           <p className="text-slate-600 leading-relaxed">
-            Worthify est ne d&apos;un constat simple : les cabinets comptables francais
+            Worthifast est ne d&apos;un constat simple : les cabinets comptables francais
             meritent un outil moderne, abordable et pense pour leur realite quotidienne.
             Developpe par des etudiants en Finance de l&apos;IAE Dijon avec le soutien
-            du corps enseignant, Worthify integre les retours de praticiens du metier
+            du corps enseignant, Worthifast integre les retours de praticiens du metier
             depuis sa conception.
           </p>
         </div>
@@ -60,9 +60,9 @@ export default function AboutPage() {
           <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8">
             <h3 className="text-lg font-bold text-slate-900 mb-3">Structure &amp; transparence</h3>
             <p className="text-slate-600 text-sm leading-relaxed">
-              Worthify est un projet dont le statut juridique est en cours de definition.
+              Worthifast est un projet dont le statut juridique est en cours de definition.
               Fonde en 2026 par des etudiants de l&apos;IAE Dijon — Ecole Universitaire
-              de Management. Contact : contact@worthify.app
+              de Management. Contact : contact@worthifast.app
             </p>
           </div>
         </div>
@@ -113,11 +113,11 @@ export default function AboutPage() {
       <section className="py-16 px-4 bg-slate-50">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-slate-600 mb-6 leading-relaxed">
-            Vous etes expert-comptable et voulez tester Worthify en avant-premiere ?
+            Vous etes expert-comptable et voulez tester Worthifast en avant-premiere ?
             Contactez-nous directement.
           </p>
           <a
-            href="mailto:contact@worthify.app"
+            href="mailto:contact@worthifast.app"
             className="inline-flex items-center gap-2 px-6 py-3.5 bg-emerald-500 text-white font-semibold rounded-xl hover:bg-emerald-600 transition-colors"
           >
             Nous ecrire
@@ -128,7 +128,7 @@ export default function AboutPage() {
 
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-400 py-8 px-4 text-center text-xs">
-        <p>&copy; 2026 Worthify &middot; Concu a l&apos;IAE Dijon &middot; contact@worthify.app</p>
+        <p>&copy; 2026 Worthifast &middot; Concu a l&apos;IAE Dijon &middot; contact@worthifast.app</p>
       </footer>
     </div>
   )

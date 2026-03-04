@@ -451,7 +451,7 @@ export default function ReglesPage() {
             <Wand2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-slate-400 space-y-1">
               <p className="text-white font-medium">Comment fonctionnent les règles ?</p>
-              <p>À chaque import de facture, Worthify compare le nom du fournisseur à vos règles actives. Si une correspondance est trouvée avec une confiance ≥ 90%, le compte PCG est appliqué automatiquement.</p>
+              <p>À chaque import de facture, Worthifast compare le nom du fournisseur à vos règles actives. Si une correspondance est trouvée avec une confiance ≥ 90%, le compte PCG est appliqué automatiquement.</p>
               <p>Le bouton <strong className="text-white">"Apprendre des factures"</strong> scanne vos factures déjà catégorisées pour créer ou renforcer les règles existantes.</p>
             </div>
           </div>

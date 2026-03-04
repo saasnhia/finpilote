@@ -1,4 +1,4 @@
-// Types pour Worthify
+// Types pour Worthifast
 
 export interface User {
   id: string

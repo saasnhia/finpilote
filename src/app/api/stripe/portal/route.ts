@@ -25,7 +25,7 @@ export async function POST() {
     )
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
 
   const session = await stripe.billingPortal.sessions.create({
     customer: sub.stripe_customer_id,

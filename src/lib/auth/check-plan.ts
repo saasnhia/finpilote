@@ -100,7 +100,7 @@ export function getFeatureLabel(feature: Feature): string {
     alerts:                 'Alertes & notifications',
     audit_ia:               'Audit IA',
     cegid_loop:             'Cegid Loop',
-    api_dedicee:            'API dédiée Worthify',
+    api_dedicee:            'API dédiée Worthifast',
     custom_api:             'API personnalisée',
     erp_custom:             'Intégration ERP sur-mesure',
     support_dedie:          'Support dédié 6h/jour',

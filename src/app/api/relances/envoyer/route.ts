@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const contenu = await genererEmailRelance(facture, niveau, config.ton, config.signature)
 
     const emailResult = await sendEmail({
-      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
       to: [facture.client_email],
       subject: `Relance facture ${facture.numero_facture} — Niveau ${niveau}`,
       html: `<pre style="font-family:Arial;white-space:pre-wrap;">${escapeHtml(contenu)}</pre>`,

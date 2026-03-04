@@ -8,7 +8,7 @@ test.describe('Pricing — page publique', () => {
 
   test('page /pricing se charge', async ({ page }) => {
     await page.goto('/pricing')
-    await expect(page).toHaveTitle(/tarif|prix|plan|Worthify/i, { timeout: 15_000 })
+    await expect(page).toHaveTitle(/tarif|prix|plan|Worthifast/i, { timeout: 15_000 })
   })
 
   test('les profils de plans sont affichés', async ({ page }) => {

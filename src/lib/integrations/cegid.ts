@@ -6,7 +6,7 @@
  * Env vars required:
  *   CEGID_CLIENT_ID=<your-cegid-app-client-id>
  *   CEGID_CLIENT_SECRET=<your-cegid-app-client-secret>
- *   CEGID_REDIRECT_URI=https://worthify.vercel.app/api/integrations/cegid/callback
+ *   CEGID_REDIRECT_URI=https://worthifast.vercel.app/api/integrations/cegid/callback
  */
 
 export const CEGID_CONFIG = {

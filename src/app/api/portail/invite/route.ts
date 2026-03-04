@@ -29,18 +29,18 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
     const portalUrl = `${baseUrl}/portail/${portail.token}`
 
     // Send invitation email (skip if link-only mode)
     if (!skip_email) {
       await sendEmail({
-        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
         to: [client_email.trim()],
-        subject: `Votre espace collaboratif Worthify — ${escapeHtml(client_nom)}`,
+        subject: `Votre espace collaboratif Worthifast — ${escapeHtml(client_nom)}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px;">
-            <h2 style="color: #22D3A5;">Bienvenue sur votre espace client Worthify</h2>
+            <h2 style="color: #22D3A5;">Bienvenue sur votre espace client Worthifast</h2>
             <p>Bonjour <strong>${escapeHtml(client_nom)}</strong>,</p>
             <p>Votre cabinet comptable vous a invité à utiliser votre espace client sécurisé pour :</p>
             <ul>

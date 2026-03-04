@@ -54,7 +54,7 @@ export default function PortailDashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          client_email: inviteMode === 'email' ? invitEmail : `portail+${Date.now()}@worthify.app`,
+          client_email: inviteMode === 'email' ? invitEmail : `portail+${Date.now()}@worthifast.app`,
           client_nom: invitNom,
           skip_email: inviteMode === 'link',
         }),

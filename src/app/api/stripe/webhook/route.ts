@@ -224,7 +224,7 @@ export async function POST(req: NextRequest) {
           day: 'numeric', month: 'long', year: 'numeric',
         })
 
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
         const { subject, html } = generateTrialEndingEmail({
           prenom,
           trialEndDate: trialEndStr,
@@ -235,7 +235,7 @@ export async function POST(req: NextRequest) {
         })
 
         await sendEmail({
-          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
           to:   [userEmail],
           subject,
           html,

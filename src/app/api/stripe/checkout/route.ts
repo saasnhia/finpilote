@@ -55,14 +55,14 @@ export async function POST(req: NextRequest) {
       .maybeSingle()
 
     const VALID_ORIGINS = [
-      'https://worthify.vercel.app',
+      'https://worthifast.vercel.app',
       process.env.NEXT_PUBLIC_APP_URL,
       'http://localhost:3000',
     ].filter(Boolean)
     const clientOrigin = req.headers.get('origin')
     const origin = clientOrigin && VALID_ORIGINS.includes(clientOrigin)
       ? clientOrigin
-      : 'https://worthify.vercel.app'
+      : 'https://worthifast.vercel.app'
 
     const customerField: Pick<Stripe.Checkout.SessionCreateParams, 'customer' | 'customer_email'> =
       existing?.stripe_customer_id

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export const metadata = {
-  title: 'Politique de Confidentialite | Worthify',
+  title: 'Politique de Confidentialite | Worthifast',
 }
 
 export default function PolitiqueConfidentialitePage() {
@@ -11,7 +11,7 @@ export default function PolitiqueConfidentialitePage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="Worthify" width={140} height={34} className="h-8 w-auto" />
+            <Image src="/logo.svg" alt="Worthifast" width={140} height={34} className="h-8 w-auto" />
           </Link>
         </div>
       </nav>
@@ -22,7 +22,7 @@ export default function PolitiqueConfidentialitePage() {
         <div className="space-y-8 text-sm text-slate-600 leading-relaxed">
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">1. Responsable du traitement</h2>
-            <p>Worthify — contact@worthify.app</p>
+            <p>Worthifast — contact@worthifast.app</p>
           </section>
 
           <section>
@@ -75,14 +75,14 @@ export default function PolitiqueConfidentialitePage() {
             <p>
               Conformement au RGPD, vous disposez des droits d&apos;acces, rectification,
               suppression, portabilite et opposition.
-              Exercez vos droits : contact@worthify.app
+              Exercez vos droits : contact@worthifast.app
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">8. Cookies</h2>
             <p>
-              Worthify utilise uniquement des cookies strictement necessaires
+              Worthifast utilise uniquement des cookies strictement necessaires
               au fonctionnement du service (session, authentification).
               Aucun cookie publicitaire ou de tracking tiers.
             </p>

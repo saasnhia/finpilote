@@ -141,6 +141,6 @@
 
 ## Connexion de démo
 
-- **URL** : https://worthify.vercel.app
+- **URL** : https://worthifast.vercel.app
 - **Email** : harounchikh71@gmail.com
 - **Mot de passe** : `Demo2026!`

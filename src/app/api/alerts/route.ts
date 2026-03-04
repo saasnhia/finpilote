@@ -295,8 +295,8 @@ export async function POST(req: NextRequest) {
       const email = authData?.user?.email
 
       if (email) {
-        const nomEntreprise = profile?.company_name || profile?.full_name || 'Worthify'
-        const fromEmail = process.env.RESEND_FROM_EMAIL || 'alertes@worthify.local'
+        const nomEntreprise = profile?.company_name || profile?.full_name || 'Worthifast'
+        const fromEmail = process.env.RESEND_FROM_EMAIL || 'alertes@worthifast.local'
         const alertLines = criticalAlerts
           .map(a => `<li><strong>${a.titre}</strong> — ${a.description}</li>`)
           .join('')
@@ -309,7 +309,7 @@ export async function POST(req: NextRequest) {
             <h2 style="color:#dc2626">Alertes critiques détectées</h2>
             <p>${criticalAlerts.length} alerte(s) requièrent votre attention immédiate :</p>
             <ul>${alertLines}</ul>
-            <p><a href="https://worthify.vercel.app/dashboard" style="color:#22D3A5">
+            <p><a href="https://worthifast.vercel.app/dashboard" style="color:#22D3A5">
               Accéder au tableau de bord →
             </a></p>
           `,

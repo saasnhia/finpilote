@@ -150,7 +150,7 @@ export default function IntegrationsPage() {
             Connexions logiciels
           </h1>
           <p className="text-sm text-navy-500 mt-1">
-            Connectez Worthify à votre logiciel comptable pour synchroniser automatiquement vos données chaque nuit à 2h00.
+            Connectez Worthifast à votre logiciel comptable pour synchroniser automatiquement vos données chaque nuit à 2h00.
           </p>
         </div>
 
@@ -176,7 +176,7 @@ export default function IntegrationsPage() {
             <ul className="mt-1 space-y-0.5 font-mono text-xs">
               <li>INTEGRATION_ENCRYPTION_KEY=&lt;64 hex chars&gt;</li>
               <li>CEGID_CLIENT_ID / CEGID_CLIENT_SECRET</li>
-              <li>CEGID_REDIRECT_URI=https://worthify.vercel.app/api/integrations/cegid/callback</li>
+              <li>CEGID_REDIRECT_URI=https://worthifast.vercel.app/api/integrations/cegid/callback</li>
               <li>CHIFT_API_KEY / CHIFT_CONSUMER_ID</li>
               <li>SUPABASE_SERVICE_ROLE_KEY</li>
             </ul>

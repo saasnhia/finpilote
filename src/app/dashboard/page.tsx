@@ -492,7 +492,7 @@ if (!authLoading && initialized && user && !isActive) {
 
         {/* Bandeau e-invoicing */}
         <div className="mb-4 flex items-center gap-3 px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-sm">
-          <span className="text-emerald-700 font-medium">✅ Worthify est conforme e-invoicing 2026 (Factur-X / EN16931)</span>
+          <span className="text-emerald-700 font-medium">✅ Worthifast est conforme e-invoicing 2026 (Factur-X / EN16931)</span>
           <Link href="/comptabilite/factures/einvoicing" className="ml-auto flex-shrink-0 text-emerald-700 hover:underline text-xs font-medium">
             En savoir plus →
           </Link>

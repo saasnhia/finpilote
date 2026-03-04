@@ -7,7 +7,7 @@ import { TEST_USER } from './fixtures/auth'
 test.describe('Auth — Inscription', () => {
   test('page signup s\'affiche', async ({ page }) => {
     await page.goto('/signup')
-    // Worthify is invite-only: /signup shows "Accès sur demande" page
+    // Worthifast is invite-only: /signup shows "Accès sur demande" page
     await expect(page.locator('body')).toBeVisible({ timeout: 10_000 })
     await expect(page).not.toHaveURL(/\/login/)
   })

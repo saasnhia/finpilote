@@ -4,7 +4,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "worthify/erreur-critique",
+        "path": "worthifast/erreur-critique",
         "responseMode": "onReceived",
         "options": {}
       },
@@ -16,8 +16,8 @@
     },
     {
       "parameters": {
-        "channel": "#ops-worthify",
-        "text": "=🚨 *Erreur critique Worthify* — {{ $json.body.environment }}\n> *Endpoint* : {{ $json.body.endpoint }}\n> *Message* : {{ $json.body.message }}\n> *User* : {{ $json.body.user_id || 'N/A' }}\n> *Timestamp* : {{ $json.body.timestamp }}\n{{ $json.body.stack ? '```' + $json.body.stack.slice(0, 300) + '```' : '' }}"
+        "channel": "#ops-worthifast",
+        "text": "=🚨 *Erreur critique Worthifast* — {{ $json.body.environment }}\n> *Endpoint* : {{ $json.body.endpoint }}\n> *Message* : {{ $json.body.message }}\n> *User* : {{ $json.body.user_id || 'N/A' }}\n> *Timestamp* : {{ $json.body.timestamp }}\n{{ $json.body.stack ? '```' + $json.body.stack.slice(0, 300) + '```' : '' }}"
       },
       "id": "slack-error",
       "name": "Slack alerte critique",

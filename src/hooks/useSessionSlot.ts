@@ -5,7 +5,7 @@ import { useAuth } from './useAuth'
 import toast from 'react-hot-toast'
 
 const PING_INTERVAL_MS = 10 * 60 * 1000  // 10 minutes
-const SESSION_KEY = 'worthify_session_token'
+const SESSION_KEY = 'worthifast_session_token'
 
 interface SlotState {
   allowed: boolean

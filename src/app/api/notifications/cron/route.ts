@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
       })
 
       // Envoyer l'email (Resend ou SMTP selon config)
-      const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@worthify.local'
+      const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@worthifast.local'
       const emailResult = await sendEmail({
         from: `${nomEntreprise} <${fromEmail}>`,
         to: [client.email],

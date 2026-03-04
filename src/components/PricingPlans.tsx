@@ -367,7 +367,7 @@ function PlanCard({ plan, annual, onSubscribe, subscribing }: PlanCardProps) {
   const useButton = !!onSubscribe && !!plan.planKey && !plan.isContact
 
   const href = plan.isContact
-    ? 'mailto:contact@worthify.app'
+    ? 'mailto:contact@worthifast.app'
     : plan.planKey
       ? `/signup?plan=${plan.planKey}&billing=${billing}`
       : '/signup'

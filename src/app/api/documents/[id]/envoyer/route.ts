@@ -32,7 +32,7 @@ export async function POST(
     if (!document.client_email) return NextResponse.json({ error: 'Pas d\'email pour ce client' }, { status: 400 })
 
     const typeLabel = TYPE_LABELS[document.type] ?? document.type
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
 
     const { message: customMessage } = await req.json().catch(() => ({ message: null }))
 
@@ -52,7 +52,7 @@ export async function POST(
     `
 
     const emailResult = await sendEmail({
-      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
       to: [document.client_email],
       subject: `${typeLabel} ${document.numero ?? ''} — ${document.total_ttc.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €`,
       html: emailHtml,

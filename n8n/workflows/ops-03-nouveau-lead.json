@@ -4,7 +4,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "worthify/nouveau-lead",
+        "path": "worthifast/nouveau-lead",
         "responseMode": "onReceived",
         "options": {}
       },
@@ -16,8 +16,8 @@
     },
     {
       "parameters": {
-        "channel": "#leads-worthify",
-        "text": "=📥 *Nouveau lead Worthify* — {{ $json.body.source || 'site' }}\n> *Nom* : {{ $json.body.nom }}\n> *Email* : {{ $json.body.email }}\n> *Message* : {{ $json.body.message || '(aucun message)' }}"
+        "channel": "#leads-worthifast",
+        "text": "=📥 *Nouveau lead Worthifast* — {{ $json.body.source || 'site' }}\n> *Nom* : {{ $json.body.nom }}\n> *Email* : {{ $json.body.email }}\n> *Message* : {{ $json.body.message || '(aucun message)' }}"
       },
       "id": "slack-lead",
       "name": "Slack nouveau lead",
@@ -35,6 +35,6 @@
   },
   "settings": { "executionOrder": "v1" },
   "meta": {
-    "description": "OPS FONDATEUR UNIQUEMENT. Notifie le fondateur dans Slack #leads-worthify quand un lead remplit le formulaire de contact (POST /api/contact)."
+    "description": "OPS FONDATEUR UNIQUEMENT. Notifie le fondateur dans Slack #leads-worthifast quand un lead remplit le formulaire de contact (POST /api/contact)."
   }
 }

@@ -27,7 +27,7 @@ const DossierContext = createContext<DossierContextValue>({
   loading: false,
 })
 
-const STORAGE_KEY = 'worthify_active_dossier_id'
+const STORAGE_KEY = 'worthifast_active_dossier_id'
 
 export function DossierProvider({ children }: { children: ReactNode }) {
   const [dossiers, setDossiers] = useState<Dossier[]>([])

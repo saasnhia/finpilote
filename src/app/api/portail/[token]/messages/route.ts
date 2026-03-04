@@ -67,7 +67,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
         .catch(() => ({ data: null }))
       if (cabinetUser?.user?.email) {
         void sendEmail({
-          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
           to: [cabinetUser.user.email],
           subject: `Nouveau message de ${escapeHtml(portail.client_nom)}`,
           html: `<p><strong>${escapeHtml(portail.client_nom)}</strong> vous a envoyé un message :</p><blockquote>${escapeHtml(message)}</blockquote>`,
@@ -76,11 +76,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     } else {
       // Notify client
       void sendEmail({
-        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
         to: [portail.client_email],
         subject: 'Nouveau message de votre cabinet',
         html: `<p>Votre cabinet vous a envoyé un message :</p><blockquote>${escapeHtml(message)}</blockquote>
-               <a href="${process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'}/portail/${token}">Répondre</a>`,
+               <a href="${process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'}/portail/${token}">Répondre</a>`,
       }).catch(() => {/* non-critical */})
     }
 

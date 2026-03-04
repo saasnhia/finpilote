@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
         // Email client
         if (abonnement.client_email) {
           await sendEmail({
-            from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+            from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
             to: [abonnement.client_email],
             subject: `Facture ${numero} — ${totaux.totalTTC.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €`,
             html: `<p>Votre facture <strong>${numero}</strong> d'un montant de <strong>${totaux.totalTTC.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</strong> a été générée.</p>`,

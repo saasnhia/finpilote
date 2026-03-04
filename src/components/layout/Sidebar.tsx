@@ -395,7 +395,7 @@ export function Sidebar() {
       <div className="px-3 py-3 border-t border-white/5 flex flex-col items-center gap-2">
         <UserCountBadge />
         <PlanBadge />
-        <Image src="/logo-white.svg" alt="Worthify" width={100} height={24} className="h-5 w-auto opacity-40" />
+        <Image src="/logo-white.svg" alt="Worthifast" width={100} height={24} className="h-5 w-auto opacity-40" />
         <p className="text-[10px] text-neutral-600 text-center">
           v2.1
         </p>

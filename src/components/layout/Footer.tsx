@@ -9,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/logo-white.svg" alt="Worthify" width={140} height={34} className="h-8 w-auto" />
+              <Image src="/logo-white.svg" alt="Worthifast" width={140} height={34} className="h-8 w-auto" />
             </Link>
             <p className="text-sm text-navy-400 max-w-sm">
               La solution simple et efficace pour piloter la rentabilité de votre entreprise. 
@@ -68,7 +68,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-navy-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-navy-500">
-            © {new Date().getFullYear()} Worthify. Tous droits réservés.
+            © {new Date().getFullYear()} Worthifast. Tous droits réservés.
           </p>
           <p className="text-sm text-navy-500">
             Fait avec ❤️ à Dijon

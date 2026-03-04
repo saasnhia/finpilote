@@ -1,10 +1,10 @@
-# Worthify 🚀
+# Worthifast 🚀
 
 **La solution simple pour piloter la rentabilité de votre entreprise.**
 
-Worthify est une application SaaS conçue pour remplacer Excel chez les comptables et PME. Calculez votre seuil de rentabilité en 30 secondes et visualisez la santé financière de votre entreprise en un coup d'œil.
+Worthifast est une application SaaS conçue pour remplacer Excel chez les comptables et PME. Calculez votre seuil de rentabilité en 30 secondes et visualisez la santé financière de votre entreprise en un coup d'œil.
 
-![Worthify Dashboard](https://via.placeholder.com/800x400/102a43/10b981?text=Worthify+Dashboard)
+![Worthifast Dashboard](https://via.placeholder.com/800x400/102a43/10b981?text=Worthifast+Dashboard)
 
 ## ✨ Fonctionnalités
 
@@ -39,8 +39,8 @@ Worthify est une application SaaS conçue pour remplacer Excel chez les comptabl
 ### 1. Cloner le projet
 
 ```bash
-git clone https://github.com/votre-repo/worthify.git
-cd worthify
+git clone https://github.com/votre-repo/worthifast.git
+cd worthifast
 ```
 
 ### 2. Installer les dépendances
@@ -81,7 +81,7 @@ Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 ## 📁 Structure du Projet
 
 ```
-worthify/
+worthifast/
 ├── src/
 │   ├── app/                    # Pages Next.js App Router
 │   │   ├── page.tsx            # Landing page
@@ -134,7 +134,7 @@ Marge de Sécurité (%) = (CA - SR) / CA × 100
 
 ## 🔐 Authentification
 
-Worthify utilise Supabase Auth avec :
+Worthifast utilise Supabase Auth avec :
 
 - **Google OAuth** - Connexion en un clic
 - **Email/Password** - Inscription classique avec confirmation par email

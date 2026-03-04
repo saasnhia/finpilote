@@ -1,6 +1,6 @@
 /**
  * scripts/test-features.ts
- * E2E API tests for Worthify — reads state from scripts/.test-state.json
+ * E2E API tests for Worthifast — reads state from scripts/.test-state.json
  * Writes results to scripts/test-report.md
  * Cleans up all test data at the end.
  *
@@ -430,7 +430,7 @@ function generateReport() {
 
   const bugs = results.filter(r => r.status === 'FAIL')
 
-  let md = `# 📋 Worthify — Rapport de Tests E2E\n\n`
+  let md = `# 📋 Worthifast — Rapport de Tests E2E\n\n`
   md += `> Généré le ${new Date().toLocaleString('fr-FR')} · Durée totale : ${(totalTime / 1000).toFixed(1)}s\n\n`
   md += `## Résumé global\n\n`
   md += `| Métrique | Valeur |\n|---|---|\n`
@@ -527,7 +527,7 @@ async function cleanup() {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('\n🧪 Worthify — Tests E2E\n')
+  console.log('\n🧪 Worthifast — Tests E2E\n')
 
   // Load state
   if (!fs.existsSync(STATE_FILE)) {

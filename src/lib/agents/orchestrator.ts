@@ -1,5 +1,5 @@
 /**
- * Worthify AI Orchestrator — Mistral AI via Vercel AI SDK
+ * Worthifast AI Orchestrator — Mistral AI via Vercel AI SDK
  * Handles rate limiting, logging, timeout, and error management.
  */
 

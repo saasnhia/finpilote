@@ -12,13 +12,13 @@ export default function CGUPage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">1. Objet</h2>
-            <p>Les présentes Conditions Générales d&apos;Utilisation (CGU) régissent l&apos;accès et l&apos;utilisation de la plateforme Worthify, éditée par Worthify SAS, accessible à l&apos;adresse worthify.vercel.app.</p>
+            <p>Les présentes Conditions Générales d&apos;Utilisation (CGU) régissent l&apos;accès et l&apos;utilisation de la plateforme Worthifast, éditée par Worthifast SAS, accessible à l&apos;adresse worthifast.vercel.app.</p>
             <p className="mt-2">En accédant à la plateforme, l&apos;utilisateur accepte sans réserve les présentes CGU.</p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">2. Description du service</h2>
-            <p>Worthify est une solution SaaS de gestion comptable et commerciale destinée aux experts-comptables, PME et indépendants. Le service comprend notamment :</p>
+            <p>Worthifast est une solution SaaS de gestion comptable et commerciale destinée aux experts-comptables, PME et indépendants. Le service comprend notamment :</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>La capture et reconnaissance automatique de documents comptables (OCR)</li>
               <li>Le rapprochement bancaire assisté par intelligence artificielle</li>
@@ -30,8 +30,8 @@ export default function CGUPage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">3. Accès au service</h2>
-            <p>L&apos;accès à Worthify est soumis à la création d&apos;un compte utilisateur. L&apos;utilisateur est responsable de la confidentialité de ses identifiants de connexion. Tout accès effectué depuis son compte est réputé effectué par l&apos;utilisateur.</p>
-            <p className="mt-2">Worthify se réserve le droit de suspendre ou supprimer tout compte en cas de violation des présentes CGU.</p>
+            <p>L&apos;accès à Worthifast est soumis à la création d&apos;un compte utilisateur. L&apos;utilisateur est responsable de la confidentialité de ses identifiants de connexion. Tout accès effectué depuis son compte est réputé effectué par l&apos;utilisateur.</p>
+            <p className="mt-2">Worthifast se réserve le droit de suspendre ou supprimer tout compte en cas de violation des présentes CGU.</p>
           </section>
 
           <section>
@@ -44,12 +44,12 @@ export default function CGUPage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">5. Propriété intellectuelle</h2>
-            <p>L&apos;ensemble des éléments constituant la plateforme Worthify (code, design, marque, contenus) est la propriété exclusive de Worthify SAS. Toute reproduction, représentation ou exploitation non autorisée est strictement interdite.</p>
+            <p>L&apos;ensemble des éléments constituant la plateforme Worthifast (code, design, marque, contenus) est la propriété exclusive de Worthifast SAS. Toute reproduction, représentation ou exploitation non autorisée est strictement interdite.</p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">6. Responsabilité</h2>
-            <p>Worthify met tout en œuvre pour assurer la disponibilité et la fiabilité du service. Toutefois, Worthify ne saurait être tenu responsable en cas d&apos;indisponibilité temporaire du service, de perte de données résultant d&apos;une faute de l&apos;utilisateur, ou de tout dommage indirect.</p>
+            <p>Worthifast met tout en œuvre pour assurer la disponibilité et la fiabilité du service. Toutefois, Worthifast ne saurait être tenu responsable en cas d&apos;indisponibilité temporaire du service, de perte de données résultant d&apos;une faute de l&apos;utilisateur, ou de tout dommage indirect.</p>
             <p className="mt-2 font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
               [À COMPLÉTER PAR UN AVOCAT — Clause limitative de responsabilité, SLA, garanties]
             </p>
@@ -57,7 +57,7 @@ export default function CGUPage() {
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">7. Modification des CGU</h2>
-            <p>Worthify se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés par email de toute modification substantielle. La poursuite de l&apos;utilisation du service après notification vaut acceptation des nouvelles CGU.</p>
+            <p>Worthifast se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés par email de toute modification substantielle. La poursuite de l&apos;utilisation du service après notification vaut acceptation des nouvelles CGU.</p>
           </section>
 
           <section>

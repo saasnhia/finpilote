@@ -10,7 +10,7 @@ export default defineConfig({
   reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }], ['list']],
 
   use: {
-    baseURL: 'https://worthify.vercel.app',
+    baseURL: 'https://worthifast.vercel.app',
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
     trace: 'on-first-retry',

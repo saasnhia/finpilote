@@ -1,4 +1,4 @@
-# 📋 Worthify — Rapport de Tests E2E
+# 📋 Worthifast — Rapport de Tests E2E
 
 > Généré le 24/02/2026 · Durée totale : 16.2s · Serveur : http://localhost:3000
 

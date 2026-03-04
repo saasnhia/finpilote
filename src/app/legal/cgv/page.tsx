@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export const metadata = {
-  title: 'Conditions Generales de Vente | Worthify',
+  title: 'Conditions Generales de Vente | Worthifast',
 }
 
 export default function CGVPage() {
@@ -11,7 +11,7 @@ export default function CGVPage() {
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="Worthify" width={140} height={34} className="h-8 w-auto" />
+            <Image src="/logo.svg" alt="Worthifast" width={140} height={34} className="h-8 w-auto" />
           </Link>
         </div>
       </nav>
@@ -23,23 +23,23 @@ export default function CGVPage() {
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">1. Objet</h2>
             <p>
-              Les presentes CGV regissent l&apos;utilisation du service Worthify,
-              logiciel SaaS de comptabilite accessible sur worthify.app.
+              Les presentes CGV regissent l&apos;utilisation du service Worthifast,
+              logiciel SaaS de comptabilite accessible sur worthifast.app.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">2. Editeur du service</h2>
             <p>
-              Worthify — Projet en cours d&apos;immatriculation, fonde en 2026.
-              Contact : contact@worthify.app
+              Worthifast — Projet en cours d&apos;immatriculation, fonde en 2026.
+              Contact : contact@worthifast.app
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">3. Description du service</h2>
             <p>
-              Worthify est un logiciel de comptabilite en ligne (SaaS) destine
+              Worthifast est un logiciel de comptabilite en ligne (SaaS) destine
               aux cabinets d&apos;expertise comptable, independants et TPE/PME francaises.
             </p>
           </section>

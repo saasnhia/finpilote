@@ -88,7 +88,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     // Update last connection (non-critical, fire-and-forget)
     void (async () => { try { await supabase.from('portail_acces').update({ derniere_connexion: new Date().toISOString() }).eq('id', portail.id) } catch { /* non-critical */ } })()
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthify.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://worthifast.vercel.app'
 
     // Notify cabinet if client uploaded
     if (uploaded_by === 'client') {
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
 
       if (cabinetUser?.user?.email) {
         void sendEmail({
-          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+          from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
           to: [cabinetUser.user.email],
           subject: `Nouveau document déposé — ${escapeHtml(portail.client_nom)}`,
           html: `<p>${escapeHtml(portail.client_nom)} a déposé un nouveau document : <strong>${escapeHtml(nom ?? 'Document')}</strong>.</p>
@@ -110,9 +110,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     // Notify client if cabinet uploaded
     if (uploaded_by === 'cabinet' && portail.client_email && !portail.client_email.startsWith('portail+')) {
       void sendEmail({
-        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthify.app',
+        from: process.env.RESEND_FROM_EMAIL ?? 'noreply@worthifast.app',
         to: [portail.client_email],
-        subject: `Votre cabinet a partagé un document — Worthify`,
+        subject: `Votre cabinet a partagé un document — Worthifast`,
         html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px;">
           <h2 style="color: #22D3A5;">Nouveau document disponible</h2>
           <p>Bonjour <strong>${escapeHtml(portail.client_nom)}</strong>,</p>

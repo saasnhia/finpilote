@@ -16,8 +16,8 @@ const AUTH_FILE = path.join(__dirname, '.auth/user.json')
 const SUPABASE_URL     = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://jwaqsszcaicikhgmfcwc.supabase.co'
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
 
-const TEST_EMAIL    = process.env.TEST_EMAIL    ?? 'test@worthify.dev'
-const TEST_PASSWORD = process.env.TEST_PASSWORD ?? 'TestWorthify2026!'
+const TEST_EMAIL    = process.env.TEST_EMAIL    ?? 'test@worthifast.dev'
+const TEST_PASSWORD = process.env.TEST_PASSWORD ?? 'TestWorthifast2026!'
 
 const adminHeaders = {
   'apikey':        SERVICE_ROLE_KEY,
@@ -82,8 +82,8 @@ async function ensureSubscription(userId: string) {
     headers: { ...adminHeaders, 'Prefer': 'return=minimal,resolution=merge-duplicates' },
     body: JSON.stringify({
       user_id: userId,
-      stripe_customer_id: 'cus_test_worthify',
-      stripe_subscription_id: 'sub_test_worthify',
+      stripe_customer_id: 'cus_test_worthifast',
+      stripe_subscription_id: 'sub_test_worthifast',
       plan: 'pro',
       status: 'active',
       current_period_end: periodEnd,

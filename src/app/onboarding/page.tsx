@@ -160,7 +160,7 @@ export default function OnboardingPage() {
             <span className="text-[#0F172A] font-black text-lg">W</span>
           </div>
           <span className="text-2xl font-bold text-white tracking-tight">
-            Worthify
+            Worthifast
           </span>
         </div>
         <p className="text-sm text-slate-400">Configurons votre espace en quelques étapes</p>
@@ -450,7 +450,7 @@ export default function OnboardingPage() {
               className="flex items-center gap-2 px-6 py-2.5 bg-[#22D3A5] text-[#0F172A] rounded-xl font-bold text-sm hover:bg-[#22D3A5]/90 transition-colors disabled:opacity-70"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              Commencer avec Worthify →
+              Commencer avec Worthifast →
             </button>
           )}
         </div>

@@ -1,4 +1,4 @@
-# MCP Servers — Worthify
+# MCP Servers — Worthifast
 
 Quatre MCP (Model Context Protocol) servers configurés pour enrichir Claude Code sur ce projet.
 Config stockée dans `~/.claude.json` (scope: local, jamais commité).
@@ -10,7 +10,7 @@ Config stockée dans `~/.claude.json` (scope: local, jamais commité).
 **Package :** `@supabase/mcp-server-supabase` v0.6.3
 **Rôle :** Accès direct à la base Supabase — lecture/écriture des tables, inspection du schéma, exécution de requêtes SQL, gestion des migrations.
 
-**Ce que ça apporte à Worthify :**
+**Ce que ça apporte à Worthifast :**
 - Inspecter et interroger les 33 tables (factures, transactions, tva, rapprochements…) sans quitter Claude Code
 - Valider des migrations SQL avant déploiement
 - Débugger des données en production de manière sécurisée
@@ -43,20 +43,20 @@ curl -s "https://jwaqsszcaicikhgmfcwc.supabase.co/rest/v1/?apikey=<SERVICE_ROLE_
 **Package :** `@executeautomation/playwright-mcp-server` v1.0.12
 **Rôle :** Contrôle de navigateur headless — navigation, screenshots, interactions UI, tests E2E depuis les prompts Claude.
 
-**Ce que ça apporte à Worthify :**
+**Ce que ça apporte à Worthifast :**
 - Prendre des screenshots de l'application déployée sur Vercel pour valider les UIs
 - Exécuter des scénarios de navigation (login, upload facture, calcul TVA) à la demande
 - Débugger des flaky tests en observant le comportement réel
 
 **Variables d'environnement :**
 ```
-BASE_URL=https://worthify.vercel.app
+BASE_URL=https://worthifast.vercel.app
 ```
 
 **Commande pour ajouter :**
 ```bash
 claude mcp add playwright --scope local \
-  -e "BASE_URL=https://worthify.vercel.app" \
+  -e "BASE_URL=https://worthifast.vercel.app" \
   -- npx -y @executeautomation/playwright-mcp-server
 ```
 
@@ -66,7 +66,7 @@ node -e "
 const { chromium } = require('@playwright/test');
 chromium.launch({ headless: true }).then(async b => {
   const p = await b.newPage();
-  await p.goto('https://worthify.vercel.app');
+  await p.goto('https://worthifast.vercel.app');
   console.log(await p.title());
   await b.close();
 });"
@@ -80,7 +80,7 @@ chromium.launch({ headless: true }).then(async b => {
 **Package :** `@upstash/context7-mcp` v2.1.2
 **Rôle :** Documentation technique à jour pour Next.js, React, Supabase, Tailwind, TypeScript — résout les docs de la version exacte utilisée dans le projet.
 
-**Ce que ça apporte à Worthify :**
+**Ce que ça apporte à Worthifast :**
 - Références API Next.js 15 App Router (useRouter, Server Actions, dynamic params…)
 - Documentation Supabase SDK à jour (RLS, auth helpers, realtime…)
 - Évite les erreurs de version en consultant les docs exactes
@@ -106,9 +106,9 @@ npm show @upstash/context7-mcp version
 ## 4. GitHub MCP
 
 **Package :** `@modelcontextprotocol/server-github` v2025.4.8
-**Rôle :** Accès à l'API GitHub — lecture des commits, issues, PRs, branches, recherche de code dans le repo saasnhia/worthify.
+**Rôle :** Accès à l'API GitHub — lecture des commits, issues, PRs, branches, recherche de code dans le repo saasnhia/worthifast.
 
-**Ce que ça apporte à Worthify :**
+**Ce que ça apporte à Worthifast :**
 - Consulter l'historique git et les PRs sans quitter Claude Code
 - Créer des issues directement depuis un prompt de debug
 - Rechercher du code dans les branches distantes
@@ -128,7 +128,7 @@ claude mcp add github --scope local \
 
 **Test de connexion :**
 ```bash
-gh api repos/saasnhia/worthify/commits --jq '.[0:5] | .[] | "- " + .sha[0:7] + " " + (.commit.message | split("\n")[0])'
+gh api repos/saasnhia/worthifast/commits --jq '.[0:5] | .[] | "- " + .sha[0:7] + " " + (.commit.message | split("\n")[0])'
 ```
 > Derniers commits du repo listés
 
@@ -147,7 +147,7 @@ claude mcp add supabase --scope local \
 
 # 2 — Playwright
 claude mcp add playwright --scope local \
-  -e "BASE_URL=https://worthify.vercel.app" \
+  -e "BASE_URL=https://worthifast.vercel.app" \
   -- npx -y @executeautomation/playwright-mcp-server
 
 # 3 — Context7

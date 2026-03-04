@@ -60,7 +60,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   { id: 'parametres', label: 'Paramètres', description: 'Paramètres généraux du compte', href: '/settings', icon: '⚙️', keywords: ['paramètres', 'settings', 'configuration', 'profil'], group: 'navigation' },
   { id: 'parametres-integrations', label: 'Intégrations', description: 'Sage, Cegid, Chift, connecteurs', href: '/parametres/integrations', icon: '🔌', keywords: ['intégrations', 'sage', 'cegid', 'chift', 'api', 'connecteur'], group: 'navigation' },
   { id: 'parametres-regles', label: 'Règles de catégorisation', description: 'Règles automatiques fournisseurs', href: '/parametres/regles', icon: '📐', keywords: ['règles', 'catégorisation', 'fournisseurs', 'pcg'], group: 'navigation' },
-  { id: 'pricing', label: 'Plans & tarifs', description: 'Plans et tarifs Worthify', href: '/pricing', icon: '💳', keywords: ['prix', 'plans', 'tarifs', 'abonnement', 'pricing'], group: 'navigation' },
+  { id: 'pricing', label: 'Plans & tarifs', description: 'Plans et tarifs Worthifast', href: '/pricing', icon: '💳', keywords: ['prix', 'plans', 'tarifs', 'abonnement', 'pricing'], group: 'navigation' },
   { id: 'notifications', label: 'Notifications', description: 'Centre de notifications', href: '/notifications', icon: '🔔', keywords: ['notifications', 'alertes', 'messages'], group: 'navigation' },
   { id: 'faq', label: 'FAQ / Aide', description: 'Questions fréquentes et aide', href: '/faq', icon: '❓', keywords: ['faq', 'aide', 'help', 'questions', 'support'], group: 'navigation' },
 

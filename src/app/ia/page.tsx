@@ -85,7 +85,7 @@ interface ChatMessage {
   content: string
 }
 
-type Tab = 'worthify' | 'mes-agents' | 'pcg'
+type Tab = 'worthifast' | 'mes-agents' | 'pcg'
 
 function AgentSection({ agent }: { agent: AgentCard }) {
   const [open, setOpen] = useState(false)
@@ -407,7 +407,7 @@ function PCGBOFIPTab() {
 }
 
 export default function IAPage() {
-  const [tab, setTab] = useState<Tab>('worthify')
+  const [tab, setTab] = useState<Tab>('worthifast')
   const [customAgents, setCustomAgents] = useState<AgentCustom[]>([])
   const [loadingAgents, setLoadingAgents] = useState(false)
 
@@ -423,7 +423,7 @@ export default function IAPage() {
   }, [tab])
 
   const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-    { id: 'worthify', label: 'Agents Worthify', icon: Sparkles },
+    { id: 'worthifast', label: 'Agents Worthifast', icon: Sparkles },
     { id: 'mes-agents', label: 'Mes Agents', icon: Bot },
     { id: 'pcg', label: 'PCG & BOFIP', icon: BookOpen },
   ]
@@ -436,7 +436,7 @@ export default function IAPage() {
           <div className="space-y-1">
             <div className="flex items-center gap-3 flex-wrap">
               <Sparkles className="w-6 h-6 text-emerald-500" />
-              <h1 className="text-2xl font-bold text-gray-900">Assistant IA Worthify</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Assistant IA Worthifast</h1>
               <span className="relative group">
                 <Info className="w-4 h-4 text-gray-400 cursor-help" />
                 <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 px-3 py-2 rounded-lg bg-gray-900 text-white text-xs leading-relaxed opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-lg">
@@ -474,8 +474,8 @@ export default function IAPage() {
             })}
           </div>
 
-          {/* Tab: Agents Worthify */}
-          {tab === 'worthify' && (
+          {/* Tab: Agents Worthifast */}
+          {tab === 'worthifast' && (
             <>
               {/* Bandeau sécurité RGPD */}
               <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-950 border border-emerald-800">

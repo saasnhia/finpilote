@@ -78,7 +78,7 @@ export function Header() {
         <div className="flex h-14 items-center justify-between">
           {/* Logo + slogan */}
           <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-3">
-            <Image src="/logo-white.svg" alt="Worthify" width={140} height={34} priority className="h-8 w-auto" />
+            <Image src="/logo-white.svg" alt="Worthifast" width={140} height={34} priority className="h-8 w-auto" />
             <span className="hidden lg:inline text-[11px] text-neutral-400 ml-1">
               Automatisez, sécurisez, gagnez du temps
             </span>

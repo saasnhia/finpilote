@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     })
 
     // 5. Envoyer l'email (Resend cloud ou SMTP on-premise)
-    const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@worthify.local'
+    const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'rappels@worthifast.local'
     const emailResult = await sendEmail({
       from: `${nomEntreprise} <${fromEmail}>`,
       to: [client.email],
