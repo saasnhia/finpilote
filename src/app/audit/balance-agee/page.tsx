@@ -61,7 +61,7 @@ export default function BalanceAgeePage() {
     try {
       const res = await fetch('/api/dashboard/summary')
       const json = await res.json()
-      if (json.success) setItems(json.balance_agee)
+      if (json.success) setItems(json.balance_agee_clients ?? json.balance_agee ?? [])
     } catch {
       // silently fail
     } finally {

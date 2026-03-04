@@ -126,7 +126,7 @@ export function CommandPalette() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Rechercher une page, feature..."
-              className="flex-1 py-4 text-base text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
+              className="flex-1 py-4 text-base text-slate-900 placeholder:text-slate-400 outline-none bg-transparent focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
             {query && (
               <button
