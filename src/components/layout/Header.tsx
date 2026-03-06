@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui'
 import { useAuth } from '@/hooks/useAuth'
+import { useSubscription } from '@/hooks/useSubscription'
 import { DossierSwitcher } from '@/components/cabinet/DossierSwitcher'
 import { useCommandPalette } from '@/lib/search/use-command-palette'
 import {
@@ -26,6 +27,7 @@ import {
   ArrowRightLeft,
   Shield,
   Settings,
+  Clock,
 } from 'lucide-react'
 
 // Grouped nav items — exported for reuse by Sidebar
@@ -52,9 +54,19 @@ const headerTabs = [
 export function Header() {
   const pathname = usePathname()
   const { user, loading, signOut } = useAuth()
+  const { subscription } = useSubscription()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const { setOpen: setCommandOpen } = useCommandPalette()
+
+  // Trial countdown
+  const trialDaysLeft = (() => {
+    if (!subscription || subscription.status !== 'trialing' || !subscription.current_period_end) return null
+    const end = new Date(subscription.current_period_end).getTime()
+    const now = Date.now()
+    const days = Math.max(0, Math.ceil((end - now) / 86400000))
+    return days
+  })()
 
   const isTabActive = (tab: typeof headerTabs[number]) => {
     if (Array.isArray(tab.matchPrefix)) {
@@ -117,6 +129,22 @@ export function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            {/* Trial countdown badge */}
+            {user && trialDaysLeft !== null && (
+              <Link
+                href="/pricing"
+                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  trialDaysLeft <= 3
+                    ? 'bg-red-500/20 text-red-300 border border-red-500/30 animate-pulse'
+                    : 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
+                }`}
+              >
+                <Clock size={13} />
+                Essai J-{trialDaysLeft}
+                {trialDaysLeft <= 3 && <span className="ml-1">— Upgrade</span>}
+              </Link>
+            )}
+
             {/* Search button */}
             {user && (
               <button

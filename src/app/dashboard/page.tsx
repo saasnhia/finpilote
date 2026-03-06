@@ -28,6 +28,8 @@ import {
   TrendingDown,
   Wallet,
   Target,
+  Zap,
+  Award,
 } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
@@ -306,11 +308,11 @@ function BalanceAgeeWidget({ items, loading, mode }: BalanceAgeeWidgetProps) {
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const { isActive, initialized } = useSubscription()
+  const { subscription, isActive, initialized } = useSubscription()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
   const [showFECModal, setShowFECModal] = useState(false)
-  const [extraKpis, setExtraKpis] = useState<{ caHT: number | null; chargesHT: number | null }>({ caHT: null, chargesHT: null })
+  const [extraKpis, setExtraKpis] = useState<{ caHT: number | null; chargesHT: number | null; facturesCount: number; facturesClientsCount: number }>({ caHT: null, chargesHT: null, facturesCount: 0, facturesClientsCount: 0 })
   const [extraLoading, setExtraLoading] = useState(false)
 
   // Redirect to pricing only once both auth and subscription are fully loaded
@@ -352,7 +354,9 @@ if (!authLoading && initialized && user && !isActive) {
         ])
         const caHT = caRes.data ? caRes.data.reduce((s: number, r: { total_ht: number | null }) => s + (r.total_ht ?? 0), 0) : null
         const chargesHT = chargesRes.data ? chargesRes.data.reduce((s: number, r: { montant_ht: number | null }) => s + (r.montant_ht ?? 0), 0) : null
-        setExtraKpis({ caHT, chargesHT })
+        const facturesClientsCount = caRes.data?.length ?? 0
+        const facturesCount = chargesRes.data?.length ?? 0
+        setExtraKpis({ caHT, chargesHT, facturesCount, facturesClientsCount })
       } catch {
         // silently fail
       } finally {
@@ -490,6 +494,28 @@ if (!authLoading && initialized && user && !isActive) {
     <AppShell>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        {/* Bandeau essai gratuit urgent */}
+        {(() => {
+          const sub = subscription
+          if (!sub || sub.status !== 'trialing' || !sub.current_period_end) return null
+          const daysLeft = Math.max(0, Math.ceil((new Date(sub.current_period_end).getTime() - Date.now()) / 86400000))
+          if (daysLeft > 3) return null
+          return (
+            <div className="mb-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <span className="text-red-700 font-medium">
+                Votre essai gratuit expire dans {daysLeft} jour{daysLeft !== 1 ? 's' : ''} !
+              </span>
+              <Link
+                href="/pricing"
+                className="ml-auto flex-shrink-0 px-3 py-1.5 bg-red-500 text-white rounded-lg text-xs font-semibold hover:bg-red-600 transition-colors"
+              >
+                Passer au plan payant →
+              </Link>
+            </div>
+          )
+        })()}
+
         {/* Bandeau e-invoicing */}
         <div className="mb-4 flex items-center gap-3 px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-sm">
           <span className="text-emerald-700 font-medium">✅ Worthifast est conforme e-invoicing 2026 (Factur-X / EN16931)</span>
@@ -497,6 +523,45 @@ if (!authLoading && initialized && user && !isActive) {
             En savoir plus →
           </Link>
         </div>
+
+        {/* ── Highlights WOW ─────────────────────────────────────────── */}
+        {(() => {
+          const totalDocs = extraKpis.facturesCount + extraKpis.facturesClientsCount
+          const hoursSaved = Math.round(totalDocs * 0.15 * 10) / 10
+          const moneySaved = Math.round(hoursSaved * 35)
+          const isExpert = totalDocs >= 100
+          return totalDocs > 0 || !extraLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100/60 border border-emerald-200">
+                <div className="p-2 bg-emerald-500 rounded-lg">
+                  <Euro className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-lg font-bold text-emerald-700">{moneySaved > 0 ? `${moneySaved} €` : '—'}</p>
+                  <p className="text-[11px] text-emerald-600">économisés cette année</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100/60 border border-blue-200">
+                <div className="p-2 bg-blue-500 rounded-lg">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-lg font-bold text-blue-700">{hoursSaved > 0 ? `${hoursSaved}h` : '—'}</p>
+                  <p className="text-[11px] text-blue-600">de saisie automatisée</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100/60 border border-purple-200">
+                <div className="p-2 bg-purple-500 rounded-lg">
+                  {isExpert ? <Award className="w-4 h-4 text-white" /> : <Target className="w-4 h-4 text-white" />}
+                </div>
+                <div>
+                  <p className="text-lg font-bold text-purple-700">{isExpert ? 'Expert' : `${totalDocs} docs`}</p>
+                  <p className="text-[11px] text-purple-600">{isExpert ? `${totalDocs} documents traités` : 'précision OCR 98 %'}</p>
+                </div>
+              </div>
+            </div>
+          ) : null
+        })()}
 
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
@@ -539,6 +604,42 @@ if (!authLoading && initialized && user && !isActive) {
             <SimpleKPICard key={i} {...card} />
           ))}
         </div>
+
+        {/* ── Mini graphique activité semaine ──────────────────────────── */}
+        {!loading && transactions.length > 0 && (() => {
+          const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+          const counts = new Array(7).fill(0) as number[]
+          const now = new Date()
+          const dayOfWeek = (now.getDay() + 6) % 7 // Monday=0
+          transactions.forEach(t => {
+            const d = new Date(t.date)
+            const diff = Math.floor((now.getTime() - d.getTime()) / 86400000)
+            if (diff >= 0 && diff < 7) {
+              const idx = (dayOfWeek - diff + 7) % 7
+              counts[idx]++
+            }
+          })
+          const max = Math.max(...counts, 1)
+          return (
+            <div className="mb-8 p-5 rounded-xl border border-navy-100 bg-white">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xs font-semibold text-navy-500 uppercase tracking-wide">Activité cette semaine</h3>
+                <span className="text-xs text-navy-400">{transactions.length} transactions récentes</span>
+              </div>
+              <div className="flex items-end gap-2 h-16">
+                {counts.map((c, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                    <div
+                      className="w-full rounded-t-md bg-emerald-400 transition-all duration-500"
+                      style={{ height: `${Math.max((c / max) * 100, 4)}%` }}
+                    />
+                    <span className="text-[10px] text-navy-400">{days[i]}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
 
         {/* ── KPIs Financiers étendus ─────────────────────────────────── */}
         <div className="space-y-5 mb-8">

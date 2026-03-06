@@ -213,7 +213,7 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <div>
                 <label className={labelClass}>Prénom</label>
                 <input type="text" value={form.prenom} onChange={e => setField('prenom', e.target.value)} placeholder="Marie" className={inputClass} />
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <div>
                 <label className={labelClass}>SIRET</label>
                 <input
@@ -284,7 +284,7 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               {USAGE_CARDS.map(card => {
                 const Icon = card.icon
                 const selected = form.usage_type === card.type
@@ -427,7 +427,7 @@ export default function OnboardingPage() {
         )}
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-6 pt-5 border-t border-white/10">
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 mt-6 pt-5 border-t border-white/10">
           {step > 1 ? (
             <button onClick={handleBack} className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
               <ChevronLeft className="w-4 h-4" />
@@ -438,7 +438,7 @@ export default function OnboardingPage() {
           {step < 4 ? (
             <button
               onClick={handleNext}
-              className="flex items-center gap-1.5 px-5 py-2.5 bg-[#22D3A5] text-[#0F172A] rounded-xl font-semibold text-sm hover:bg-[#22D3A5]/90 transition-colors"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 bg-[#22D3A5] text-[#0F172A] rounded-xl font-semibold text-sm hover:bg-[#22D3A5]/90 transition-colors"
             >
               Continuer
               <ChevronRight className="w-4 h-4" />
@@ -447,10 +447,16 @@ export default function OnboardingPage() {
             <button
               onClick={handleFinish}
               disabled={loading}
-              className="flex items-center gap-2 px-6 py-2.5 bg-[#22D3A5] text-[#0F172A] rounded-xl font-bold text-sm hover:bg-[#22D3A5]/90 transition-colors disabled:opacity-70"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 bg-[#22D3A5] text-[#0F172A] rounded-xl font-bold text-sm hover:bg-[#22D3A5]/90 transition-colors disabled:opacity-70"
             >
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              Commencer avec Worthifast →
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Création de votre espace…
+                </>
+              ) : (
+                'Commencer avec Worthifast →'
+              )}
             </button>
           )}
         </div>

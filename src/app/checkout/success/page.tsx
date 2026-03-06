@@ -70,6 +70,13 @@ export default function CheckoutSuccessPage() {
     )
   }
 
+  // Auto-redirect to dashboard 8s after timeout (anti-boucle)
+  useEffect(() => {
+    if (status !== 'timeout') return
+    const timer = setTimeout(() => router.push('/dashboard'), 8000)
+    return () => clearTimeout(timer)
+  }, [status, router])
+
   if (status === 'timeout') {
     return (
       <div className="min-h-screen bg-[#0F172A] flex items-center justify-center px-4">
@@ -79,7 +86,7 @@ export default function CheckoutSuccessPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Paiement en cours de traitement</h1>
           <p className="text-slate-400 text-sm mb-6">
-            Votre paiement a été reçu. La confirmation peut prendre quelques secondes supplémentaires.
+            Votre paiement a été reçu. Redirection automatique dans quelques secondes…
           </p>
           <button
             onClick={() => {
