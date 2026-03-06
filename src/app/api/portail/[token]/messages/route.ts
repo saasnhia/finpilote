@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/email-sender'
 import { escapeHtml } from '@/lib/utils/escape-html'
+import { rateLimit } from '@/lib/utils/rate-limit'
 
 async function getPortailByToken(token: string) {
   const supabase = await createClient()
@@ -17,6 +18,9 @@ async function getPortailByToken(token: string) {
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
     const { token } = await params
+    if (!rateLimit(`portail:${token}`, 30, 60_000)) {
+      return NextResponse.json({ error: 'Trop de requêtes' }, { status: 429 })
+    }
     const { supabase, portail } = await getPortailByToken(token)
     if (!portail) return NextResponse.json({ error: 'Portail introuvable' }, { status: 404 })
 
@@ -36,6 +40,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ tok
 export async function POST(req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
     const { token } = await params
+    if (!rateLimit(`portail:${token}`, 15, 60_000)) {
+      return NextResponse.json({ error: 'Trop de requêtes' }, { status: 429 })
+    }
     const { supabase, portail } = await getPortailByToken(token)
     if (!portail) return NextResponse.json({ error: 'Portail introuvable' }, { status: 404 })
 

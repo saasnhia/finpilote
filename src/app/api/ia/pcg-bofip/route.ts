@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { rateLimit } from '@/lib/utils/rate-limit'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -35,6 +36,10 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+
+    if (!rateLimit(`ai:${user.id}`, 10, 60_000)) {
+      return NextResponse.json({ error: 'Trop de requêtes IA, réessayez dans une minute' }, { status: 429 })
+    }
 
     const { question, contexte = 'pcg', dossier_id } = await req.json() as { question: string; contexte?: string; dossier_id?: string }
     if (!question?.trim()) return NextResponse.json({ error: 'Question requise' }, { status: 400 })

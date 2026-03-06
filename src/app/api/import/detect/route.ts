@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimit } from '@/lib/utils/rate-limit'
 
 export type ImportType =
   | 'facture_ocr'
@@ -49,6 +50,10 @@ export async function POST(req: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+    }
+
+    if (!rateLimit(`import-detect:${user.id}`, 20, 60_000)) {
+      return NextResponse.json({ error: 'Trop de requêtes' }, { status: 429 })
     }
 
     const formData = await req.formData()
